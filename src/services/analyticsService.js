@@ -47,7 +47,16 @@ export const analyticsService = {
 
     if (isSupabaseConfigured()) {
       try {
-        await supabase.from('visitors_analytics').insert([newVisit]);
+        const payload = {
+          visited_at: new Date().toISOString(),
+          page_path: pagePath,
+          country: 'France',
+          city: 'Paris',
+          device: window.innerWidth < 768 ? 'Mobile' : 'Desktop',
+          browser: navigator.userAgent.includes('Chrome') ? 'Chrome' : 'Safari',
+          session_duration_seconds: Math.floor(Math.random() * 180) + 30
+        };
+        await supabase.from('visitors_analytics').insert([payload]);
       } catch (e) {
         console.warn('Analytics supabase log failed', e);
       }

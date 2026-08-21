@@ -4,8 +4,6 @@ const LOCAL_STORAGE_LEADS_KEY = 'intercars_leads_data';
 
 const initialDemoLeads = [
   {
-    id: 'lead-001',
-    created_at: new Date(Date.now() - 3600 * 1000 * 2).toISOString(),
     full_name: 'Guillaume de Montmirail',
     email: 'g.montmirail@lux-holdings.com',
     phone: '+33 6 42 18 90 22',
@@ -15,14 +13,12 @@ const initialDemoLeads = [
     preferred_timeline: 'Moins de 30 jours',
     fuel_type: 'Essence',
     transmission: 'Automatique (PDK)',
-    message: 'Recherche active d’un exemplaire Weissach en teinte exclusive (Vert Python ou Shark Blue), moins de 5 000 km, historique Porsche Approved uniquement.',
+    message: 'Recherche active d’un exemplaire en teinte exclusive (Vert Python ou Shark Blue), moins de 5 000 km, historique constructeur vérifié.',
     status: 'Nouveau',
     admin_notes: 'Client très sérieux, profil VIP. Contact direct par téléphone prévu.',
     source: 'Configurateur Web'
   },
   {
-    id: 'lead-002',
-    created_at: new Date(Date.now() - 3600 * 1000 * 18).toISOString(),
     full_name: 'Frédéric Bellegarde',
     email: 'f.bellegarde@cabinet-avocats.fr',
     phone: '+33 6 11 88 34 50',
@@ -32,14 +28,12 @@ const initialDemoLeads = [
     preferred_timeline: '1 à 2 mois',
     fuel_type: 'Hybride / Essence',
     transmission: 'Automatique',
-    message: 'Véhicule de direction recherché en Allemagne, première main certifiée constructeur. Toit panoramique et sono Bang & Olufsen indispensables.',
+    message: 'Véhicule de direction recherché, première main certifiée constructeur. Toit panoramique et sono Bang & Olufsen indispensables.',
     status: 'En cours',
-    admin_notes: 'Deux opportunités en Bavière identifiées. En attente du retour de la concession allemande.',
+    admin_notes: 'Deux opportunités conformes identifiées. En attente du retour de la concession.',
     source: 'Formulaire Contact'
   },
   {
-    id: 'lead-003',
-    created_at: new Date(Date.now() - 3600 * 1000 * 48).toISOString(),
     full_name: 'Arthur Saint-Germain',
     email: 'arthur.stg@monaco-yachts.mc',
     phone: '+377 98 00 23 11',
@@ -49,9 +43,9 @@ const initialDemoLeads = [
     preferred_timeline: 'Immédiat',
     fuel_type: 'Essence V8',
     transmission: 'Automatique',
-    message: 'Édition limitée recherchée pour livraison à Monaco. Nécessite immatriculation et gestion douanière complète.',
+    message: 'Édition limitée recherchée pour livraison à Monaco avec audit complet.',
     status: 'Devis envoyé',
-    admin_notes: 'Proposition transmise avec audit complet du véhicule situé à Zurich.',
+    admin_notes: 'Proposition transmise avec audit complet du véhicule.',
     source: 'Configurateur Web'
   }
 ];
@@ -65,23 +59,69 @@ export const leadsService = {
           .from('leads')
           .select('*')
           .order('created_at', { ascending: false });
-        if (!error && data) return data;
+
+        if (!error && data && data.length > 0) {
+          return data;
+        }
+
+        // Auto-seed initial leads si la table est vide
+        if (!error && data && data.length === 0) {
+          try {
+            const { data: inserted } = await supabase
+              .from('leads')
+              .insert(initialDemoLeads)
+              .select();
+            if (inserted && inserted.length > 0) return inserted;
+          } catch (seedErr) {
+            console.warn('Auto-seed leads failed:', seedErr);
+          }
+        }
       } catch (err) {
-        console.warn('Supabase fetch failed, using local storage fallback', err);
+        console.warn('Supabase leads fetch failed, using local storage fallback', err);
       }
     }
 
-    // Fallback LocalStorage
     const stored = localStorage.getItem(LOCAL_STORAGE_LEADS_KEY);
     if (!stored) {
-      localStorage.setItem(LOCAL_STORAGE_LEADS_KEY, JSON.stringify(initialDemoLeads));
-      return initialDemoLeads;
+      const demoWithIds = initialDemoLeads.map((l, i) => ({
+        id: `lead-demo-${i + 1}`,
+        created_at: new Date(Date.now() - (i + 1) * 3600 * 1000 * 12).toISOString(),
+        ...l
+      }));
+      localStorage.setItem(LOCAL_STORAGE_LEADS_KEY, JSON.stringify(demoWithIds));
+      return demoWithIds;
     }
     return JSON.parse(stored);
   },
 
-  // Créer une nouvelle demande de devis
+  // Créer une nouvelle demande de devis (reçue du formulaire Contact)
   async createLead(leadData) {
+    if (isSupabaseConfigured()) {
+      try {
+        const payload = {
+          created_at: new Date().toISOString(),
+          status: 'Nouveau',
+          source: 'Web Conciergerie',
+          ...leadData
+        };
+        delete payload.id; // Laisser Supabase attribuer le UUID
+
+        const { data, error } = await supabase
+          .from('leads')
+          .insert([payload])
+          .select();
+
+        if (!error && data && data.length > 0) {
+          return { success: true, lead: data[0] };
+        }
+        if (error) {
+          console.error('Erreur insertion Lead Supabase:', error);
+        }
+      } catch (err) {
+        console.warn('Supabase insert lead failed, using local fallback', err);
+      }
+    }
+
     const newLead = {
       id: 'lead-' + Date.now(),
       created_at: new Date().toISOString(),
@@ -90,23 +130,10 @@ export const leadsService = {
       ...leadData
     };
 
-    if (isSupabaseConfigured()) {
-      try {
-        const { data, error } = await supabase
-          .from('leads')
-          .insert([newLead])
-          .select();
-        if (!error && data && data.length > 0) return data[0];
-      } catch (err) {
-        console.warn('Supabase insert failed, using local fallback', err);
-      }
-    }
-
-    // Sauvegarde locale
     const current = await this.getAllLeads();
     const updated = [newLead, ...current];
     localStorage.setItem(LOCAL_STORAGE_LEADS_KEY, JSON.stringify(updated));
-    return newLead;
+    return { success: true, lead: newLead };
   },
 
   // Mettre à jour le statut ou les notes d'un lead
@@ -118,9 +145,12 @@ export const leadsService = {
           .update(updates)
           .eq('id', id)
           .select();
-        if (!error && data && data.length > 0) return data[0];
+
+        if (!error && data && data.length > 0) {
+          return data[0];
+        }
       } catch (err) {
-        console.warn('Supabase update failed, using local fallback', err);
+        console.warn('Supabase update lead failed', err);
       }
     }
 
@@ -136,7 +166,7 @@ export const leadsService = {
       try {
         await supabase.from('leads').delete().eq('id', id);
       } catch (err) {
-        console.warn('Supabase delete failed', err);
+        console.warn('Supabase delete lead failed', err);
       }
     }
 
