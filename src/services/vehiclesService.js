@@ -4,7 +4,7 @@ import { initialVehicles } from '../data/vehiclesData';
 const LOCAL_STORAGE_VEHICLES_KEY = 'intercars_vehicles_catalog';
 
 export const vehiclesService = {
-  // Récupérer tous les véhicules
+  // Récupérer tous les véhicules (avec auto-initialisation si la base Supabase est vide)
   async getAllVehicles() {
     if (isSupabaseConfigured()) {
       try {
@@ -12,9 +12,36 @@ export const vehiclesService = {
           .from('delivered_vehicles')
           .select('*')
           .order('created_at', { ascending: false });
-        if (!error && data && data.length > 0) return data;
+
+        if (!error && data && data.length > 0) {
+          return data;
+        }
+
+        // Si la table Supabase est vide, on l'initialise automatiquement avec notre catalogue
+        if (!error && data && data.length === 0 && initialVehicles.length > 0) {
+          try {
+            const seedPayload = initialVehicles.map(v => {
+              const { id, ...rest } = v;
+              return {
+                ...rest,
+                savings_amount: 0,
+                rating: 5,
+                gallery: [v.image_url]
+              };
+            });
+            const { data: inserted } = await supabase
+              .from('delivered_vehicles')
+              .insert(seedPayload)
+              .select();
+            if (inserted && inserted.length > 0) {
+              return inserted;
+            }
+          } catch (seedErr) {
+            console.warn('Auto-seed Supabase failed:', seedErr);
+          }
+        }
       } catch (err) {
-        console.warn('Supabase vehicles fetch failed, using local storage', err);
+        console.warn('Supabase vehicles fetch failed, using local storage fallback', err);
       }
     }
 
@@ -26,8 +53,35 @@ export const vehiclesService = {
     return JSON.parse(stored);
   },
 
-  // Ajouter un véhicule livré
+  // Ajouter un véhicule
   async addVehicle(vehicleData) {
+    if (isSupabaseConfigured()) {
+      try {
+        const payload = {
+          created_at: new Date().toISOString(),
+          gallery: [vehicleData.image_url],
+          rating: 5,
+          savings_amount: 0,
+          ...vehicleData
+        };
+        delete payload.id; // Laisser Supabase générer le UUID
+
+        const { data, error } = await supabase
+          .from('delivered_vehicles')
+          .insert([payload])
+          .select();
+
+        if (!error && data && data.length > 0) {
+          return data[0];
+        }
+        if (error) {
+          console.error('Erreur insertion véhicule Supabase:', error);
+        }
+      } catch (err) {
+        console.warn('Supabase add vehicle failed, using local fallback', err);
+      }
+    }
+
     const newVehicle = {
       id: 'veh-' + Date.now(),
       created_at: new Date().toISOString(),
@@ -35,18 +89,6 @@ export const vehiclesService = {
       rating: 5,
       ...vehicleData
     };
-
-    if (isSupabaseConfigured()) {
-      try {
-        const { data, error } = await supabase
-          .from('delivered_vehicles')
-          .insert([newVehicle])
-          .select();
-        if (!error && data && data.length > 0) return data[0];
-      } catch (err) {
-        console.warn('Supabase add vehicle failed', err);
-      }
-    }
 
     const current = await this.getAllVehicles();
     const updated = [newVehicle, ...current];
@@ -63,7 +105,10 @@ export const vehiclesService = {
           .update(updates)
           .eq('id', id)
           .select();
-        if (!error && data && data.length > 0) return data[0];
+
+        if (!error && data && data.length > 0) {
+          return data[0];
+        }
       } catch (err) {
         console.warn('Supabase update vehicle failed', err);
       }
