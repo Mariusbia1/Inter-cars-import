@@ -41,10 +41,10 @@ export const Navbar = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
           isScrolled
-            ? 'bg-rolex-dark/95 backdrop-blur-md shadow-2xl border-b border-gold/30 py-1'
-            : 'bg-gradient-to-b from-rolex-dark/95 via-rolex-dark/85 to-rolex-dark/40 backdrop-blur-md border-b border-white/10'
+            ? 'bg-rolex-dark/65 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.35)] border-b border-gold/30 py-1'
+            : 'bg-rolex-dark/25 backdrop-blur-sm border-b border-white/10 py-1.5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
