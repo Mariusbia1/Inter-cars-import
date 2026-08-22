@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { AdminLayout } from '../../components/admin/AdminLayout';
@@ -7,15 +7,25 @@ import { LeadsTable } from '../../components/admin/LeadsTable';
 import { VehicleManager } from '../../components/admin/VehicleManager';
 import { AnalyticsView } from '../../components/admin/AnalyticsView';
 import { SettingsManager } from '../../components/admin/SettingsManager';
-import { MessageSquare, Car, Award, Clock, ArrowUpRight, Plus, Eye, Settings } from 'lucide-react';
+import { MessageSquare, Car, Award, Clock, ArrowUpRight, Plus, Eye, Settings, Users, Activity } from 'lucide-react';
 import { useLeads } from '../../context/LeadsContext';
 import { useVehicles } from '../../context/VehicleContext';
+import { analyticsService } from '../../services/analyticsService';
 
 export const AdminDashboardPage = () => {
   const { isAuthenticated, loading } = useAdminAuth();
   const { leads } = useLeads();
   const { vehicles } = useVehicles();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [analyticsData, setAnalyticsData] = useState({ totalVisits: 0, todayVisits: 0, conversionRate: '0%' });
+
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      const data = await analyticsService.getAnalyticsData();
+      if (data) setAnalyticsData(data);
+    };
+    fetchAnalytics();
+  }, [activeTab]);
 
   if (loading) {
     return (
@@ -29,7 +39,6 @@ export const AdminDashboardPage = () => {
     return <Navigate to="/admin/login" replace />;
   }
 
-  // Calculs KPI (strictement sans prix ni CA)
   const newLeadsCount = leads.filter((l) => l.status === 'Nouveau').length;
   const inProgressLeadsCount = leads.filter((l) => l.status === 'En cours' || l.status === 'Devis envoyé').length;
   const totalVehiclesCount = vehicles.length;
@@ -38,13 +47,13 @@ export const AdminDashboardPage = () => {
     <AdminLayout activeTab={activeTab} onSelectTab={setActiveTab}>
       {activeTab === 'dashboard' && (
         <div className="space-y-8">
-          {/* KPI Header Grid */}
+          {/* KPI Header Grid avec données 100% réelles issues de Supabase */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <KpiCard
-              title="Demandes Reçues"
+              title="Demandes de Devis"
               value={leads.length}
               subtitle={`${newLeadsCount} nouvelle(s) à traiter`}
-              change="+3 cette semaine"
+              change={newLeadsCount > 0 ? `+${newLeadsCount} en attente` : 'À jour'}
               icon={MessageSquare}
             />
             <KpiCard
@@ -55,17 +64,17 @@ export const AdminDashboardPage = () => {
               icon={Car}
             />
             <KpiCard
-              title="Délai de Traitement"
-              value="< 48h"
-              subtitle="Audit et premier sourcing"
-              change="Délai garanti"
-              icon={Clock}
+              title="Visites Réelles du Site"
+              value={analyticsData.totalVisits}
+              subtitle={`+${analyticsData.todayVisits} visite(s) aujourd'hui`}
+              change="Trafic en temps réel"
+              icon={Activity}
             />
             <KpiCard
-              title="Indice de Satisfaction"
-              value="100%"
-              subtitle="180+ livraisons sans litige"
-              change="5.0 ★ sur avis"
+              title="Taux de Conversion"
+              value={analyticsData.conversionRate}
+              subtitle="Visiteurs convertis en devis"
+              change="Performance réelle"
               icon={Award}
             />
           </div>
@@ -87,32 +96,38 @@ export const AdminDashboardPage = () => {
                 </button>
               </div>
 
-              <div className="divide-y divide-slate-100">
-                {leads.slice(0, 4).map((lead) => (
-                  <div key={lead.id} className="py-3.5 flex items-center justify-between gap-4">
-                    <div>
-                      <h5 className="font-bold text-slate-900 text-sm">{lead.full_name}</h5>
-                      <p className="text-xs text-slate-500">
-                        {lead.brand_sought} {lead.model_sought} • {lead.vehicle_type}
-                      </p>
+              {leads.length === 0 ? (
+                <div className="py-8 text-center text-slate-400 text-xs">
+                  Aucune demande pour le moment. Les formulaires clients apparaîtront ici automatiquement.
+                </div>
+              ) : (
+                <div className="divide-y divide-slate-100">
+                  {leads.slice(0, 4).map((lead) => (
+                    <div key={lead.id} className="py-3.5 flex items-center justify-between gap-4">
+                      <div>
+                        <h5 className="font-bold text-slate-900 text-sm">{lead.full_name}</h5>
+                        <p className="text-xs text-slate-500">
+                          {lead.brand_sought} {lead.model_sought} • {lead.vehicle_type}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                            lead.status === 'Nouveau'
+                              ? 'bg-amber-100 text-amber-800'
+                              : 'bg-blue-100 text-blue-800'
+                          }`}
+                        >
+                          {lead.status || 'Nouveau'}
+                        </span>
+                        <span className="text-[10px] text-slate-400 block mt-0.5">
+                          {new Date(lead.created_at).toLocaleDateString('fr-FR')}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <span
-                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          lead.status === 'Nouveau'
-                            ? 'bg-amber-100 text-amber-800'
-                            : 'bg-blue-100 text-blue-800'
-                        }`}
-                      >
-                        {lead.status || 'Nouveau'}
-                      </span>
-                      <span className="text-[10px] text-slate-400 block mt-0.5">
-                        {new Date(lead.created_at).toLocaleDateString('fr-FR')}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Actions Rapides & Raccourcis */}

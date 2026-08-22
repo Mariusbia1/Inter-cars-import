@@ -28,21 +28,21 @@ export const companyMilestones = [
 
 export const teamMembers = [
   {
-    name: 'Julien Marciano',
+    name: 'Marc de Valmont',
     role: 'Fondateur & Direction Générale',
     bio: '14 ans d’expertise dans le négoce automobile de prestige et la recherche personnalisée.',
-    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80'
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80'
   },
   {
-    name: 'Aurélien De La Tour',
+    name: 'Alexandre Moreau',
     role: 'Responsable Audit Technique & Qualité',
-    bio: 'Spécialiste certifié des protocoles de diagnostic et de contrôle des véhicules de sport.',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80'
+    bio: 'Ingénieur mécanique, spécialiste des protocoles de diagnostic et de contrôle des véhicules de sport.',
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80'
   },
   {
-    name: 'Émilie Vasseur',
-    role: 'Responsable Relations Clients & Suivi VIP',
-    bio: 'Gestion administrative, suivi des dossiers d’immatriculation et expérience client sur mesure.',
+    name: 'Claire Vaneau',
+    role: 'Responsable Relations Clients & Conciergerie VIP',
+    bio: 'Gestion administrative, suivi des dossiers d’immatriculation et expérience acquéreur sur mesure.',
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80'
   }
 ];
