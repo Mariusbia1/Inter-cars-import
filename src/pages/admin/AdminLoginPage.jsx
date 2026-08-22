@@ -30,8 +30,8 @@ export const AdminLoginPage = () => {
       } else {
         setError(res.error || 'Identifiants invalides.');
       }
-    } catch (err) {
-      setError(err.message);
+    } catch {
+      setError('Une erreur est survenue lors de l’authentification.');
     } finally {
       setLoading(false);
     }
