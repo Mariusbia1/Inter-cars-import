@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Lock, Mail, KeyRound, ArrowRight, ShieldCheck, Sparkles, ArrowLeft } from 'lucide-react';
+import { Mail, KeyRound, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { LuxuryButton } from '../../components/common/LuxuryButton';
 import { BrandLogo } from '../../components/common/BrandLogo';
@@ -12,16 +12,10 @@ export const AdminLoginPage = () => {
   const { login } = useAdminAuth();
   const { addToast } = useToast();
 
-  const [email, setEmail] = useState('admin@intercarsimport.fr');
-  const [password, setPassword] = useState('AdminRolex2026!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-  const handleFillDemo = () => {
-    setEmail('admin@intercarsimport.fr');
-    setPassword('AdminRolex2026!');
-    addToast('Identifiants de démonstration pré-remplis !', 'info');
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,10 +25,10 @@ export const AdminLoginPage = () => {
     try {
       const res = await login(email, password);
       if (res.success) {
-        addToast('Connexion réussie à l’espace Conciergerie VIP !', 'success');
+        addToast('Connexion réussie à l’espace Conciergerie Privée !', 'success');
         navigate('/admin');
       } else {
-        setError(res.error || 'Erreur lors de la connexion.');
+        setError(res.error || 'Identifiants invalides.');
       }
     } catch (err) {
       setError(err.message);
@@ -46,7 +40,7 @@ export const AdminLoginPage = () => {
   return (
     <div className="min-h-screen bg-rolex-dark flex items-center justify-center p-4 relative overflow-hidden">
       {/* Texture de fond dorée */}
-      <div className="absolute inset-0 bg-[radial-gradient(#C6A15B_1px,transparent_1px)] [background-size:28px_28px] opacity-10" />
+      <div className="absolute inset-0 bg-[radial-gradient(#C6A15B_1px,transparent_1px)] [background-size:28px_28px] opacity-10 pointer-events-none" />
 
       {/* Bouton Retour Site Public */}
       <div className="absolute top-6 left-6 z-20">
@@ -81,12 +75,12 @@ export const AdminLoginPage = () => {
 
         {/* Message d'Erreur */}
         {error && (
-          <div className="p-3 rounded-xl bg-red-950/80 border border-red-500/40 text-red-200 text-xs leading-relaxed">
+          <div className="p-3.5 rounded-xl bg-red-950/80 border border-red-500/40 text-red-200 text-xs leading-relaxed text-center">
             {error}
           </div>
         )}
 
-        {/* Formulaire de Connexion */}
+        {/* Formulaire de Connexion Sécurisé (Champs Vides) */}
         <form onSubmit={handleSubmit} className="space-y-4 text-xs sm:text-sm">
           <div>
             <label className="block text-xs font-bold uppercase text-slate-300 mb-1.5">
@@ -97,9 +91,10 @@ export const AdminLoginPage = () => {
               <input
                 type="email"
                 required
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@intercarsimport.fr"
+                placeholder="contact@inter-cars-import.fr"
                 className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/20 text-white placeholder-slate-500 outline-none focus:border-gold transition-colors"
               />
             </div>
@@ -114,6 +109,7 @@ export const AdminLoginPage = () => {
               <input
                 type="password"
                 required
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
@@ -128,27 +124,13 @@ export const AdminLoginPage = () => {
               disabled={loading}
               variant="gold"
               size="md"
-              className="w-full justify-center shadow-gold-glow"
+              className="w-full justify-center shadow-gold-glow font-bold tracking-wider"
               icon={ArrowRight}
             >
-              {loading ? 'Connexion en cours...' : 'Se Connecter au Dashboard'}
+              {loading ? 'Authentification...' : 'Se Connecter'}
             </LuxuryButton>
           </div>
         </form>
-
-        {/* Aide Démo 1 Clic */}
-        <div className="pt-4 border-t border-white/10 text-center space-y-2">
-          <p className="text-[11px] text-slate-400">
-            Accès Démo : <span className="text-gold font-mono">admin@intercarsimport.fr</span> / <span className="text-gold font-mono">AdminRolex2026!</span>
-          </p>
-          <button
-            type="button"
-            onClick={handleFillDemo}
-            className="text-xs text-gold-light hover:underline font-semibold"
-          >
-            Remplir automatiquement les identifiants démo
-          </button>
-        </div>
       </motion.div>
     </div>
   );
