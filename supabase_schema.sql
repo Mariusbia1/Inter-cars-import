@@ -1,9 +1,16 @@
 -- ==============================================================================
--- INTER CARS IMPORT - Schéma SQL Supabase & Initialisation Complète
+-- INTER CARS IMPORT - Schéma SQL Supabase & Réinitialisation Propre
 -- ==============================================================================
 
+-- 0. Nettoyage des anciennes tables pour synchroniser les colonnes
+DROP TABLE IF EXISTS public.leads CASCADE;
+DROP TABLE IF EXISTS public.delivered_vehicles CASCADE;
+DROP TABLE IF EXISTS public.visitors_analytics CASCADE;
+DROP TABLE IF EXISTS public.testimonials CASCADE;
+DROP TABLE IF EXISTS public.site_settings CASCADE;
+
 -- 1. Table des Demandes de Contact & Devis (Leads)
-CREATE TABLE IF NOT EXISTS public.leads (
+CREATE TABLE public.leads (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     full_name TEXT NOT NULL,
@@ -24,7 +31,7 @@ CREATE TABLE IF NOT EXISTS public.leads (
 );
 
 -- 2. Table des Véhicules du Catalogue & Showroom
-CREATE TABLE IF NOT EXISTS public.delivered_vehicles (
+CREATE TABLE public.delivered_vehicles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     title TEXT NOT NULL,
@@ -50,7 +57,7 @@ CREATE TABLE IF NOT EXISTS public.delivered_vehicles (
 );
 
 -- 3. Table des Visiteurs & Statistiques Analytiques Réelles
-CREATE TABLE IF NOT EXISTS public.visitors_analytics (
+CREATE TABLE public.visitors_analytics (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     visited_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     page_path TEXT NOT NULL,
@@ -62,7 +69,7 @@ CREATE TABLE IF NOT EXISTS public.visitors_analytics (
 );
 
 -- 4. Table des Témoignages Clients
-CREATE TABLE IF NOT EXISTS public.testimonials (
+CREATE TABLE public.testimonials (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     client_name TEXT NOT NULL,
@@ -77,7 +84,7 @@ CREATE TABLE IF NOT EXISTS public.testimonials (
 );
 
 -- 5. Table des Paramètres Généraux du Site
-CREATE TABLE IF NOT EXISTS public.site_settings (
+CREATE TABLE public.site_settings (
     id TEXT PRIMARY KEY DEFAULT 'main_settings',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     phone TEXT DEFAULT '+33 (0)4 93 00 00 00',
@@ -93,25 +100,6 @@ ALTER TABLE public.visitors_analytics ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.testimonials ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
 
--- Suppression préalable des politiques pour éviter toute erreur de duplication
-DO $$ 
-BEGIN
-    DROP POLICY IF EXISTS "Acces total leads" ON public.leads;
-    DROP POLICY IF EXISTS "Acces total vehicules" ON public.delivered_vehicles;
-    DROP POLICY IF EXISTS "Acces total analytics" ON public.visitors_analytics;
-    DROP POLICY IF EXISTS "Acces total testimonials" ON public.testimonials;
-    DROP POLICY IF EXISTS "Acces total settings" ON public.site_settings;
-    
-    DROP POLICY IF EXISTS "Lecture publique des véhicules livrés" ON public.delivered_vehicles;
-    DROP POLICY IF EXISTS "Lecture publique des témoignages" ON public.testimonials;
-    DROP POLICY IF EXISTS "Insertion publique des demandes de devis" ON public.leads;
-    DROP POLICY IF EXISTS "Insertion publique des analytics" ON public.visitors_analytics;
-    DROP POLICY IF EXISTS "Gestion totale pour les administrateurs" ON public.leads;
-    DROP POLICY IF EXISTS "Gestion totale des véhicules pour les administrateurs" ON public.delivered_vehicles;
-EXCEPTION
-    WHEN undefined_object THEN NULL;
-END $$;
-
 -- Politiques de sécurité universelles
 CREATE POLICY "Acces total leads" ON public.leads FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Acces total vehicules" ON public.delivered_vehicles FOR ALL USING (true) WITH CHECK (true);
@@ -120,10 +108,8 @@ CREATE POLICY "Acces total testimonials" ON public.testimonials FOR ALL USING (t
 CREATE POLICY "Acces total settings" ON public.site_settings FOR ALL USING (true) WITH CHECK (true);
 
 -- ==============================================================================
--- INSERTION DES 6 VÉHICULES DU CATALOGUE (SANS DOUBLON)
+-- INSERTION DES 6 VÉHICULES DU CATALOGUE
 -- ==============================================================================
-DELETE FROM public.delivered_vehicles;
-
 INSERT INTO public.delivered_vehicles (title, brand, model, category, year, mileage, power_hp, engine, transmission, origin_country, delivery_city, certification, warranty, image_url, client_name, client_city, client_review, rating, is_featured)
 VALUES 
 (
@@ -254,10 +240,8 @@ VALUES
 );
 
 -- ==============================================================================
--- INSERTION DES TÉMOIGNAGES CLIENTS (SANS DOUBLON)
+-- INSERTION DES TÉMOIGNAGES CLIENTS
 -- ==============================================================================
-DELETE FROM public.testimonials;
-
 INSERT INTO public.testimonials (client_name, client_city, vehicle_model, rating, comment, tag, date, is_verified, avatar_url)
 VALUES
 (
@@ -298,10 +282,4 @@ VALUES
 -- INITIALISATION DES PARAMÈTRES DU SITE
 -- ==============================================================================
 INSERT INTO public.site_settings (id, phone, email, notification_email, address)
-VALUES ('main_settings', '+33 (0)4 93 00 00 00', 'contact@inter-cars-import.fr', 'direction@intercarsimport.fr', 'Showroom Privé & Bureau Sourcing, Axe Cannes — Monaco')
-ON CONFLICT (id) DO UPDATE SET 
-    phone = EXCLUDED.phone,
-    email = EXCLUDED.email,
-    notification_email = EXCLUDED.notification_email,
-    address = EXCLUDED.address,
-    updated_at = timezone('utc'::text, now());
+VALUES ('main_settings', '+33 (0)4 93 00 00 00', 'contact@inter-cars-import.fr', 'direction@intercarsimport.fr', 'Showroom Privé & Bureau Sourcing, Axe Cannes — Monaco');
