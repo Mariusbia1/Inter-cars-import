@@ -13,9 +13,9 @@ export const VehicleProvider = ({ children }) => {
     try {
       setLoading(true);
       const data = await vehiclesService.getAllVehicles();
-      setVehicles(data);
+      setVehicles(data || []);
     } catch (err) {
-      console.error('Failed to load vehicles', err);
+      console.error('Failed to load vehicles:', err);
     } finally {
       setLoading(false);
     }
@@ -32,8 +32,9 @@ export const VehicleProvider = ({ children }) => {
       addToast(`Véhicule "${created.title}" ajouté au catalogue avec succès !`, 'success');
       return { success: true, vehicle: created };
     } catch (err) {
+      console.error('Add vehicle error:', err);
       addToast("Erreur lors de l'ajout du véhicule", 'error');
-      return { success: false, error: err.message };
+      return { success: false, error: "Une erreur est survenue lors de l'ajout du véhicule." };
     }
   };
 
@@ -44,8 +45,9 @@ export const VehicleProvider = ({ children }) => {
       addToast(`Véhicule mis à jour avec succès !`, 'success');
       return { success: true, vehicle: updated };
     } catch (err) {
+      console.error('Update vehicle error:', err);
       addToast("Erreur lors de la mise à jour", 'error');
-      return { success: false, error: err.message };
+      return { success: false, error: 'Une erreur est survenue lors de la mise à jour du véhicule.' };
     }
   };
 
@@ -56,8 +58,9 @@ export const VehicleProvider = ({ children }) => {
       addToast('Véhicule retiré du catalogue', 'info');
       return { success: true };
     } catch (err) {
+      console.error('Delete vehicle error:', err);
       addToast('Erreur lors de la suppression', 'error');
-      return { success: false, error: err.message };
+      return { success: false, error: 'Une erreur est survenue lors de la suppression du véhicule.' };
     }
   };
 

@@ -13,9 +13,9 @@ export const LeadsProvider = ({ children }) => {
     try {
       setLoading(true);
       const data = await leadsService.getAllLeads();
-      setLeads(data);
+      setLeads(data || []);
     } catch (err) {
-      console.error('Failed to load leads', err);
+      console.error('Failed to load leads:', err);
     } finally {
       setLoading(false);
     }
@@ -27,13 +27,15 @@ export const LeadsProvider = ({ children }) => {
 
   const createLead = async (leadData) => {
     try {
-      const created = await leadsService.createLead(leadData);
+      const res = await leadsService.createLead(leadData);
+      const created = res.lead || res;
       setLeads(prev => [created, ...prev]);
       addToast('Votre demande a été transmise à notre conciergerie VIP avec succès !', 'success');
       return { success: true, lead: created };
     } catch (err) {
+      console.error('Lead creation error:', err);
       addToast("Erreur lors de l'envoi de votre demande", 'error');
-      return { success: false, error: err.message };
+      return { success: false, error: 'Une erreur est survenue lors de la transmission de la demande.' };
     }
   };
 
@@ -43,11 +45,12 @@ export const LeadsProvider = ({ children }) => {
       if (notes !== undefined) updates.admin_notes = notes;
       const updated = await leadsService.updateLead(id, updates);
       setLeads(prev => prev.map(l => (l.id === id ? updated : l)));
-      addToast(`Statut du lead actualisé en "${status}"`, 'info');
+      addToast(`Statut du dossier actualisé en "${status}"`, 'info');
       return { success: true, lead: updated };
     } catch (err) {
+      console.error('Lead update error:', err);
       addToast("Erreur lors de la mise à jour", 'error');
-      return { success: false, error: err.message };
+      return { success: false, error: 'Une erreur est survenue lors de la mise à jour du dossier.' };
     }
   };
 
@@ -55,11 +58,12 @@ export const LeadsProvider = ({ children }) => {
     try {
       await leadsService.deleteLead(id);
       setLeads(prev => prev.filter(l => l.id !== id));
-      addToast('Demande supprimée avec succès', 'info');
+      addToast('Dossier supprimé avec succès', 'info');
       return { success: true };
     } catch (err) {
+      console.error('Lead deletion error:', err);
       addToast('Erreur lors de la suppression', 'error');
-      return { success: false, error: err.message };
+      return { success: false, error: 'Une erreur est survenue lors de la suppression du dossier.' };
     }
   };
 
