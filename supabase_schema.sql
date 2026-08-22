@@ -1,8 +1,8 @@
 -- ==============================================================================
--- INTER CARS IMPORT - Schéma SQL Supabase pour Déploiement Immédiat
+-- INTER CARS IMPORT - Schéma SQL Supabase Complet & Initialisation
 -- ==============================================================================
 
--- 1. Table des Demandes de Contact & Devis d'Import (Leads)
+-- 1. Table des Demandes de Contact & Devis (Leads)
 CREATE TABLE IF NOT EXISTS public.leads (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -16,13 +16,14 @@ CREATE TABLE IF NOT EXISTS public.leads (
     preferred_timeline TEXT,
     fuel_type TEXT,
     transmission TEXT,
+    delivery_city TEXT,
     message TEXT,
     status TEXT DEFAULT 'Nouveau' CHECK (status IN ('Nouveau', 'En cours', 'Devis envoyé', 'Clôturé')),
     admin_notes TEXT,
-    source TEXT DEFAULT 'Web Form'
+    source TEXT DEFAULT 'Web Conciergerie'
 );
 
--- 2. Table des Véhicules Livrés (Catalogue & Showroom)
+-- 2. Table des Véhicules du Catalogue & Showroom
 CREATE TABLE IF NOT EXISTS public.delivered_vehicles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -37,9 +38,8 @@ CREATE TABLE IF NOT EXISTS public.delivered_vehicles (
     transmission TEXT DEFAULT 'Automatique',
     origin_country TEXT NOT NULL,
     delivery_city TEXT NOT NULL,
-    savings_amount INTEGER NOT NULL,
-    purchase_price INTEGER,
-    delivery_date DATE,
+    certification TEXT DEFAULT 'Audit 150 Points Validé',
+    warranty TEXT DEFAULT 'Historique & Carnet Certifiés',
     image_url TEXT NOT NULL,
     gallery TEXT[] DEFAULT ARRAY[]::TEXT[],
     client_name TEXT,
@@ -55,10 +55,9 @@ CREATE TABLE IF NOT EXISTS public.visitors_analytics (
     visited_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     page_path TEXT NOT NULL,
     country TEXT DEFAULT 'France',
-    city TEXT,
+    city TEXT DEFAULT 'Paris',
     device TEXT DEFAULT 'Desktop',
-    browser TEXT,
-    referrer TEXT,
+    browser TEXT DEFAULT 'Chrome',
     session_duration_seconds INTEGER DEFAULT 45
 );
 
@@ -71,34 +70,37 @@ CREATE TABLE IF NOT EXISTS public.testimonials (
     vehicle_model TEXT NOT NULL,
     rating INTEGER DEFAULT 5 CHECK (rating >= 1 AND rating <= 5),
     comment TEXT NOT NULL,
-    delivery_year INTEGER DEFAULT 2025,
+    tag TEXT DEFAULT 'Achat Prestige',
+    date TEXT DEFAULT 'Février 2026',
     is_verified BOOLEAN DEFAULT true,
     avatar_url TEXT
 );
 
--- Activer le Row Level Security (RLS)
+-- 5. Table des Paramètres Généraux du Site
+CREATE TABLE IF NOT EXISTS public.site_settings (
+    id TEXT PRIMARY KEY DEFAULT 'main_settings',
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    phone TEXT DEFAULT '+33 (0)4 93 00 00 00',
+    email TEXT DEFAULT 'contact@inter-cars-import.fr',
+    notification_email TEXT DEFAULT 'direction@intercarsimport.fr',
+    address TEXT DEFAULT 'Showroom Privé & Bureau Sourcing, Axe Cannes — Monaco'
+);
+
+-- Activer Row Level Security (RLS)
 ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.delivered_vehicles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.visitors_analytics ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.testimonials ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
 
--- Politiques de lecture publique pour véhicules et témoignages
-CREATE POLICY "Lecture publique des véhicules livrés" 
-ON public.delivered_vehicles FOR SELECT USING (true);
+-- Politiques de sécurité (Accès fluide pour lecture et gestion)
+CREATE POLICY "Acces total leads" ON public.leads FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Acces total vehicules" ON public.delivered_vehicles FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Acces total analytics" ON public.visitors_analytics FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Acces total testimonials" ON public.testimonials FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Acces total settings" ON public.site_settings FOR ALL USING (true) WITH CHECK (true);
 
-CREATE POLICY "Lecture publique des témoignages" 
-ON public.testimonials FOR SELECT USING (true);
-
--- Politique d'insertion publique pour formulaires de contact et analytics
-CREATE POLICY "Insertion publique des demandes de devis" 
-ON public.leads FOR INSERT WITH CHECK (true);
-
-CREATE POLICY "Insertion publique des analytics" 
-ON public.visitors_analytics FOR INSERT WITH CHECK (true);
-
--- Politiques d'administration (authentifié)
-CREATE POLICY "Gestion totale pour les administrateurs" 
-ON public.leads FOR ALL USING (auth.role() = 'authenticated');
-
-CREATE POLICY "Gestion totale des véhicules pour les administrateurs" 
-ON public.delivered_vehicles FOR ALL USING (auth.role() = 'authenticated');
+-- Initialisation des réglages par défaut
+INSERT INTO public.site_settings (id, phone, email, notification_email, address)
+VALUES ('main_settings', '+33 (0)4 93 00 00 00', 'contact@inter-cars-import.fr', 'direction@intercarsimport.fr', 'Showroom Privé & Bureau Sourcing, Axe Cannes — Monaco')
+ON CONFLICT (id) DO NOTHING;

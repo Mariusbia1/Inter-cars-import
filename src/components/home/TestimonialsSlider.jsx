@@ -1,10 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import { motion } from 'framer-motion';
-import { Star, ChevronLeft, ChevronRight, Quote, CheckCircle2, Award } from 'lucide-react';
+import { Star, ChevronLeft, ChevronRight, CheckCircle2, Award } from 'lucide-react';
 import { SectionHeader } from '../common/SectionHeader';
-import { testimonialsList } from '../../data/testimonialsData';
+import { testimonialsService } from '../../services/testimonialsService';
 
 // Import des styles Swiper
 import 'swiper/css';
@@ -14,6 +13,15 @@ import 'swiper/css/navigation';
 export const TestimonialsSlider = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+    const loadTestimonials = async () => {
+      const data = await testimonialsService.getAllTestimonials();
+      setTestimonials(data || []);
+    };
+    loadTestimonials();
+  }, []);
 
   return (
     <section className="py-20 lg:py-28 bg-rolex-dark text-white relative overflow-hidden border-t border-gold/20">
@@ -27,7 +35,7 @@ export const TestimonialsSlider = () => {
             align="left"
             badge="Témoignages Clients"
             title="La Confiance de nos Acquéreurs"
-            subtitle="Découvrez les retours d'expérience de passionnés et dirigeants qui ont franchi le pas de l'importation à nos côtés."
+            subtitle="Découvrez les retours d'expérience de passionnés et dirigeants qui ont concrétisé leur projet à nos côtés."
             className="mb-0 max-w-2xl"
           />
 
@@ -51,82 +59,84 @@ export const TestimonialsSlider = () => {
         </div>
 
         {/* Swiper Carousel */}
-        <Swiper
-          modules={[Autoplay, Pagination, Navigation]}
-          spaceBetween={24}
-          slidesPerView={1}
-          breakpoints={{
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-          }}
-          autoplay={{
-            delay: 4500,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true, // Pause automatique au survol de la souris !
-          }}
-          pagination={{
-            clickable: true,
-            dynamicBullets: true,
-          }}
-          navigation={{
-            prevEl: prevRef.current,
-            nextEl: nextRef.current,
-          }}
-          onBeforeInit={(swiper) => {
-            swiper.params.navigation.prevEl = prevRef.current;
-            swiper.params.navigation.nextEl = nextRef.current;
-          }}
-          loop={true}
-          className="pb-16"
-        >
-          {testimonialsList.map((item) => (
-            <SwiperSlide key={item.id} className="h-auto">
-              <div className="h-full p-6 sm:p-8 rounded-2xl bg-white/[0.04] backdrop-blur-md border border-gold/30 hover:border-gold transition-all duration-300 flex flex-col justify-between shadow-xl">
-                <div>
-                  {/* Étoiles & Badge de vérification */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex text-gold gap-1">
-                      {[...Array(item.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-gold text-gold" />
-                      ))}
-                    </div>
-                    <span className="px-2.5 py-0.5 rounded-full bg-rolex/80 text-gold-light text-[10px] font-semibold border border-gold/30">
-                      {item.tag}
-                    </span>
-                  </div>
-
-                  {/* Modèle de voiture importé */}
-                  <div className="mb-4 text-xs font-serif font-bold text-gold uppercase tracking-wider flex items-center gap-1.5">
-                    <Award className="w-3.5 h-3.5" />
-                    <span>{item.vehicle_model}</span>
-                  </div>
-
-                  {/* Commentaire client */}
-                  <p className="text-xs sm:text-sm text-slate-200 leading-relaxed italic mb-6">
-                    "{item.comment}"
-                  </p>
-                </div>
-
-                {/* Profil Client */}
-                <div className="pt-4 border-t border-white/10 flex items-center gap-3">
-                  <img
-                    src={item.avatar}
-                    alt={item.client_name}
-                    className="w-11 h-11 rounded-full object-cover border border-gold/40 shrink-0"
-                  />
+        {testimonials.length > 0 && (
+          <Swiper
+            modules={[Autoplay, Pagination, Navigation]}
+            spaceBetween={24}
+            slidesPerView={1}
+            breakpoints={{
+              640: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+            autoplay={{
+              delay: 4500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            pagination={{
+              clickable: true,
+              dynamicBullets: true,
+            }}
+            navigation={{
+              prevEl: prevRef.current,
+              nextEl: nextRef.current,
+            }}
+            onBeforeInit={(swiper) => {
+              swiper.params.navigation.prevEl = prevRef.current;
+              swiper.params.navigation.nextEl = nextRef.current;
+            }}
+            loop={testimonials.length >= 3}
+            className="pb-16"
+          >
+            {testimonials.map((item) => (
+              <SwiperSlide key={item.id || item.client_name} className="h-auto">
+                <div className="h-full p-6 sm:p-8 rounded-2xl bg-white/[0.04] backdrop-blur-md border border-gold/30 hover:border-gold transition-all duration-300 flex flex-col justify-between shadow-xl">
                   <div>
-                    <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
-                      {item.client_name}
-                      {item.verified && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
-                    </h4>
-                    <p className="text-xs text-slate-400">{item.client_city} • {item.date}</p>
+                    {/* Étoiles & Badge */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex text-gold gap-1">
+                        {[...Array(item.rating || 5)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 fill-gold text-gold" />
+                        ))}
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-full bg-rolex/80 text-gold-light text-[10px] font-semibold border border-gold/30">
+                        {item.tag || 'Achat Vérifié'}
+                      </span>
+                    </div>
+
+                    {/* Modèle de voiture */}
+                    <div className="mb-4 text-xs font-serif font-bold text-gold uppercase tracking-wider flex items-center gap-1.5">
+                      <Award className="w-3.5 h-3.5" />
+                      <span>{item.vehicle_model}</span>
+                    </div>
+
+                    {/* Commentaire client */}
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed italic mb-6">
+                      "{item.comment}"
+                    </p>
+                  </div>
+
+                  {/* Profil Client */}
+                  <div className="pt-4 border-t border-white/10 flex items-center gap-3">
+                    <img
+                      src={item.avatar_url || item.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80'}
+                      alt={item.client_name}
+                      className="w-11 h-11 rounded-full object-cover border border-gold/40 shrink-0"
+                    />
+                    <div>
+                      <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
+                        {item.client_name}
+                        {(item.is_verified || item.verified) && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
+                      </h4>
+                      <p className="text-xs text-slate-400">{item.client_city} • {item.date || 'Février 2026'}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </section>
   );
