@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Globe, Users, Clock, Eye, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Globe, Users, Clock, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 import { analyticsService } from '../../services/analyticsService';
 
 export const AnalyticsView = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  // Pagination pour les visites récentes
+  const [currentPage, setCurrentPage] = useState(1);
+  const VISITS_PER_PAGE = 8;
 
   useEffect(() => {
     const load = async () => {
@@ -14,6 +18,13 @@ export const AnalyticsView = () => {
     };
     load();
   }, []);
+
+  const totalPages = data ? Math.ceil((data.recentVisits?.length || 0) / VISITS_PER_PAGE) || 1 : 1;
+  const paginatedVisits = useMemo(() => {
+    if (!data?.recentVisits) return [];
+    const start = (currentPage - 1) * VISITS_PER_PAGE;
+    return data.recentVisits.slice(start, start + VISITS_PER_PAGE);
+  }, [data, currentPage]);
 
   if (loading || !data) {
     return (
@@ -81,7 +92,7 @@ export const AnalyticsView = () => {
           </div>
         </div>
 
-        {/* Pages les Plus Consultées (Noms en Clair) */}
+        {/* Pages les Plus Consultées */}
         <div className="lg:col-span-7 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
           <h4 className="font-serif font-bold text-slate-900 text-base flex items-center gap-2">
             <Eye className="w-4 h-4 text-gold-dark" /> Pages les Plus Consultées
@@ -104,7 +115,7 @@ export const AnalyticsView = () => {
         </div>
       </div>
 
-      {/* Journal des Dernières Visites (Avec nom de page clair et lisible) */}
+      {/* Journal des Dernières Visites avec Pagination */}
       <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
         <h4 className="font-serif font-bold text-slate-900 text-base flex items-center gap-2">
           <Clock className="w-4 h-4 text-rolex" /> Journal des Visites Récentes (Temps Réel)
@@ -121,7 +132,7 @@ export const AnalyticsView = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-600">
-              {data.recentVisits.map((v) => (
+              {paginatedVisits.map((v) => (
                 <tr key={v.id} className="hover:bg-slate-50/60 transition-colors">
                   <td className="py-3 px-4 font-mono text-[11px] text-slate-400">
                     {new Date(v.visited_at).toLocaleTimeString('fr-FR')}
@@ -137,6 +148,31 @@ export const AnalyticsView = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination des visites */}
+        {totalPages > 1 && (
+          <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs text-slate-400">
+              Page {currentPage} sur {totalPages}
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-2.5 py-1 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" /> Précédent
+              </button>
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-2.5 py-1 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1"
+              >
+                Suivant <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

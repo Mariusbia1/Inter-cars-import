@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, Download, Filter, Eye, Trash2, AlertCircle } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Search, Download, Filter, Eye, Trash2, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLeads } from '../../context/LeadsContext';
 import { LeadDetailModal } from './LeadDetailModal';
 import { useToast } from '../../context/ToastContext';
@@ -10,17 +10,33 @@ export const LeadsTable = () => {
   const [selectedLead, setSelectedLead] = useState(null);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('Tous');
+  
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 8;
 
-  const filteredLeads = leads.filter((lead) => {
-    const matchesStatus = statusFilter === 'Tous' || lead.status === statusFilter;
-    const matchesSearch =
-      (lead.full_name || '').toLowerCase().includes(search.toLowerCase()) ||
-      (lead.email || '').toLowerCase().includes(search.toLowerCase()) ||
-      (lead.phone || '').toLowerCase().includes(search.toLowerCase()) ||
-      (lead.brand_sought || '').toLowerCase().includes(search.toLowerCase()) ||
-      (lead.model_sought || '').toLowerCase().includes(search.toLowerCase());
-    return matchesStatus && matchesSearch;
-  });
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter]);
+
+  const filteredLeads = useMemo(() => {
+    return leads.filter((lead) => {
+      const matchesStatus = statusFilter === 'Tous' || lead.status === statusFilter;
+      const matchesSearch =
+        (lead.full_name || '').toLowerCase().includes(search.toLowerCase()) ||
+        (lead.email || '').toLowerCase().includes(search.toLowerCase()) ||
+        (lead.phone || '').toLowerCase().includes(search.toLowerCase()) ||
+        (lead.brand_sought || '').toLowerCase().includes(search.toLowerCase()) ||
+        (lead.model_sought || '').toLowerCase().includes(search.toLowerCase());
+      return matchesStatus && matchesSearch;
+    });
+  }, [leads, search, statusFilter]);
+
+  const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE) || 1;
+  const paginatedLeads = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredLeads.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredLeads, currentPage]);
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -124,64 +140,109 @@ export const LeadsTable = () => {
             <p className="text-xs text-slate-400">Modifiez votre recherche ou attendez de nouveaux prospects.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm">
-              <thead className="bg-slate-50 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-500">
-                <tr>
-                  <th className="py-3.5 px-4 sm:px-6">Prospect / Client</th>
-                  <th className="py-3.5 px-4">Véhicule Cible</th>
-                  <th className="py-3.5 px-4">Délai Souhaité</th>
-                  <th className="py-3.5 px-4">Date Réception</th>
-                  <th className="py-3.5 px-4">Statut</th>
-                  <th className="py-3.5 px-4 sm:px-6 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredLeads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-4 px-4 sm:px-6">
-                      <div className="font-bold text-slate-900">{lead.full_name}</div>
-                      <div className="text-xs text-slate-500">{lead.email} • {lead.phone}</div>
-                    </td>
-                    <td className="py-4 px-4 font-semibold text-rolex">
-                      {lead.brand_sought} {lead.model_sought}
-                      <span className="block text-[11px] text-slate-400 font-normal">{lead.vehicle_type}</span>
-                    </td>
-                    <td className="py-4 px-4 font-medium text-slate-700">
-                      {lead.preferred_timeline || 'Sous 30 jours'}
-                    </td>
-                    <td className="py-4 px-4 text-xs text-slate-500">
-                      {new Date(lead.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
-                    </td>
-                    <td className="py-4 px-4">
-                      <span className={`px-2.5 py-1 rounded-full text-[11px] border ${getStatusBadge(lead.status)}`}>
-                        {lead.status || 'Nouveau'}
-                      </span>
-                    </td>
-                    <td className="py-4 px-4 sm:px-6 text-right space-x-2">
-                      <button
-                        onClick={() => setSelectedLead(lead)}
-                        className="px-3 py-1.5 rounded-lg bg-rolex-50 hover:bg-rolex text-rolex hover:text-gold border border-rolex/20 text-xs font-semibold transition-all inline-flex items-center gap-1"
-                      >
-                        <Eye className="w-3.5 h-3.5" /> Gérer
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (window.confirm("Supprimer cette demande ?")) {
-                            deleteLead(lead.id);
-                          }
-                        }}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-                        title="Supprimer"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </td>
+          <>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <tr>
+                    <th className="py-3.5 px-4 sm:px-6">Prospect / Client</th>
+                    <th className="py-3.5 px-4">Véhicule Cible</th>
+                    <th className="py-3.5 px-4">Délai Souhaité</th>
+                    <th className="py-3.5 px-4">Date Réception</th>
+                    <th className="py-3.5 px-4">Statut</th>
+                    <th className="py-3.5 px-4 sm:px-6 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {paginatedLeads.map((lead) => (
+                    <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-4 px-4 sm:px-6">
+                        <div className="font-bold text-slate-900">{lead.full_name}</div>
+                        <div className="text-xs text-slate-500">{lead.email} • {lead.phone}</div>
+                      </td>
+                      <td className="py-4 px-4 font-semibold text-rolex">
+                        {lead.brand_sought} {lead.model_sought}
+                        <span className="block text-[11px] text-slate-400 font-normal">{lead.vehicle_type}</span>
+                      </td>
+                      <td className="py-4 px-4 font-medium text-slate-700">
+                        {lead.preferred_timeline || 'Sous 30 jours'}
+                      </td>
+                      <td className="py-4 px-4 text-xs text-slate-500">
+                        {new Date(lead.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className={`px-2.5 py-1 rounded-full text-[11px] border ${getStatusBadge(lead.status)}`}>
+                          {lead.status || 'Nouveau'}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4 sm:px-6 text-right space-x-2">
+                        <button
+                          onClick={() => setSelectedLead(lead)}
+                          className="px-3 py-1.5 rounded-lg bg-rolex-50 hover:bg-rolex text-rolex hover:text-gold border border-rolex/20 text-xs font-semibold transition-all inline-flex items-center gap-1"
+                        >
+                          <Eye className="w-3.5 h-3.5" /> Gérer
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (window.confirm("Supprimer cette demande ?")) {
+                              deleteLead(lead.id);
+                            }
+                          }}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                          title="Supprimer"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="p-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/50">
+                <span className="text-xs text-slate-500">
+                  Affichage de {(currentPage - 1) * ITEMS_PER_PAGE + 1} à {Math.min(currentPage * ITEMS_PER_PAGE, filteredLeads.length)} sur {filteredLeads.length} demandes
+                </span>
+
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1 transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4" /> Précédent
+                  </button>
+
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`w-7 h-7 rounded-lg text-xs font-bold transition-all ${
+                          currentPage === pageNum
+                            ? 'bg-rolex text-gold border border-gold/40'
+                            : 'text-slate-600 hover:bg-slate-200'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1 transition-colors"
+                  >
+                    Suivant <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 

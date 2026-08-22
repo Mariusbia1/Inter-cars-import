@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 const SettingsContext = createContext();
 
@@ -7,13 +8,9 @@ const SETTINGS_STORAGE_KEY = 'intercars_site_settings';
 const defaultSettings = {
   phone: '+33 (0)4 93 00 00 00',
   phoneRaw: '+33493000000',
-  email: 'contact@intercarsimport.fr',
+  email: 'contact@inter-cars-import.fr',
   notificationEmail: 'direction@intercarsimport.fr',
-  whatsapp: '+33 6 00 00 00 00',
-  whatsappRaw: '33600000000',
   address: "Showroom Privé & Bureau Sourcing, Axe Cannes — Monaco",
-  businessHours: "Du Lundi au Samedi : 08h30 - 20h00 (Ligne VIP 7j/7)",
-  logoVariant: 'crest', // 'crest' | 'horology' | 'gt_wings' | 'seal_vip'
 };
 
 export const SettingsProvider = ({ children }) => {
@@ -21,23 +18,70 @@ export const SettingsProvider = ({ children }) => {
     try {
       const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
       return stored ? { ...defaultSettings, ...JSON.parse(stored) } : defaultSettings;
-    } catch (e) {
+    } catch {
       return defaultSettings;
     }
   });
 
-  const updateSettings = (newSettings) => {
+  // Charger depuis Supabase en temps réel
+  useEffect(() => {
+    const fetchRemoteSettings = async () => {
+      if (!isSupabaseConfigured()) return;
+      try {
+        const { data, error } = await supabase
+          .from('site_settings')
+          .select('*')
+          .eq('id', 'main_settings')
+          .single();
+
+        if (!error && data) {
+          const remoteConfig = {
+            phone: data.phone || defaultSettings.phone,
+            phoneRaw: (data.phone || defaultSettings.phone).replace(/[^0-9+]/g, ''),
+            email: data.email || defaultSettings.email,
+            notificationEmail: data.notification_email || defaultSettings.notificationEmail,
+            address: data.address || defaultSettings.address,
+          };
+          setSettings(remoteConfig);
+          localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(remoteConfig));
+        }
+      } catch (err) {
+        console.warn('Failed to load settings from Supabase:', err);
+      }
+    };
+
+    fetchRemoteSettings();
+  }, []);
+
+  const updateSettings = async (newSettings) => {
     const updated = {
       ...settings,
       ...newSettings,
       phoneRaw: newSettings.phone ? newSettings.phone.replace(/[^0-9+]/g, '') : settings.phoneRaw,
-      whatsappRaw: newSettings.whatsapp ? newSettings.whatsapp.replace(/[^0-9]/g, '') : settings.whatsappRaw,
     };
     setSettings(updated);
+
     try {
       localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(updated));
-    } catch (e) {
-      console.warn('Failed to save settings to localStorage', e);
+    } catch {
+      // Ignorer
+    }
+
+    if (isSupabaseConfigured()) {
+      try {
+        await supabase
+          .from('site_settings')
+          .upsert({
+            id: 'main_settings',
+            phone: updated.phone,
+            email: updated.email,
+            notification_email: updated.notificationEmail,
+            address: updated.address,
+            updated_at: new Date().toISOString()
+          });
+      } catch (err) {
+        console.warn('Failed to persist settings to Supabase:', err);
+      }
     }
   };
 
