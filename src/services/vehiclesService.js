@@ -24,7 +24,6 @@ export const vehiclesService = {
               const { id, ...rest } = v;
               return {
                 ...rest,
-                savings_amount: 0,
                 rating: 5,
                 gallery: [v.image_url]
               };
@@ -61,7 +60,6 @@ export const vehiclesService = {
           created_at: new Date().toISOString(),
           gallery: [vehicleData.image_url],
           rating: 5,
-          savings_amount: 0,
           ...vehicleData
         };
         delete payload.id; // Laisser Supabase générer le UUID
@@ -73,9 +71,6 @@ export const vehiclesService = {
 
         if (!error && data && data.length > 0) {
           return data[0];
-        }
-        if (error) {
-          console.error('Erreur insertion véhicule Supabase:', error);
         }
       } catch (err) {
         console.warn('Supabase add vehicle failed, using local fallback', err);
