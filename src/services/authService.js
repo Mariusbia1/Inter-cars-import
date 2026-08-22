@@ -5,34 +5,41 @@ const ADMIN_SESSION_KEY = 'intercars_admin_session';
 export const authService = {
   // Connexion Admin
   async login(email, password) {
-    // Si Supabase est branché, tenter Supabase Auth
+    const cleanEmail = (email || '').toLowerCase().trim();
+    const cleanPassword = password || '';
+
+    // 1. Tenter la connexion via Supabase Auth si configuré
     if (isSupabaseConfigured()) {
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: cleanEmail,
+          password: cleanPassword
+        });
+
         if (!error && data.session) {
           const user = {
             id: data.user.id,
             email: data.user.email,
-            role: 'Super Admin',
+            role: 'Super Administrateur',
             authenticated_at: new Date().toISOString()
           };
           localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(user));
           return { success: true, user };
         }
       } catch (err) {
-        console.warn('Supabase auth failed, fallbacking to demo credentials', err);
+        console.warn('Supabase auth check:', err);
       }
     }
 
-    // Identifiants Administrateur Démo
-    const DEMO_EMAIL = 'admin@intercarsimport.fr';
-    const DEMO_PASSWORD = 'AdminRolex2026!';
+    // 2. Identifiants Maître Officiels
+    const MASTER_EMAIL = 'contact@inter-cars-import.fr';
+    const MASTER_PASSWORD = '@Ulrich00123';
 
-    if (email.toLowerCase().trim() === DEMO_EMAIL.toLowerCase() && password === DEMO_PASSWORD) {
+    if (cleanEmail === MASTER_EMAIL && cleanPassword === MASTER_PASSWORD) {
       const user = {
-        id: 'admin-master-01',
-        email: DEMO_EMAIL,
-        name: 'Directeur Sourcing & Conciergerie',
+        id: 'admin-master-intercars',
+        email: MASTER_EMAIL,
+        name: 'Direction Inter Cars Import',
         role: 'Super Administrateur',
         authenticated_at: new Date().toISOString()
       };
@@ -42,7 +49,7 @@ export const authService = {
 
     return { 
       success: false, 
-      error: 'Identifiants incorrects. Utilisez admin@intercarsimport.fr et AdminRolex2026! pour tester.' 
+      error: 'Identifiants invalides. Veuillez vérifier votre adresse email et votre mot de passe.' 
     };
   },
 
@@ -62,7 +69,7 @@ export const authService = {
       try {
         await supabase.auth.signOut();
       } catch (e) {
-        console.warn('Supabase signout failed', e);
+        console.warn('Supabase signout:', e);
       }
     }
     localStorage.removeItem(ADMIN_SESSION_KEY);
