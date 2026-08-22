@@ -1,5 +1,5 @@
 -- ==============================================================================
--- INTER CARS IMPORT - Schéma SQL Supabase & Données Complètes
+-- INTER CARS IMPORT - Schéma SQL Supabase & Initialisation Complète
 -- ==============================================================================
 
 -- 1. Table des Demandes de Contact & Devis (Leads)
@@ -93,13 +93,26 @@ ALTER TABLE public.visitors_analytics ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.testimonials ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
 
--- Politiques de sécurité (Lecture & Écriture intégrale)
-DROP POLICY IF EXISTS "Acces total leads" ON public.leads;
-DROP POLICY IF EXISTS "Acces total vehicules" ON public.delivered_vehicles;
-DROP POLICY IF EXISTS "Acces total analytics" ON public.visitors_analytics;
-DROP POLICY IF EXISTS "Acces total testimonials" ON public.testimonials;
-DROP POLICY IF EXISTS "Acces total settings" ON public.site_settings;
+-- Suppression préalable des politiques pour éviter toute erreur de duplication
+DO $$ 
+BEGIN
+    DROP POLICY IF EXISTS "Acces total leads" ON public.leads;
+    DROP POLICY IF EXISTS "Acces total vehicules" ON public.delivered_vehicles;
+    DROP POLICY IF EXISTS "Acces total analytics" ON public.visitors_analytics;
+    DROP POLICY IF EXISTS "Acces total testimonials" ON public.testimonials;
+    DROP POLICY IF EXISTS "Acces total settings" ON public.site_settings;
+    
+    DROP POLICY IF EXISTS "Lecture publique des véhicules livrés" ON public.delivered_vehicles;
+    DROP POLICY IF EXISTS "Lecture publique des témoignages" ON public.testimonials;
+    DROP POLICY IF EXISTS "Insertion publique des demandes de devis" ON public.leads;
+    DROP POLICY IF EXISTS "Insertion publique des analytics" ON public.visitors_analytics;
+    DROP POLICY IF EXISTS "Gestion totale pour les administrateurs" ON public.leads;
+    DROP POLICY IF EXISTS "Gestion totale des véhicules pour les administrateurs" ON public.delivered_vehicles;
+EXCEPTION
+    WHEN undefined_object THEN NULL;
+END $$;
 
+-- Politiques de sécurité universelles
 CREATE POLICY "Acces total leads" ON public.leads FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Acces total vehicules" ON public.delivered_vehicles FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Acces total analytics" ON public.visitors_analytics FOR ALL USING (true) WITH CHECK (true);
@@ -107,8 +120,10 @@ CREATE POLICY "Acces total testimonials" ON public.testimonials FOR ALL USING (t
 CREATE POLICY "Acces total settings" ON public.site_settings FOR ALL USING (true) WITH CHECK (true);
 
 -- ==============================================================================
--- INSERTION DES 6 VÉHICULES DU CATALOGUE DE PRESTIGE
+-- INSERTION DES 6 VÉHICULES DU CATALOGUE (SANS DOUBLON)
 -- ==============================================================================
+DELETE FROM public.delivered_vehicles;
+
 INSERT INTO public.delivered_vehicles (title, brand, model, category, year, mileage, power_hp, engine, transmission, origin_country, delivery_city, certification, warranty, image_url, client_name, client_city, client_review, rating, is_featured)
 VALUES 
 (
@@ -239,8 +254,10 @@ VALUES
 );
 
 -- ==============================================================================
--- INSERTION DES TÉMOIGNAGES CLIENTS
+-- INSERTION DES TÉMOIGNAGES CLIENTS (SANS DOUBLON)
 -- ==============================================================================
+DELETE FROM public.testimonials;
+
 INSERT INTO public.testimonials (client_name, client_city, vehicle_model, rating, comment, tag, date, is_verified, avatar_url)
 VALUES
 (
