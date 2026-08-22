@@ -43,17 +43,13 @@ export const Navbar = () => {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gold/30 py-1'
+            ? 'bg-rolex-dark/95 backdrop-blur-md shadow-2xl border-b border-gold/30 py-1'
             : 'bg-gradient-to-b from-rolex-dark/95 via-rolex-dark/85 to-rolex-dark/40 backdrop-blur-md border-b border-white/10'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* LIGNE DU HAUT : Logo officiel à gauche | Téléphone & Bouton d'action à droite */}
-          <div
-            className={`flex items-center justify-between py-2 sm:py-2.5 border-b transition-colors duration-300 ${
-              isScrolled ? 'border-slate-200' : 'border-white/10'
-            }`}
-          >
+          <div className="flex items-center justify-between py-2 sm:py-2.5 border-b border-white/10 transition-colors duration-300">
             {/* Logo Officiel Découpé */}
             <Link to="/" className="flex items-center group py-0.5" aria-label="Accueil Inter Cars Import">
               <BrandLogo size="md" />
@@ -63,17 +59,9 @@ export const Navbar = () => {
             <div className="hidden sm:flex items-center gap-3 md:gap-4">
               <a
                 href={`tel:${settings.phoneRaw || '+33493000000'}`}
-                className={`flex items-center gap-2.5 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all group border shadow-sm ${
-                  isScrolled
-                    ? 'bg-rolex-50 hover:bg-rolex text-rolex hover:text-gold border-rolex/30'
-                    : 'bg-white/5 hover:bg-white/10 border-white/15 hover:border-gold/40 text-slate-200 hover:text-gold'
-                }`}
+                className="flex items-center gap-2.5 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all group border shadow-sm bg-white/5 hover:bg-white/10 border-white/15 hover:border-gold/40 text-slate-200 hover:text-gold"
               >
-                <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center transition-transform group-hover:scale-110 ${
-                    isScrolled ? 'bg-rolex text-gold' : 'bg-gold/15 text-gold'
-                  }`}
-                >
+                <div className="w-7 h-7 rounded-full flex items-center justify-center transition-transform group-hover:scale-110 bg-gold/15 text-gold">
                   <Phone className="w-3.5 h-3.5 animate-pulse" />
                 </div>
                 <span>{settings.phone}</span>
@@ -93,9 +81,7 @@ export const Navbar = () => {
             <div className="flex items-center gap-2 sm:hidden">
               <a
                 href={`tel:${settings.phoneRaw || '+33493000000'}`}
-                className={`p-2 rounded-lg border ${
-                  isScrolled ? 'bg-rolex-50 text-rolex border-rolex/30' : 'bg-white/5 text-gold border-white/15'
-                }`}
+                className="p-2 rounded-lg border bg-white/5 text-gold border-white/15"
                 aria-label="Appeler"
               >
                 <Phone className="w-4 h-4" />
@@ -110,7 +96,7 @@ export const Navbar = () => {
             </div>
           </div>
 
-          {/* LIGNE DU BAS : Navigation (Texte VERT sur fond blanc au scroll, Texte BLANC au repos, Trait OR au hover et sur page active) */}
+          {/* LIGNE DU BAS : Navigation (Fond sombre luxueux préservé au scroll, Trait OR animé au hover et sur page active) */}
           <nav className="hidden lg:flex items-center justify-center gap-1 xl:gap-3 py-2">
             {navLinks.map((link) => (
               <NavLink
@@ -120,9 +106,9 @@ export const Navbar = () => {
                 onMouseLeave={() => setHoveredPath(null)}
                 className={({ isActive }) =>
                   `px-4 py-1.5 text-xs xl:text-sm tracking-wider uppercase transition-colors duration-200 rounded relative group ${
-                    isScrolled
-                      ? 'text-rolex-900 hover:text-rolex-950 font-bold'
-                      : 'text-slate-100 hover:text-white font-semibold'
+                    isActive
+                      ? 'text-white font-bold'
+                      : 'text-slate-200 hover:text-white font-medium'
                   }`
                 }
               >
