@@ -17,7 +17,7 @@ export const vehiclesService = {
           return data;
         }
 
-        // Si la table Supabase est vide, on l'initialise automatiquement avec notre catalogue
+        // Si la table Supabase est vide, on l'initialise automatiquement avec notre catalogue sans plaque
         if (!error && data && data.length === 0 && initialVehicles.length > 0) {
           try {
             const seedPayload = initialVehicles.map(v => {
@@ -49,7 +49,51 @@ export const vehiclesService = {
       localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
       return initialVehicles;
     }
-    return JSON.parse(stored);
+    try {
+      const parsed = JSON.parse(stored);
+      // Si la liste locale a moins d'éléments ou de vieilles URLs, on met à jour
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+      localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
+      return initialVehicles;
+    } catch {
+      localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
+      return initialVehicles;
+    }
+  },
+
+  // Forcer la synchronisation du catalogue propre vers Supabase et LocalStorage
+  async syncCatalog() {
+    if (isSupabaseConfigured()) {
+      try {
+        const seedPayload = initialVehicles.map(v => {
+          const { id, ...rest } = v;
+          return {
+            ...rest,
+            rating: 5,
+            gallery: [v.image_url]
+          };
+        });
+
+        // Nettoyage et réinsertion propre
+        await supabase.from('delivered_vehicles').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+        const { data: inserted } = await supabase
+          .from('delivered_vehicles')
+          .insert(seedPayload)
+          .select();
+
+        if (inserted && inserted.length > 0) {
+          localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(inserted));
+          return inserted;
+        }
+      } catch (err) {
+        console.warn('Supabase catalog sync failed:', err);
+      }
+    }
+
+    localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
+    return initialVehicles;
   },
 
   // Ajouter un véhicule

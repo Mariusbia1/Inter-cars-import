@@ -16,13 +16,13 @@ export const ContactPage = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
-    vehicle_type: 'Supercar',
+    vehicle_type: 'Sportive',
     brand_sought: 'Porsche',
     model_sought: '',
     year_min: '2023',
     mileage_max: 'Moins de 25 000 km',
     fuel_type: 'Essence V8 / Flat-6',
-    transmission: 'Automatique (PDK / Double Embrayage)',
+    transmission: 'Automatique (Double Embrayage / BVA)',
     preferred_timeline: 'Sous 30 jours',
     full_name: '',
     email: '',
@@ -85,20 +85,20 @@ export const ContactPage = () => {
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">
             Initiez Votre Projet <br />
-            <span className="text-gold-gradient">d'Importation Sur Mesure</span>
+            <span className="text-gold-gradient">Automobile Sur Mesure</span>
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Remplissez notre configurateur en 3 étapes. Notre équipe effectue un premier audit de disponibilité sur les réseaux officiels européens sous 48h.
+            Remplissez notre formulaire en 3 étapes. Notre équipe étudie votre demande et vérifie la disponibilité auprès de nos concessions partenaires en France sous 48h.
           </p>
         </div>
       </section>
 
-      {/* Main Content : Formulaire Configurateur & Coordonnées */}
+      {/* Main Content : Formulaire & Coordonnées */}
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-            {/* Colonne Gauche : Configurateur Formulaire 3 Étapes */}
+            {/* Colonne Gauche : Formulaire 3 Étapes */}
             <div className="lg:col-span-7">
               <div className="bg-surface rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-luxury-card relative overflow-hidden">
                 {/* Indicateur d'étapes */}
@@ -145,11 +145,11 @@ export const ContactPage = () => {
                     </h3>
 
                     <p className="text-sm sm:text-base text-slate-600 max-w-md mx-auto leading-relaxed">
-                      Merci <strong>{formData.full_name}</strong>. Vos critères pour votre <strong>{formData.brand_sought} {formData.model_sought}</strong> ont été transmis directement à notre conciergerie ({settings.email}).
+                      Merci <strong>{formData.full_name}</strong>. Vos critères pour votre <strong>{formData.brand_sought} {formData.model_sought}</strong> ont été transmis directement à notre équipe ({settings.email}).
                     </p>
 
                     <div className="p-4 rounded-xl bg-rolex-50 border border-rolex/20 text-rolex text-xs max-w-md mx-auto">
-                      Un conseiller dédié prend en charge votre dossier et vous contacte par téléphone au <strong>{formData.phone}</strong> sous 24 à 48 heures ouvrées.
+                      Un conseiller dédié prend en charge votre dossier et vous contacte au <strong>{formData.phone}</strong> sous 24 à 48 heures ouvrées.
                     </div>
 
                     <div className="pt-4">
@@ -176,14 +176,14 @@ export const ContactPage = () => {
                         className="space-y-5"
                       >
                         <h3 className="text-lg font-serif font-bold text-slate-900 mb-1">
-                          1. Définissez le véhicule convoité
+                          1. Définissez le véhicule souhaité
                         </h3>
                         <p className="text-xs text-slate-500 mb-4">
                           Sélectionnez la catégorie et la marque souhaitée.
                         </p>
 
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                          {['Supercar', 'Sportive', 'SUV Prestige', 'Berline GT'].map((cat) => (
+                          {['Sportive', 'Berline & Break', 'SUV & 4x4', 'Coupé & Cabriolet'].map((cat) => (
                             <button
                               type="button"
                               key={cat}
@@ -211,13 +211,13 @@ export const ContactPage = () => {
                               className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm bg-white outline-none focus:border-rolex"
                             >
                               <option value="Porsche">Porsche</option>
-                              <option value="Audi Sport / RS">Audi Sport / RS</option>
-                              <option value="Mercedes-AMG">Mercedes-AMG</option>
-                              <option value="BMW M / Alpina">BMW M / Alpina</option>
+                              <option value="Audi">Audi</option>
+                              <option value="Mercedes-Benz">Mercedes-Benz</option>
+                              <option value="BMW">BMW</option>
                               <option value="Ferrari">Ferrari</option>
                               <option value="Aston Martin">Aston Martin</option>
-                              <option value="Land Rover / SV">Range Rover / SV</option>
-                              <option value="Autre Marque de Prestige">Autre Marque</option>
+                              <option value="Range Rover / Land Rover">Range Rover / Land Rover</option>
+                              <option value="Autre Marque">Autre Marque</option>
                             </select>
                           </div>
 
@@ -231,7 +231,7 @@ export const ContactPage = () => {
                               name="model_sought"
                               value={formData.model_sought}
                               onChange={handleChange}
-                              placeholder="ex: 911 GT3 Touring, RS6 C8, G63..."
+                              placeholder="ex: 911 GT3 Touring, RS6 C8, Classe G..."
                               className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm bg-white outline-none focus:border-rolex"
                             />
                           </div>
@@ -239,14 +239,14 @@ export const ContactPage = () => {
 
                         <div>
                           <label className="block text-xs font-semibold uppercase text-slate-700 mb-1.5">
-                            Cahier des Charges Spécifique
+                            Critères & Équipements Souhaités
                           </label>
                           <input
                             type="text"
                             name="message"
                             value={formData.message}
                             onChange={handleChange}
-                            placeholder="ex: Finition carbone, pack chrono, freins céramique, échappement sport..."
+                            placeholder="ex: Toit ouvrant, pack sport, affichage tête haute, échappement sport..."
                             className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm bg-white outline-none focus:border-rolex"
                           />
                         </div>
@@ -265,7 +265,7 @@ export const ContactPage = () => {
                           2. Spécifications & Exigences Techniques
                         </h3>
                         <p className="text-xs text-slate-500 mb-4">
-                          Précisez vos tolérances kilométriques et le calendrier souhaité.
+                          Précisez vos critères kilométriques et le calendrier souhaité.
                         </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -283,7 +283,7 @@ export const ContactPage = () => {
                               <option value="2023">2023</option>
                               <option value="2022">2022</option>
                               <option value="2020">2020</option>
-                              <option value="2018 ou avant (Youngtimer / Collecteur)">2018 ou avant</option>
+                              <option value="2018 ou avant">2018 ou avant</option>
                             </select>
                           </div>
 
@@ -316,7 +316,8 @@ export const ContactPage = () => {
                               onChange={handleChange}
                               className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm bg-white outline-none focus:border-rolex"
                             >
-                              <option value="Essence V8 / V6 / Flat-6">Essence V8 / V6 / Flat-6</option>
+                              <option value="Essence">Essence</option>
+                              <option value="Diesel">Diesel</option>
                               <option value="Hybride Rechargeable (PHEV)">Hybride Rechargeable (PHEV)</option>
                               <option value="100% Électrique">100% Électrique</option>
                               <option value="Indifférent">Indifférent</option>
@@ -325,7 +326,7 @@ export const ContactPage = () => {
 
                           <div>
                             <label className="block text-xs font-semibold uppercase text-slate-700 mb-1.5">
-                              Délai de Livraison Souhaité
+                              Délai Souhaité
                             </label>
                             <select
                               name="preferred_timeline"
@@ -352,10 +353,10 @@ export const ContactPage = () => {
                         className="space-y-4"
                       >
                         <h3 className="text-lg font-serif font-bold text-slate-900 mb-1">
-                          3. Vos Coordonnées Privées
+                          3. Vos Coordonnées
                         </h3>
                         <p className="text-xs text-slate-500 mb-4">
-                          Ces informations restent strictement confidentielles au sein de notre conciergerie.
+                          Ces informations permettent à notre équipe de vous contacter avec une sélection personnalisée.
                         </p>
 
                         <div>
@@ -368,7 +369,7 @@ export const ContactPage = () => {
                             name="full_name"
                             value={formData.full_name}
                             onChange={handleChange}
-                            placeholder="ex: Alexandre de Villeroy"
+                            placeholder="ex: Alexandre Dupont"
                             className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm bg-white outline-none focus:border-rolex"
                           />
                         </div>
@@ -414,7 +415,7 @@ export const ContactPage = () => {
                             name="delivery_city"
                             value={formData.delivery_city}
                             onChange={handleChange}
-                            placeholder="ex: Paris, Cannes, Lyon, Genève, Monaco..."
+                            placeholder="ex: Paris, Cannes, Lyon, Bordeaux..."
                             className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm bg-white outline-none focus:border-rolex"
                           />
                         </div>
@@ -453,7 +454,7 @@ export const ContactPage = () => {
                           icon={Send}
                           className="shadow-gold-glow font-bold tracking-wider text-xs"
                         >
-                          {isSubmitting ? 'Transmission...' : 'Envoyer mon cahier des charges'}
+                          {isSubmitting ? 'Transmission...' : 'Envoyer ma demande'}
                         </LuxuryButton>
                       )}
                     </div>
@@ -462,7 +463,7 @@ export const ContactPage = () => {
               </div>
             </div>
 
-            {/* Colonne Droite : Coordonnées Directes & Showroom */}
+            {/* Colonne Droite : Coordonnées & Showroom */}
             <div className="lg:col-span-5 space-y-8">
               {/* Carte Contact Direct */}
               <div className="p-8 rounded-3xl bg-rolex-dark text-white border border-gold/40 shadow-2xl space-y-6">
@@ -471,7 +472,7 @@ export const ContactPage = () => {
                     <Sparkles className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-lg text-white">Conciergerie VIP Dédiée</h3>
+                    <h3 className="font-serif font-bold text-lg text-white">Conseil & Vente Automobile</h3>
                     <p className="text-xs text-gold">Ligne directe & prise en charge rapide</p>
                   </div>
                 </div>
@@ -480,16 +481,16 @@ export const ContactPage = () => {
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-gold shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block mb-0.5">Showroom Privé & Bureau Sourcing</strong>
+                      <strong className="text-white block mb-0.5">Showroom & Bureau Commercial</strong>
                       {settings.address}<br />
-                      Sur rendez-vous exclusif
+                      Sur rendez-vous
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 text-gold shrink-0" />
                     <div>
-                      <strong className="text-white block mb-0.5">Hotline Téléphonique Directe</strong>
+                      <strong className="text-white block mb-0.5">Ligne Téléphonique Directe</strong>
                       <a href={`tel:${settings.phoneRaw || '+33493000000'}`} className="text-gold-light hover:underline font-semibold">
                         {settings.phone}
                       </a>
@@ -514,7 +515,7 @@ export const ContactPage = () => {
                     className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl bg-rolex hover:bg-rolex-600 text-gold border border-gold/40 text-xs font-bold uppercase tracking-wider transition-colors shadow-md shadow-gold-glow/20"
                   >
                     <Phone className="w-4 h-4 animate-pulse" />
-                    <span>Ligne Directe Conciergerie VIP</span>
+                    <span>Ligne Directe Équipe Commerciale</span>
                   </a>
                 </div>
               </div>
@@ -524,9 +525,9 @@ export const ContactPage = () => {
                 <div className="w-12 h-12 rounded-full bg-rolex-50 border border-rolex/30 text-rolex flex items-center justify-center mx-auto">
                   <MapPin className="w-6 h-6 text-rolex" />
                 </div>
-                <h4 className="font-serif font-bold text-slate-900 text-base">Livraison Sécurisée à Domicile</h4>
+                <h4 className="font-serif font-bold text-slate-900 text-base">Livraison Sécurisée en France</h4>
                 <p className="text-xs text-slate-600 leading-relaxed font-light">
-                  Nos camions plateaux fermés sécurisés acheminent votre véhicule directement à votre domicile ou showroom en France et à Monaco.
+                  Nos transporteurs partenaires acheminent votre véhicule directement à votre domicile ou lieu de livraison partout en France.
                 </p>
                 <div className="flex items-center justify-center gap-4 text-xs font-semibold text-rolex pt-2">
                   <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4 text-gold" /> Transport Assuré</span>

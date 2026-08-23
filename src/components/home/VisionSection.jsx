@@ -7,16 +7,16 @@ import { LuxuryButton } from '../common/LuxuryButton';
 export const VisionSection = () => {
   const visionPillars = [
     {
-      title: 'Une Expérience de Haute Conciergerie',
-      text: 'Chaque acquéreur bénéficie d’un interlocuteur unique, joignable 7j/7, qui orchestre l’ensemble des étapes avec le niveau d’exigence des palaces.'
+      title: 'Un Accompagnement Dédié & Réactif',
+      text: 'Chaque client bénéficie d’un conseiller unique qui suit son projet d’achat de A à Z avec rigueur et disponibilité.'
     },
     {
       title: 'La Rupture avec l’Opacité Traditionnelle',
-      text: 'Nous fournissons chaque contrat de vente d’origine, chaque relevé douanier et chaque rapport technique sans aucune dissimulation.'
+      text: 'Nous fournissons l’intégralité de l’historique constructeur, le carnet d’entretien à jour et le rapport d’audit technique en totale transparence.'
     },
     {
-      title: 'La Sérénité Absolue des Investissements',
-      text: 'Sélectionner des véhicules rares dont la cote et l’historique préservent la valeur patrimoniale de votre garage au fil des années.'
+      title: 'La Sérénité Absolue de votre Achat',
+      text: 'Des véhicules d’occasion sélectionnés auprès de nos partenaires exclusifs en France, garantis et prêts à prendre la route.'
     }
   ];
 
@@ -33,9 +33,9 @@ export const VisionSection = () => {
             <SectionHeader
               dark
               align="left"
-              badge="Notre Vision"
-              title="Redéfinir les Standards du Courtage Automobile"
-              subtitle="Nous croyons en un modèle où la passion mécanique s'associe à la rigueur juridique la plus stricte, pour transformer l'achat transfrontalier en un plaisir pur."
+              badge="Notre Engagement"
+              title="Redéfinir les Standards de la Vente Automobile"
+              subtitle="Nous croyons en un modèle où la passion mécanique s'associe à la rigueur technique et administrative la plus stricte, avec notre réseau de partenaires exclusifs en France."
               className="mb-6"
             />
 
@@ -72,7 +72,7 @@ export const VisionSection = () => {
             </div>
           </div>
 
-          {/* Visuel Ferrari / Prestige */}
+          {/* Visuel */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -83,15 +83,15 @@ export const VisionSection = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gold/40">
               <img
                 src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1200&q=80"
-                alt="Ferrari 296 GTB livrée par Inter Cars Import"
+                alt="Véhicule vendu par Inter Cars"
                 className="w-full h-[400px] sm:h-[500px] object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
               <div className="absolute bottom-6 left-6 right-6 p-5 rounded-xl bg-rolex-forest/90 backdrop-blur-md border border-gold/30">
-                <p className="text-xs uppercase font-bold tracking-widest text-gold mb-1">Curation Personnalisée</p>
+                <p className="text-xs uppercase font-bold tracking-widest text-gold mb-1">Sélection Rigoureuse</p>
                 <p className="text-sm font-medium text-white">
-                  "Chaque véhicule importé est sélectionné avec la même minutie que s'il rejoignait notre collection personnelle."
+                  "Chaque véhicule est minutieusement vérifié et préparé avant d'être proposé à la vente."
                 </p>
               </div>
             </div>

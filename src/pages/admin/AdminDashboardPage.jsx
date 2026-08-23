@@ -85,7 +85,7 @@ export const AdminDashboardPage = () => {
             <div className="lg:col-span-8 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="font-serif font-bold text-slate-900 text-base">
-                  Dernières Demandes de Recherche
+                  Dernières Demandes de Devis
                 </h3>
                 <button
                   type="button"
@@ -137,7 +137,7 @@ export const AdminDashboardPage = () => {
                   Actions Rapides
                 </h4>
                 <p className="text-xs text-slate-200 leading-relaxed font-light">
-                  Gérez vos demandes de conciergerie, actualisez la vitrine de véhicules ou modifiez vos coordonnées.
+                  Gérez vos demandes de devis, actualisez la vitrine de véhicules ou modifiez vos coordonnées.
                 </p>
                 <div className="space-y-2 pt-2">
                   <button

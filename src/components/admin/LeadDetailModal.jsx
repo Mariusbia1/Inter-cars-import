@@ -129,7 +129,7 @@ export const LeadDetailModal = ({ lead, onClose, onUpdateStatus, onDelete }) => 
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-semibold bg-white outline-none focus:border-rolex"
                 >
                   <option value="Nouveau">Nouveau</option>
-                  <option value="En cours">En cours de sourcing</option>
+                  <option value="En cours">En cours de traitement</option>
                   <option value="Devis envoyé">Devis & Dossier envoyé</option>
                   <option value="Clôturé">Clôturé / Livré</option>
                 </select>
@@ -143,7 +143,7 @@ export const LeadDetailModal = ({ lead, onClose, onUpdateStatus, onDelete }) => 
                   type="text"
                   value={adminNotes}
                   onChange={(e) => setAdminNotes(e.target.value)}
-                  placeholder="ex: Client rappelé, recherche en Allemagne lancée..."
+                  placeholder="ex: Client contacté, recherche chez nos partenaires en France..."
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white outline-none focus:border-rolex"
                 />
               </div>
@@ -152,13 +152,13 @@ export const LeadDetailModal = ({ lead, onClose, onUpdateStatus, onDelete }) => 
             {/* Simulateur de Réponse Email Rapide */}
             <div className="p-5 rounded-2xl bg-rolex-50 border border-rolex/20 space-y-3">
               <h4 className="text-xs font-bold uppercase tracking-wider text-rolex flex items-center gap-1.5">
-                <Send className="w-3.5 h-3.5" /> Réponse Rapide Conciergerie VIP
+                <Send className="w-3.5 h-3.5" /> Réponse Rapide Conseiller
               </h4>
               <textarea
                 rows={2}
                 value={replyMessage}
                 onChange={(e) => setReplyMessage(e.target.value)}
-                placeholder={`Bonjour ${lead.full_name}, nous avons identifié 2 opportunités conformes en Allemagne...`}
+                placeholder={`Bonjour ${lead.full_name}, nous avons identifié des opportunités conformes auprès de nos partenaires en France...`}
                 className="w-full px-3 py-2 rounded-lg border border-rolex/30 text-xs bg-white outline-none focus:border-rolex resize-none"
               />
               <div className="flex justify-end">

@@ -16,7 +16,7 @@ export const BrandLogo = ({
     <div className={`inline-flex items-center justify-center group select-none transition-transform duration-300 hover:scale-[1.03] ${className}`}>
       <img
         src={logoImg}
-        alt="Inter Cars Import"
+        alt="Inter Cars"
         className={`${sizeClasses[size] || sizeClasses.md} w-auto object-contain drop-shadow-[0_2px_10px_rgba(198,161,91,0.25)]`}
         loading="eager"
       />

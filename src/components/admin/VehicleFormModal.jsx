@@ -7,19 +7,19 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
     title: '',
     brand: 'Porsche',
     model: '',
-    category: 'Supercar',
+    category: 'Sportive',
     year: 2024,
     mileage: 10000,
     power_hp: 500,
     engine: 'V8 Bi-Turbo',
-    origin_country: 'Allemagne (Stuttgart)',
+    origin_country: 'Partenaire Officiel France',
     delivery_city: 'Cannes (06)',
     certification: 'Audit 150 Points Certifié',
-    warranty: 'Garantie Européenne 24 Mois',
+    warranty: 'Garantie & Révision Validée',
     image_url: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80',
     client_name: 'Client Privé',
     client_city: 'Cannes',
-    client_review: 'Audit 150 points irréprochable et livraison express à domicile.',
+    client_review: 'Audit 150 points irréprochable et livraison soignée à domicile.',
     is_featured: false,
   });
 
@@ -29,15 +29,15 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
         title: vehicle.title || '',
         brand: vehicle.brand || 'Porsche',
         model: vehicle.model || '',
-        category: vehicle.category || 'Supercar',
+        category: vehicle.category || 'Sportive',
         year: vehicle.year || 2024,
         mileage: vehicle.mileage || 10000,
         power_hp: vehicle.power_hp || 500,
         engine: vehicle.engine || 'V8 Bi-Turbo',
-        origin_country: vehicle.origin_country || 'Allemagne',
+        origin_country: vehicle.origin_country || 'Réseau Partenaire France',
         delivery_city: vehicle.delivery_city || 'Paris',
         certification: vehicle.certification || 'Audit 150 Points Certifié',
-        warranty: vehicle.warranty || 'Garantie Européenne 24 Mois',
+        warranty: vehicle.warranty || 'Garantie & Révision Validée',
         image_url: vehicle.image_url || '',
         client_name: vehicle.client_name || '',
         client_city: vehicle.client_city || '',
@@ -49,19 +49,19 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
         title: '',
         brand: 'Porsche',
         model: '',
-        category: 'Supercar',
+        category: 'Sportive',
         year: 2024,
         mileage: 10000,
         power_hp: 500,
         engine: 'V8 Bi-Turbo',
-        origin_country: 'Allemagne (Stuttgart)',
+        origin_country: 'Partenaire Officiel France',
         delivery_city: 'Cannes (06)',
         certification: 'Audit 150 Points Certifié',
-        warranty: 'Garantie Européenne 24 Mois',
+        warranty: 'Garantie & Révision Validée',
         image_url: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80',
         client_name: 'Client Privé',
         client_city: 'Cannes',
-        client_review: 'Audit 150 points irréprochable et livraison express à domicile.',
+        client_review: 'Audit 150 points irréprochable et livraison soignée à domicile.',
         is_featured: false,
       });
     }
@@ -110,7 +110,7 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
                 <h3 className="text-xl font-serif font-bold text-white">
                   {vehicle ? 'Modifier le Véhicule Livré' : 'Ajouter un Véhicule Livré'}
                 </h3>
-                <p className="text-xs text-slate-300">Vitrine des réalisations Inter Cars Import</p>
+                <p className="text-xs text-slate-300">Vitrine des réalisations Inter Cars</p>
               </div>
             </div>
 
@@ -160,10 +160,9 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
                   onChange={handleChange}
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-surface outline-none focus:border-rolex"
                 >
-                  <option value="Supercar">Supercar</option>
                   <option value="Sportive">Sportive</option>
-                  <option value="SUV Prestige">SUV Prestige</option>
-                  <option value="Berline GT">Berline GT</option>
+                  <option value="Berline & Break">Berline & Break</option>
+                  <option value="SUV & 4x4">SUV & 4x4</option>
                 </select>
               </div>
 
@@ -228,7 +227,7 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
                   name="certification"
                   value={formData.certification}
                   onChange={handleChange}
-                  placeholder="ex: Porsche Approved 111 Pts"
+                  placeholder="ex: Audit 150 Points Certifié"
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-surface outline-none focus:border-rolex"
                 />
               </div>
@@ -241,7 +240,7 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
                   name="warranty"
                   value={formData.warranty}
                   onChange={handleChange}
-                  placeholder="ex: Garantie Constructeur 24 Mois"
+                  placeholder="ex: Garantie & Révision Incluse"
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-surface outline-none focus:border-rolex"
                 />
               </div>
@@ -249,14 +248,14 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">Pays de Provenance *</label>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">Réseau / Provenance *</label>
                 <input
                   type="text"
                   required
                   name="origin_country"
                   value={formData.origin_country}
                   onChange={handleChange}
-                  placeholder="ex: Allemagne (Stuttgart)"
+                  placeholder="ex: Partenaire Officiel France"
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-surface outline-none focus:border-rolex"
                 />
               </div>

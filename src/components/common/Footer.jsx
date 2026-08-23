@@ -12,7 +12,7 @@ export const Footer = () => {
       {/* Texture de fond discrète */}
       <div className="absolute inset-0 bg-[radial-gradient(#C6A15B_1px,transparent_1px)] [background-size:32px_32px] opacity-5 pointer-events-none" />
 
-      {/* Bannière de réassurance supérieure (sans garantie 12/24 mois) */}
+      {/* Bannière de réassurance supérieure */}
       <div className="border-b border-white/10 bg-rolex-forest/60 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
@@ -26,8 +26,8 @@ export const Footer = () => {
             <div className="flex items-center justify-center md:justify-start gap-3">
               <Award className="w-6 h-6 text-gold shrink-0" />
               <div>
-                <p className="text-xs font-bold text-white uppercase tracking-wider">Achat & Vente</p>
-                <p className="text-[11px] text-slate-400">Véhicules d'exception vérifiés</p>
+                <p className="text-xs font-bold text-white uppercase tracking-wider">Partenaires en France</p>
+                <p className="text-[11px] text-slate-400">Réseau exclusif officiel</p>
               </div>
             </div>
             <div className="flex items-center justify-center md:justify-start gap-3">
@@ -53,12 +53,12 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
           {/* Colonne 1 & 2 : Présentation & Wordmark */}
           <div className="lg:col-span-2 space-y-5">
-            <Link to="/" className="inline-block group" aria-label="Accueil Inter Cars Import">
+            <Link to="/" className="inline-block group" aria-label="Accueil Inter Cars">
               <BrandLogo size="lg" />
             </Link>
 
             <p className="text-sm text-slate-300 leading-relaxed max-w-md font-light">
-              Maison spécialisée dans l'achat, la vente, la recherche sur mesure, l'audit technique rigoureux en 150 points et la livraison de véhicules de prestige et sportifs.
+              Spécialiste de la vente de véhicules d'occasion rigoureusement audités en 150 points de contrôle, en partenariat exclusif avec les concessions officielles en France.
             </p>
           </div>
 
@@ -108,27 +108,27 @@ export const Footer = () => {
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-300">
               <li className="flex items-center gap-2">
-                <span className="text-gold">›</span> Achat de Véhicules de Prestige
+                <span className="text-gold">›</span> Vente de Véhicules d'Occasion
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-gold">›</span> Vente & Dépôt-Vente VIP
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-gold">›</span> Recherche Personnalisée sur Mesure
+                <span className="text-gold">›</span> Réseau Partenaire Exclusif en France
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-gold">›</span> Audit Technique 150 Points
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-gold">›</span> Livraison Sécurisée à Domicile
+                <span className="text-gold">›</span> Reprise & Estimation
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-gold">›</span> Démarches Administratives Clé en Main
+                <span className="text-gold">›</span> Livraison Sécurisée en France
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gold">›</span> Carte Grise & Démarches Complètes
               </li>
             </ul>
           </div>
 
-          {/* Colonne 5 : Coordonnées & Showroom (Sans Horaires) */}
+          {/* Colonne 5 : Coordonnées & Showroom */}
           <div>
             <h4 className="font-serif font-bold text-white text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-gold" /> Contact & Showroom
@@ -157,10 +157,10 @@ export const Footer = () => {
         {/* Ligne de séparation dorée */}
         <div className="gold-divider my-10" />
 
-        {/* Barre Inférieure : Mentions Légales & Droits */}
+        {/* Barre Inférieure */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <div>
-            © {new Date().getFullYear()} Inter Cars Import. Tous droits réservés.
+            © {new Date().getFullYear()} Inter Cars. Tous droits réservés.
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">

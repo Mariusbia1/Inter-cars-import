@@ -12,17 +12,17 @@ export const HistoryPage = () => {
     {
       icon: Shield,
       title: 'Intégrité & Transparence',
-      text: 'Aucune commission cachée, aucun intermédiaire opaque. Vous disposez de la facture originale de la concession européenne et de tous les justificatifs fiscaux.'
+      text: 'Aucun frais dissimulé, aucun intermédiaire opaque. Chaque véhicule est vendu avec un contrat clair, un historique d’entretien officiel et tous les justificatifs en règle.'
     },
     {
       icon: Award,
       title: 'Excellence & Rigueur Technique',
-      text: 'Notre protocole d’audit 150 points ne tolère aucun compromis. Si un véhicule présente le moindre doute kilométrique ou structurel, nous l’écartons immédiatement.'
+      text: 'Notre protocole d’audit 150 points ne tolère aucun compromis. Si un véhicule présente le moindre doute kilométrique ou mécanique, nous l’écartons immédiatement.'
     },
     {
       icon: HeartHandshake,
-      title: 'Passion & Haute Conciergerie',
-      text: 'Nous partageons le même enthousiasme que nos clients pour les mécaniques d’exception. Chaque projet est traité avec le dévouement d’un service de conciergerie privée.'
+      title: 'Partenariats Exclusifs en France',
+      text: 'Nous collaborons étroitement avec les plus grands groupes de concessions officielles en France pour garantir la provenance et l’entretien certifié de nos véhicules.'
     }
   ];
 
@@ -32,8 +32,10 @@ export const HistoryPage = () => {
       <section className="bg-rolex-dark text-white py-14 sm:py-20 relative overflow-hidden border-b border-gold/30">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=80"
-            alt="Inter Cars Import Histoire"
+            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=75"
+            alt="Inter Cars Histoire"
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover opacity-20"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-rolex-dark via-rolex-dark/80 to-transparent" />
@@ -48,48 +50,50 @@ export const HistoryPage = () => {
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">
-            La Passion de l'Excellence <br />
+            La Passion de la Qualité <br />
             <span className="text-gold-gradient">Automobile depuis 2016</span>
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Découvrez la genèse d'Inter Cars Import, notre philosophie de curateur indépendant et l'équipe d'experts dédiée à vos acquisitions de prestige.
+            Découvrez la genèse d'Inter Cars, notre engagement envers la transparence et notre réseau de concessions partenaires exclusifs en France.
           </p>
         </div>
       </section>
 
-      {/* Récit Fondateur & Manifeste */}
+      {/* Récit Fondateur */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-6 space-y-6">
               <SectionHeader
                 align="left"
-                badge="Le Manifeste"
-                title="L'Art du Courtage Automobile Haute Fidélité"
-                subtitle="Né de la passion des circuits et du constat d'un marché français souvent restreint en choix et surtarifé."
+                badge="Notre Engagement"
+                title="L'Exigence de la Vente Automobile Certifiée"
+                subtitle="Une approche axée sur la rigueur technique, la sécurité d'achat et la proximité avec nos clients."
                 className="mb-4"
               />
 
               <div className="text-sm sm:text-base text-slate-600 leading-relaxed space-y-4">
                 <p>
-                  Acheter une Porsche 911 GT3, une Ferrari V8 ou une Audi RS6 ne devrait jamais être source de tracas ou d'incertitude. Pourtant, les démarches transfrontalières, la barrière de la langue, les formalités de douane et le risque de compteurs trafiqués freinent bon nombre de passionnés.
+                  Acheter un véhicule d'occasion doit être une expérience sereine, transparente et sécurisée. Trop souvent, le marché de l'occasion manque de clarté sur l'historique réel des entretiens et l'état mécanique approfondi.
                 </p>
                 <p>
-                  Chez <strong>Inter Cars Import</strong>, nous avons bâti un pont sécurisé et direct avec les meilleures concessions officielles allemandes, suisses et italiennes. Nous agissons en véritables curateurs privés : nous inspectons sur place, négocions fermement et livrons votre futur joyau directement sur le pas de votre porte, immatriculé et prêt à rouler.
+                  Chez <strong>Inter Cars</strong>, nous avons fait le choix de la rigueur absolue. Grâce à nos accords avec des concessions officielles partenaires en France, chaque véhicule proposé est rigoureusement audité sur 150 points de contrôle, révisé et garanti avec son carnet constructeur à jour.
                 </p>
               </div>
 
               <div className="p-5 rounded-xl bg-rolex-50 border border-rolex/20 text-rolex-900 font-serif italic text-sm">
-                "Nous ne vendons pas des voitures. Nous dénichons des pièces d'exception et garantissons une sérénité totale à leurs futurs propriétaires."
+                "Notre engagement est simple : offrir à chaque acheteur un véhicule parfaitement contrôlé et garanti, avec un service clé en main."
               </div>
             </div>
 
             <div className="lg:col-span-6 relative">
               <div className="rounded-2xl overflow-hidden shadow-2xl border border-gold/40">
                 <img
-                  src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80"
-                  alt="Atelier et curation Inter Cars Import"
+                  src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=75"
+                  alt="Sélection de véhicules chez Inter Cars"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-[450px] object-cover"
                 />
               </div>
@@ -98,14 +102,14 @@ export const HistoryPage = () => {
         </div>
       </section>
 
-      {/* Nos Valeurs Cardinales */}
+      {/* Nos Valeurs */}
       <section className="py-20 bg-rolex-dark text-white border-y border-gold/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             dark
             badge="Nos Valeurs"
             title="Les Principes qui Guident Chacun de nos Pas"
-            subtitle="Une éthique de travail inébranlable au service d'une clientèle d'esthètes et de collectionneurs."
+            subtitle="Une éthique de travail inébranlable au service de nos clients et partenaires."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -136,13 +140,13 @@ export const HistoryPage = () => {
         </div>
       </section>
 
-      {/* Frise Chronologique / Jalons */}
+      {/* Frise Chronologique */}
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             badge="Notre Parcours"
             title="Les Jalons d'une Croissance Maîtrisée"
-            subtitle="Près d'une décennie d'exigence, de partenariats exclusifs et d'innovations de service."
+            subtitle="Près d'une décennie d'exigence, de partenariats exclusifs en France et d'innovations de service."
           />
 
           <div className="relative border-l-2 border-gold/40 ml-4 sm:ml-32 space-y-12 pl-6 sm:pl-10">
@@ -155,10 +159,9 @@ export const HistoryPage = () => {
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="relative"
               >
-                {/* Pastille dorée sur la frise */}
+                {/* Pastille dorée */}
                 <div className="absolute -left-[31px] sm:-left-[47px] top-1.5 w-5 h-5 rounded-full bg-rolex border-4 border-gold shadow-gold-glow" />
 
-                {/* Année affichée à gauche sur grand écran */}
                 <span className="sm:absolute sm:-left-36 top-1 font-serif font-black text-xl text-rolex block sm:inline">
                   {m.year}
                 </span>
@@ -177,13 +180,13 @@ export const HistoryPage = () => {
         </div>
       </section>
 
-      {/* Équipe Dirigeante */}
+      {/* Équipe */}
       <section className="py-20 bg-surface border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             badge="L'Équipe"
             title="Des Spécialistes Dévoués à Votre Projet"
-            subtitle="Chaque membre d'Inter Cars Import apporte une expertise pointue en ingénierie mécanique, fiscalité douanière ou négociation internationale."
+            subtitle="Chaque membre d'Inter Cars apporte une expertise pointue en mécanique automobile, gestion de dossiers et accompagnement client."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

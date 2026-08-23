@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Check, X, Shield, Search, FileCheck, Truck, HelpCircle, ChevronDown, Sparkles } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
-import { importFaqs } from '../data/faqData';
+import { salesFaqs } from '../data/faqData';
 import { FinalCta } from '../components/home/FinalCta';
 
 export const MethodPage = () => {
@@ -17,45 +17,45 @@ export const MethodPage = () => {
   const detailedSteps = [
     {
       step: '01',
-      title: 'Cahier des Charges & Curation Exclusive',
-      desc: 'Nous débutons par une séance de cadrage approfondie : modèle exact, pack d’options prioritaires (Pack Chrono, freins carbone, pack dynamique, toit ouvrant), combinaisons de teintes intérieures/extérieures et budget tout compris (véhicule + malus + transport + prestation).',
+      title: 'Définition de Votre Projet Automobile',
+      desc: 'Nous débutons par une séance de cadrage approfondie : modèle souhaité, motorisation, options prioritaires, budget tout compris et calendrier.',
       points: [
-        'Écoute active et conseils sur la côte et la liquidité du modèle',
-        'Calcul immédiat et au centime près du malus écologique résiduel',
-        'Signature du mandat de recherche exclusif sans aucun coût caché'
+        'Écoute active et conseils personnalisés sur les modèles',
+        'Étude des configurations disponibles et de leur cote',
+        'Cadrage clair et transparent sans aucun coût caché'
       ],
       icon: Search
     },
     {
       step: '02',
-      title: 'Sélection Rigoureuse & Négociation Privilégiée',
-      desc: 'Nous activons notre réseau étendu de concessions officielles et de partenaires agréés. Nous négocions directement auprès des professionnels pour obtenir les meilleures conditions pour votre acquisition.',
+      title: 'Sélection auprès de nos Partenaires en France',
+      desc: 'Nous activons notre réseau exclusif de concessions partenaires officielles en France. Nous sélectionnons uniquement les véhicules certifiés bénéficiant d’un historique d’entretien limpide.',
       points: [
-        'Filtrage rigoureux des véhicules avec historique vérifié',
-        'Vérification préalable du carnet d’entretien et des révisions constructeur',
-        'Négociation des conditions préférentielles pour votre projet'
+        'Accès direct aux stocks de concessions partenaires en France',
+        'Vérification rigoureuse du carnet d’entretien et des révisions constructeur',
+        'Garantie de provenance et d’authenticité'
       ],
       icon: Shield
     },
     {
       step: '03',
       title: 'Audit Physique 150 Points & Sécurisation',
-      desc: 'Notre inspecteur certifié réalise une expertise approfondie : mesure au micromètre des épaisseurs de peinture, passage de la valise de diagnostic électronique et contrôle d’absence de choc structurel.',
+      desc: 'Nos techniciens réalisent un contrôle approfondi : mesure au micromètre des épaisseurs de peinture, passage de la valise de diagnostic électronique et contrôle structurel complet.',
       points: [
-        'Rapport complet détaillé avec photos et vidéos HD sous tous les angles',
+        'Rapport complet détaillé avec photos HD et contrôle technique',
         'Certification de l’authenticité kilométrique dans les calculateurs',
-        'Paiement sécurisé par compte séquestre après votre accord formel'
+        'Validation complète de l’état avant finalisation de la vente'
       ],
       icon: FileCheck
     },
     {
       step: '04',
-      title: 'Immatriculation & Livraison VIP à Domicile',
-      desc: 'Nous gérons la totalité du volet administratif et administratif pour votre immatriculation définitive. Votre véhicule vous est livré en camion plateau fermé sécurisé directement à votre adresse.',
+      title: 'Carte Grise & Livraison Clé en Main',
+      desc: 'Nous gérons la totalité du volet administratif français (carte grise, certificat de non-gage). Votre véhicule vous est livré préparé avec soin, directement à votre adresse.',
       points: [
-        'Démarches administratives et carte grise définitive assurées',
-        'Préparation esthétique et detailing haut de gamme avant remise des clés',
-        'Dossier de traçabilité complet et remise des clés en main propre'
+        'Démarches administratives et carte grise française assurées',
+        'Préparation esthétique et nettoyage professionnel complet',
+        'Remise des clés en main propre et activation de votre garantie'
       ],
       icon: Truck
     }
@@ -63,43 +63,43 @@ export const MethodPage = () => {
 
   const comparisonRows = [
     {
-      criteria: "Accès aux stocks B2B fermés d'Europe",
+      criteria: "Réseau de concessions partenaires en France",
+      intercars: true,
+      seul: false,
+      concession: "Limité à 1 marque",
+    },
+    {
+      criteria: "Audit physique 150 points certifié",
       intercars: true,
       seul: false,
       concession: false,
     },
     {
-      criteria: "Audit physique 150 points sur place",
+      criteria: "Transparence totale de l'historique d'entretien",
       intercars: true,
-      seul: false,
-      concession: false,
+      seul: "Rarement vérifiable",
+      concession: true,
     },
     {
-      criteria: "Transparence totale (Facture d'achat d'origine)",
-      intercars: true,
-      seul: true,
-      concession: false,
-    },
-    {
-      criteria: "Économie moyenne de 15% à 30%",
-      intercars: true,
-      seul: "Possible mais risqué",
-      concession: false,
-    },
-    {
-      criteria: "Gestion intégrale du quitus & carte grise",
+      criteria: "Garantie mécanique & contrôle technique valide",
       intercars: true,
       seul: false,
       concession: true,
     },
     {
-      criteria: "Sécurisation des fonds par compte séquestre",
+      criteria: "Prise en charge intégrale de la carte grise",
       intercars: true,
       seul: false,
       concession: true,
     },
     {
-      criteria: "Livraison à domicile en plateau fermé",
+      criteria: "Sécurisation totale de la transaction",
+      intercars: true,
+      seul: false,
+      concession: true,
+    },
+    {
+      criteria: "Livraison soignée à domicile partout en France",
       intercars: true,
       seul: false,
       concession: "Option payante",
@@ -118,12 +118,12 @@ export const MethodPage = () => {
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">
-            Un Protocole d'Acquisition <br />
+            Un Parcours d'Achat Sécurisé <br />
             <span className="text-gold-gradient">en 4 Étapes Clés</span>
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Une approche méthodique et éprouvée pour transformer l'importation européenne en une formalité fluide, sécurisée et sans la moindre mauvaise surprise.
+            Une approche méthodique et éprouvée pour acheter votre véhicule en toute confiance, grâce à notre réseau de concessions partenaires en France.
           </p>
         </div>
       </section>
@@ -133,7 +133,6 @@ export const MethodPage = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           {detailedSteps.map((s, index) => {
             const Icon = s.icon;
-            const isEven = index % 2 === 1;
             return (
               <motion.div
                 key={index}
@@ -187,20 +186,20 @@ export const MethodPage = () => {
           <SectionHeader
             dark
             badge="Comparatif du Marché"
-            title="Pourquoi Choisir Inter Cars Import ?"
-            subtitle="Analyse comparative objective entre notre service de conciergerie, l'achat en solitaire et les concessions traditionnelles."
+            title="Pourquoi Choisir Inter Cars ?"
+            subtitle="Analyse comparative objective entre notre service avec partenaires exclusifs, l'achat entre particuliers et d'autres circuits."
           />
 
           <div className="overflow-x-auto rounded-2xl border border-gold/30 shadow-2xl bg-white/[0.03] backdrop-blur-md">
             <table className="w-full text-left text-sm">
               <thead className="bg-rolex-forest/80 border-b border-gold/30 text-xs font-serif uppercase tracking-wider text-gold">
                 <tr>
-                  <th className="p-4 sm:p-6">Critère d'Achat</th>
+                  <th className="p-4 sm:p-6">Critère de Vente</th>
                   <th className="p-4 sm:p-6 text-center text-gold-light font-bold bg-rolex/60 border-x border-gold/30">
-                    Inter Cars Import
+                    Inter Cars
                   </th>
-                  <th className="p-4 sm:p-6 text-center text-slate-300">Acheter Seul à l'Étranger</th>
-                  <th className="p-4 sm:p-6 text-center text-slate-300">Concessionnaire FR</th>
+                  <th className="p-4 sm:p-6 text-center text-slate-300">Achat entre Particuliers</th>
+                  <th className="p-4 sm:p-6 text-center text-slate-300">Vendeur Traditionnel</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10 text-xs sm:text-sm">
@@ -219,7 +218,7 @@ export const MethodPage = () => {
                       )}
                     </td>
 
-                    {/* Colonne Seul */}
+                    {/* Colonne Particuliers */}
                     <td className="p-4 sm:p-6 text-center text-slate-400">
                       {row.seul === true ? (
                         <Check className="w-5 h-5 text-emerald-400 mx-auto" />
@@ -230,7 +229,7 @@ export const MethodPage = () => {
                       )}
                     </td>
 
-                    {/* Colonne Concession FR */}
+                    {/* Colonne Vendeur Traditionnel */}
                     <td className="p-4 sm:p-6 text-center text-slate-400">
                       {row.concession === true ? (
                         <Check className="w-5 h-5 text-emerald-400 mx-auto" />
@@ -254,11 +253,11 @@ export const MethodPage = () => {
           <SectionHeader
             badge="FAQ & Réponses"
             title="Questions Fréquemment Posées"
-            subtitle="Toutes les réponses à vos interrogations sur la fiscalité, les garanties et les délais d'importation."
+            subtitle="Toutes les réponses à vos interrogations sur nos véhicules, nos garanties et les démarches d'immatriculation."
           />
 
           <div className="space-y-4">
-            {importFaqs.map((faq, idx) => (
+            {salesFaqs.map((faq, idx) => (
               <div
                 key={idx}
                 className="rounded-2xl border border-slate-200 bg-surface overflow-hidden transition-all"

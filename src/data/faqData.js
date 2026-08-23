@@ -1,26 +1,28 @@
-export const importFaqs = [
+export const salesFaqs = [
   {
-    question: "Pourquoi faire appel à Inter Cars Import pour votre achat ou vente ?",
-    answer: "Nous vous offrons un accès exclusif aux plus belles configurations du marché, vérifiées avec un historique limpide dans les réseaux officiels de la marque. Vous bénéficiez d'un accompagnement personnalisé de conciergerie, d'une négociation professionnelle et d'une sécurité totale."
+    question: "Pourquoi acheter votre véhicule chez Inter Cars ?",
+    answer: "Nous collaborons avec un réseau de concessions partenaires exclusifs en France. Chaque véhicule vendu fait l'objet d'un contrôle rigoureux en 150 points, d'un historique d'entretien officiel vérifié et d'une garantie complète pour un achat en toute sérénité."
   },
   {
-    question: "Comment garantissez-vous que le véhicule n'a jamais été accidenté ni trafiqué ?",
-    answer: "Nous appliquons un protocole rigoureux d'audit en 150 points de contrôle. Nous consultons l'historique officiel du constructeur (carnet numérique, passages en concession), effectuons des mesures d'épaisseur de peinture au micromètre pour détecter d'éventuels repeints, et analysons les calculateurs électroniques pour certifier l'authenticité du kilométrage."
+    question: "Comment garantissez-vous l'état et le kilométrage du véhicule ?",
+    answer: "Nous appliquons un protocole rigoureux d'audit en 150 points de contrôle : relevé du carnet d'entretien constructeur, mesures d'épaisseur de peinture au micromètre, contrôle sur pont élévateur et diagnostic électronique pour certifier l'absence de choc et l'authenticité kilométrique."
   },
   {
-    question: "Comment se déroule le paiement de mon véhicule ? Mon argent est-il protégé ?",
-    answer: "Votre sécurité financière est totale. Aucun paiement n'est effectué avant la validation complète du rapport d'audit 150 points. Les transactions passent par un compte séquestre dédié et sécurisé, garanti par contrat."
+    question: "Comment se déroule la transaction et le paiement ?",
+    answer: "Votre sécurité financière est totale. Les transactions sont formalisées par contrat de vente en toute transparence. Aucun règlement final n'est exigé sans la validation complète de la conformité du véhicule."
   },
   {
-    question: "Prenez-vous en charge toutes les démarches administratives et d'immatriculation ?",
-    answer: "Oui, l'intégralité des formalités est assurée par notre équipe : constitution du dossier d'immatriculation, démarches administratives et pose des plaques françaises pour une livraison clé en main."
+    question: "Prenez-vous en charge la carte grise et les formalités administratives ?",
+    answer: "Oui, nous prenons en charge 100% des démarches d'immatriculation française : certificat de non-gage, contrôle technique à jour, changement de titulaire de carte grise et pose des plaques d'immatriculation."
   },
   {
-    question: "Sous quel délai puis-je recevoir mon véhicule chez moi ?",
-    answer: "Une fois le véhicule sélectionné et inspecté, le délai moyen de livraison à domicile est généralement de 7 à 14 jours ouvrés. Ce délai comprend la finalisation administrative, le transport sécurisé en camion fermé et la préparation esthétique complète."
+    question: "Quels sont les délais et modalités de livraison en France ?",
+    answer: "Une fois la commande validée, le délai moyen de mise à disposition ou de livraison à votre domicile est de 5 à 10 jours ouvrés. Le véhicule est préparé avec un nettoyage professionnel approfondi."
   },
   {
-    question: "Quelle est la traçabilité des véhicules proposés ?",
-    answer: "Chaque véhicule est livré avec son dossier d'expertise 150 points certifié, son carnet d'entretien complet, son double des clés et son certificat de situation administrative limpide."
+    question: "Proposez-vous la reprise de mon ancien véhicule ?",
+    answer: "Oui, nous pouvons vous proposer une estimation rapide et une offre de reprise claire pour votre véhicule actuel afin de faciliter votre nouvel achat."
   }
 ];
+
+export const importFaqs = salesFaqs;

@@ -7,23 +7,23 @@ export const WhyUsGrid = () => {
   const pillars = [
     {
       icon: Network,
-      title: 'Réseau Concessionnaire Privilégié',
-      description: 'Accès direct aux plus beaux stocks de concessions officielles et aux modèles de prestige rigoureusement sélectionnés.'
+      title: 'Partenaires Exclusifs en France',
+      description: 'Accès direct aux stocks de concessions officielles partenaires en France avec sélection rigoureuse des véhicules.'
     },
     {
       icon: Eye,
       title: 'Transparence Absolue',
-      description: 'Dossier limpide dès le premier échange, historique vérifié et tarification claire de notre prestation d\'accompagnement.'
+      description: 'Dossier limpide dès le premier échange, historique d’entretien officiel vérifié et tarification claire.'
     },
     {
       icon: ShieldCheck,
       title: 'Audit 150 Points & Zéro Vice',
-      description: 'Chaque véhicule fait l’objet d’une inspection physique intransigeante avant achat, avec contrôle des calculateurs et de la carrosserie.'
+      description: 'Chaque véhicule fait l’objet d’une inspection physique intransigeante avant mise en vente, avec contrôle des calculateurs et de la carrosserie.'
     },
     {
       icon: UserCheck,
       title: 'Conseiller Dédié',
-      description: 'Un interlocuteur unique, expert automobile passionné, qui vous informe en temps réel de chaque avancée de votre dossier.'
+      description: 'Un interlocuteur unique, professionnel de l’automobile, qui vous accompagne à chaque étape de votre projet.'
     },
     {
       icon: Award,
@@ -33,7 +33,7 @@ export const WhyUsGrid = () => {
     {
       icon: Smile,
       title: 'Sérénité Clé en Main',
-      description: 'Prise en charge complète des formalités administratives, immatriculation définitive et livraison soignée à votre adresse.'
+      description: 'Prise en charge complète des formalités administratives, carte grise française et livraison soignée à votre adresse.'
     }
   ];
 
@@ -42,8 +42,8 @@ export const WhyUsGrid = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeader
           badge="Pourquoi Nous Choisir"
-          title="L'Excellence d'une Conciergerie Indépendante"
-          subtitle="Découvrez pourquoi plus de 180 passionnés et collectionneurs nous confient la recherche et l'importation de leurs véhicules de prestige."
+          title="La Confiance d'un Spécialiste Automobile"
+          subtitle="Découvrez pourquoi plus de 180 clients nous font confiance pour l'achat et la livraison de leur véhicule en France."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -70,7 +70,7 @@ export const WhyUsGrid = () => {
                   </p>
                 </div>
                 <div className="pt-4 mt-4 border-t border-slate-100/80 flex items-center text-xs font-semibold text-gold group-hover:text-gold-dark">
-                  <span>Engagement Inter Cars Import</span>
+                  <span>Engagement Inter Cars</span>
                 </div>
               </motion.div>
             );

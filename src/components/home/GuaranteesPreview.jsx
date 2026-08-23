@@ -10,19 +10,19 @@ export const GuaranteesPreview = () => {
       icon: ShieldCheck,
       title: 'Charte d’Audit 150 Points',
       subtitle: 'Contrôle Technique & Esthétique',
-      desc: 'Mesure de peinture au micromètre, contrôle du carnet d’entretien numérique constructeur, passage de la valise diagnostique et essai dynamique complet sur route.'
+      desc: 'Mesure de carrosserie au micromètre, contrôle du carnet d’entretien constructeur, passage de la valise diagnostique et essai dynamique complet sur route.'
     },
     {
       icon: Landmark,
-      title: 'Sécurité Financière & Séquestre',
-      subtitle: 'Protection Totale de vos Fonds',
-      desc: 'Aucun acompte n’est versé au vendeur étranger avant la validation pleine et entière du rapport d’audit technique. Virement sur compte bancaire séquestre agréé.'
+      title: 'Sécurité & Paiement Garanti',
+      subtitle: 'Transactions 100% Sécurisées',
+      desc: 'Contrat de vente clair et transparent. Aucun engagement sans la validation pleine et entière du rapport de contrôle technique.'
     },
     {
       icon: FileCheck,
-      title: 'Conformité Administrative & Fiscale',
-      subtitle: 'Immatriculation Française Définitive',
-      desc: 'Délivrance du Certificat de Conformité Européen (COC), obtention du quitus fiscal auprès du centre des impôts et certificat d’immatriculation sécurisé.'
+      title: 'Conformité Administrative Française',
+      subtitle: 'Carte Grise & Démarches Complètes',
+      desc: 'Certificat de situation administrative (non-gage), contrôle technique valide, prise en charge de la carte grise française et livraison clé en main.'
     }
   ];
 
@@ -36,7 +36,7 @@ export const GuaranteesPreview = () => {
           dark
           badge="Sécurité & Confiance"
           title="Nos Garanties Contractuelles"
-          subtitle="Acheter un véhicule à l'étranger ne doit comporter aucun doute. Nous engageons notre responsabilité sur chaque véhicule livré."
+          subtitle="Acheter un véhicule chez Inter Cars ne doit comporter aucun doute. Nous engageons notre responsabilité sur chaque véhicule livré."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">

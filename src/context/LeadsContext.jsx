@@ -30,7 +30,7 @@ export const LeadsProvider = ({ children }) => {
       const res = await leadsService.createLead(leadData);
       const created = res.lead || res;
       setLeads(prev => [created, ...prev]);
-      addToast('Votre demande a été transmise à notre conciergerie VIP avec succès !', 'success');
+      addToast('Votre demande a été transmise à notre équipe avec succès !', 'success');
       return { success: true, lead: created };
     } catch (err) {
       console.error('Lead creation error:', err);

@@ -13,35 +13,35 @@ export const GuaranteesPage = () => {
       points: [
         'Mesure de l’épaisseur de peinture au micromètre (détection de mastic ou repeint)',
         'Alignement millimétrique des panneaux de carrosserie et ouvrants',
-        'Contrôle de soubassement sur pont élévateur et état des longerons',
+        'Contrôle de soubassement sur pont élévateur et état des éléments de structure',
         'Vérification d’absence de trace de marbre ou de choc antérieur'
       ]
     },
     {
       title: 'Moteur & Organes Mécaniques (50 points)',
       points: [
-        'Analyse des calculateurs moteur (plages de surrégimes Porsche / DME)',
-        'Contrôle d’étanchéité des turbocompresseurs et du circuit de refroidissement',
-        'Mesure d’usure des disques de freins céramiques (PCCB) ou acier',
-        'Test dynamique de la boîte de vitesses (PDK / S-Tronic / M Steptronic)'
+        'Analyse approfondie des calculateurs moteur et des paramètres de fonctionnement',
+        'Contrôle d’étanchéité des turbocompresseurs, circuit d’huile et de refroidissement',
+        'Mesure d’usure des disques et plaquettes de freins',
+        'Test dynamique de la boîte de vitesses (automatique et manuelle)'
       ]
     },
     {
       title: 'Historique & Kilométrage Certifié (30 points)',
       points: [
-        'Rapprochement de l’historique des serveurs centraux constructeur',
-        'Contrôle de conformité du carnet d’entretien physique et numérique',
-        'Audit de cohérence des heures d’utilisation moteur vs kilomètres',
-        'Vérification du certificat de non-gage européen et absence d’opposition'
+        'Rapprochement de l’historique auprès des concessions officielles françaises',
+        'Contrôle de conformité du carnet d’entretien constructeur à jour',
+        'Audit de cohérence des heures d’utilisation moteur vs kilomètres réels',
+        'Certificat de situation administrative (non-gage) certifié vierge'
       ]
     },
     {
       title: 'Électronique & Habitacle (25 points)',
       points: [
-        'Passage complet de la valise diagnostique multimarque officielle',
-        'Test de santé des batteries de traction (PHEV & 100% Électriques SOH)',
-        'Vérification de l’intégralité des équipements de confort et de sécurité',
-        'Contrôle de l’état d’origine des cuirs, alcantara et inserts carbone'
+        'Passage complet de la valise diagnostique officielle',
+        'Test de santé des batteries de traction (Hybrides & Électriques SOH)',
+        'Vérification de l’intégralité des équipements de sécurité et de bord',
+        'Contrôle soigné des finitions intérieures, sellerie et commandes'
       ]
     }
   ];
@@ -59,11 +59,11 @@ export const GuaranteesPage = () => {
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">
             Un Cadre d'Engagement <br />
-            <span className="text-gold-gradient">Strict et Inconditionnel</span>
+            <span className="text-gold-gradient">Strict et Transparent</span>
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Une protection juridique, financière et mécanique totale pour faire de l'achat de votre véhicule de prestige une expérience d'une sérénité absolue.
+            Une protection juridique, financière et mécanique totale pour faire de l'achat de votre véhicule une expérience d'une sérénité absolue.
           </p>
         </div>
       </section>
@@ -74,7 +74,7 @@ export const GuaranteesPage = () => {
           <SectionHeader
             badge="Expertise Technique"
             title="L'Audit 150 Points en Détail"
-            subtitle="Chaque véhicule sélectionné est passé au crible par nos techniciens sur le lieu de vente avant validation de l'achat."
+            subtitle="Chaque véhicule proposé fait l'objet d'une inspection complète par nos spécialistes avant sa mise en vente."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -106,7 +106,7 @@ export const GuaranteesPage = () => {
         </div>
       </section>
 
-      {/* Sécurité Financière & Compte Séquestre */}
+      {/* Sécurité Financière & Contrat Clair */}
       <section className="py-20 bg-rolex-dark text-white border-y border-gold/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -114,24 +114,24 @@ export const GuaranteesPage = () => {
               <SectionHeader
                 dark
                 align="left"
-                badge="Sécurité Bancaire"
-                title="Votre Capital Protégé à 100% par Séquestre"
-                subtitle="Vous ne transférez aucun euro à l'étranger sans garanties contractuelles étanches."
+                badge="Sécurité des Transactions"
+                title="Des Paiements Sécurisés & un Contrat Transparent"
+                subtitle="Vous bénéficiez d'un cadre contractuel clair et conforme à la législation française."
                 className="mb-4"
               />
 
               <div className="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
                 <p>
-                  Dans l'importation classique, envoyer des fonds à un concessionnaire étranger suscite de légitimes inquiétudes. Chez Inter Cars Import, la totalité des paiements transite par un <strong>compte séquestre dédié</strong>.
+                  Chez <strong>Inter Cars</strong>, chaque transaction est encadrée par un contrat de vente officiel. Nous vous garantissons une clarté totale sur le prix, les garanties et les caractéristiques du véhicule.
                 </p>
                 <p>
-                  Les fonds ne sont débloqués auprès de la concession vendeuse qu'une fois le contrat de vente validé, le rapport d'audit 150 points signé et la conformité administrative certifiée. En cas de non-conformité constatée lors de l'inspection sur place, vos fonds vous sont intégralement restitués sous 24h.
+                  Les fonds sont sécurisés et la vente n'est conclue qu'après validation complète de la conformité technique du véhicule et de son dossier administratif.
                 </p>
               </div>
 
               <div className="pt-2 flex flex-wrap gap-4 text-xs text-gold font-semibold">
-                <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4" /> Compte bancaire européen sécurisé</span>
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Contrat de mandat clair et transparent</span>
+                <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4" /> Transactions bancaires sécurisées</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Contrat de vente clair et conforme</span>
               </div>
             </div>
 
@@ -142,23 +142,23 @@ export const GuaranteesPage = () => {
                     <Landmark className="w-7 h-7" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-serif font-bold text-white">Garantie Financière Totale</h4>
-                    <p className="text-xs text-gold">Zéro risque de perte de capital</p>
+                    <h4 className="text-lg font-serif font-bold text-white">Garantie & Sécurité Achat</h4>
+                    <p className="text-xs text-gold">Transactions sécurisées sans mauvaise surprise</p>
                   </div>
                 </div>
 
                 <div className="space-y-3 text-xs text-slate-300 border-t border-white/10 pt-4">
                   <div className="flex justify-between py-2 border-b border-white/5">
-                    <span>Audit non conforme sur place</span>
-                    <strong className="text-emerald-400">Remboursement immédiat 100%</strong>
+                    <span>Audit 150 points validé</span>
+                    <strong className="text-emerald-400">Rapport certifié remis</strong>
                   </div>
                   <div className="flex justify-between py-2 border-b border-white/5">
                     <span>Protection & Sécurité Juridique</span>
-                    <strong className="text-emerald-400">Dossier administratif certifié</strong>
+                    <strong className="text-emerald-400">Dossier administratif en règle</strong>
                   </div>
                   <div className="flex justify-between py-2 border-b border-white/5">
-                    <span>Conformité Mécanique & Électronique</span>
-                    <strong className="text-emerald-400">Audit 150 points certifié</strong>
+                    <span>Réseau Partenaire Officiel en France</span>
+                    <strong className="text-emerald-400">Historique vérifié</strong>
                   </div>
                 </div>
               </div>
@@ -167,29 +167,29 @@ export const GuaranteesPage = () => {
         </div>
       </section>
 
-      {/* Optimisation du Malus & Démarches */}
+      {/* Démarches Administratives Françaises */}
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
           <SectionHeader
-            badge="Fiscalité & Immatriculation"
-            title="Maîtrise Fiscale & Optimisation du Malus Écologique"
-            subtitle="Nous calculons l'abattement fiscal exact et prenons en charge toutes les formalités auprès de l'administration française."
+            badge="Formalités Administratives"
+            title="Gestion Complète de la Carte Grise & Livraison Clé en Main"
+            subtitle="Nous prenons en charge toutes les formalités auprès de l'administration française pour une livraison sereine."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
             <div className="p-6 rounded-2xl bg-surface border border-slate-200">
-              <Scale className="w-8 h-8 text-rolex mb-3" />
-              <h4 className="font-serif font-bold text-slate-900 mb-2">Abattement Légal -10% / An</h4>
+              <FileCheck2 className="w-8 h-8 text-rolex mb-3" />
+              <h4 className="font-serif font-bold text-slate-900 mb-2">Certificat de Non-Gage</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Le malus écologique diminue de 10% par année entamée depuis la 1ère immatriculation. Nous optimisons le calendrier de dédouanement.
+                Vérification systématique du certificat de situation administrative garantissant l'absence de gage ou d'opposition.
               </p>
             </div>
 
             <div className="p-6 rounded-2xl bg-surface border border-slate-200">
-              <FileCheck2 className="w-8 h-8 text-rolex mb-3" />
-              <h4 className="font-serif font-bold text-slate-900 mb-2">Quitus Fiscal & COC Inclus</h4>
+              <Wrench className="w-8 h-8 text-rolex mb-3" />
+              <h4 className="font-serif font-bold text-slate-900 mb-2">Contrôle Technique à Jour</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Obtention du quitus auprès de la DGFIP et du Certificat de Conformité constructeur sans aucune démarche de votre part.
+                Chaque véhicule est livré avec un contrôle technique valide de moins de 6 mois et une révision effectuée.
               </p>
             </div>
 
@@ -197,7 +197,7 @@ export const GuaranteesPage = () => {
               <ShieldCheck className="w-8 h-8 text-rolex mb-3" />
               <h4 className="font-serif font-bold text-slate-900 mb-2">Carte Grise Définitive</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Immatriculation provisoire WW pour rouler immédiatement, suivie de la délivrance de la carte grise française à votre domicile.
+                Prise en charge de la demande de changement de titulaire en préfecture (SIV) et envoi de votre carte grise à domicile.
               </p>
             </div>
           </div>
