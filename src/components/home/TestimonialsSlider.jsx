@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import { Star, ChevronLeft, ChevronRight, CheckCircle2, Award } from 'lucide-react';
+import { Star, ChevronLeft, ChevronRight, CheckCircle2, Award, Quote } from 'lucide-react';
 import { SectionHeader } from '../common/SectionHeader';
 import { testimonialsService } from '../../services/testimonialsService';
 
@@ -33,9 +33,9 @@ export const TestimonialsSlider = () => {
           <SectionHeader
             dark
             align="left"
-            badge="Témoignages Clients"
-            title="La Confiance de nos Acquéreurs"
-            subtitle="Découvrez les retours d'expérience de passionnés et dirigeants qui ont concrétisé leur projet à nos côtés."
+            badge="Avis & Témoignages"
+            title="La Confiance de nos Clients en France"
+            subtitle="Découvrez les retours d'expérience authentiques d'acquéreurs partout en France qui ont concrétisé leur achat à nos côtés."
             className="mb-0 max-w-2xl"
           />
 
@@ -58,19 +58,20 @@ export const TestimonialsSlider = () => {
           </div>
         </div>
 
-        {/* Swiper Carousel */}
+        {/* Swiper Carousel Défilant */}
         {testimonials.length > 0 && (
           <Swiper
             modules={[Autoplay, Pagination, Navigation]}
             spaceBetween={24}
             slidesPerView={1}
+            speed={750}
             breakpoints={{
               640: { slidesPerView: 1 },
               768: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
             }}
             autoplay={{
-              delay: 4500,
+              delay: 3500,
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
             }}
@@ -91,7 +92,7 @@ export const TestimonialsSlider = () => {
           >
             {testimonials.map((item) => (
               <SwiperSlide key={item.id || item.client_name} className="h-auto">
-                <div className="h-full p-6 sm:p-8 rounded-2xl bg-white/[0.04] backdrop-blur-md border border-gold/30 hover:border-gold transition-all duration-300 flex flex-col justify-between shadow-xl">
+                <div className="h-full p-6 sm:p-8 rounded-2xl bg-white/[0.04] backdrop-blur-md border border-gold/30 hover:border-gold transition-all duration-300 flex flex-col justify-between shadow-xl relative group">
                   <div>
                     {/* Étoiles & Badge */}
                     <div className="flex items-center justify-between mb-4">
@@ -120,8 +121,12 @@ export const TestimonialsSlider = () => {
                   {/* Profil Client */}
                   <div className="pt-4 border-t border-white/10 flex items-center gap-3">
                     <img
-                      src={item.avatar_url || item.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80'}
+                      src={item.avatar_url || item.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=75'}
                       alt={item.client_name}
+                      loading="lazy"
+                      decoding="async"
+                      width="44"
+                      height="44"
                       className="w-11 h-11 rounded-full object-cover border border-gold/40 shrink-0"
                     />
                     <div>

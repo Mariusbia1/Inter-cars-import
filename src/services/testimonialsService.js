@@ -45,6 +45,16 @@ export const testimonialsService = {
       localStorage.setItem(LOCAL_STORAGE_TESTIMONIALS_KEY, JSON.stringify(testimonialsList));
       return testimonialsList;
     }
-    return JSON.parse(stored);
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length >= 6) {
+        return parsed;
+      }
+      localStorage.setItem(LOCAL_STORAGE_TESTIMONIALS_KEY, JSON.stringify(testimonialsList));
+      return testimonialsList;
+    } catch {
+      localStorage.setItem(LOCAL_STORAGE_TESTIMONIALS_KEY, JSON.stringify(testimonialsList));
+      return testimonialsList;
+    }
   }
 };
