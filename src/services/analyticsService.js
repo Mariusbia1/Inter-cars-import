@@ -7,7 +7,7 @@ export const getPageDisplayName = (path) => {
   const map = {
     '/': "Page d'Accueil",
     '/vehicules-livres': "Catalogue des Véhicules Livrés",
-    '/notre-methode': "Notre Méthode d'Achat & Import",
+    '/notre-methode': "Notre Processus de Vente & Contrôle",
     '/garanties': "Garanties & Audit 150 Points",
     '/contact': "Formulaire de Contact & Devis",
     '/notre-histoire': "Notre Histoire & Valeurs",

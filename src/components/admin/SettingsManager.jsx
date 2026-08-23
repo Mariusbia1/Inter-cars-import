@@ -12,8 +12,8 @@ export const SettingsManager = () => {
     email: settings.email || 'contact@intercarsimport.fr',
     notificationEmail: settings.notificationEmail || 'direction@intercarsimport.fr',
     whatsapp: settings.whatsapp || '+33 6 00 00 00 00',
-    address: settings.address || "Showroom Privé & Bureau Sourcing, Axe Cannes — Monaco",
-    businessHours: settings.businessHours || "Du Lundi au Samedi : 08h30 - 20h00 (Ligne VIP 7j/7)",
+    address: settings.address || "Showroom Commercial, Axe Cannes — Monaco",
+    businessHours: settings.businessHours || "Du Lundi au Samedi : 08h30 - 19h30",
   });
 
   const [isTestingEmail, setIsTestingEmail] = useState(false);
@@ -160,7 +160,7 @@ export const SettingsManager = () => {
 
               <div>
                 <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                  Horaires d'Ouverture Conciergerie
+                  Horaires d'Ouverture Commerciale
                 </label>
                 <input
                   type="text"
@@ -168,7 +168,7 @@ export const SettingsManager = () => {
                   name="businessHours"
                   value={formState.businessHours}
                   onChange={handleChange}
-                  placeholder="Du Lundi au Samedi : 08h30 - 20h00 (Ligne VIP 7j/7)"
+                  placeholder="Du Lundi au Samedi : 08h30 - 19h30"
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
                 />
               </div>

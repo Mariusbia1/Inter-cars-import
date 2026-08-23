@@ -30,8 +30,8 @@ export const TrustBar = () => {
       icon: Clock,
       count: 48,
       suffix: 'h',
-      title: 'Délai de Sourcing',
-      subtitle: 'Premières opportunités ciblées'
+      title: 'Réactivité Équipe',
+      subtitle: 'Prise en charge & opportunités'
     }
   ];
 

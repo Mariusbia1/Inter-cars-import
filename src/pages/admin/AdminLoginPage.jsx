@@ -25,7 +25,7 @@ export const AdminLoginPage = () => {
     try {
       const res = await login(email, password);
       if (res.success) {
-        addToast('Connexion réussie à l’espace Conciergerie Privée !', 'success');
+        addToast('Connexion réussie à l’espace d’administration !', 'success');
         navigate('/admin');
       } else {
         setError(res.error || 'Identifiants invalides.');
@@ -65,10 +65,10 @@ export const AdminLoginPage = () => {
           </div>
           <div>
             <h1 className="text-xl font-serif font-bold text-white">
-              Espace Conciergerie Privée
+              Espace Administration
             </h1>
             <p className="text-xs uppercase tracking-widest text-gold font-semibold mt-0.5">
-              Accès Réservé à l'Administration
+              Accès Réservé à l'Équipe
             </p>
           </div>
         </div>
@@ -94,7 +94,7 @@ export const AdminLoginPage = () => {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="contact@inter-cars-import.fr"
+                placeholder="contact@intercars.fr"
                 className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/20 text-white placeholder-slate-500 outline-none focus:border-gold transition-colors"
               />
             </div>

@@ -21,7 +21,7 @@
 }
 
 @layer utilities {
-  /* Effet verre dépoli sombre pour header & cards VIP */
+  /* Effet verre dépoli sombre pour header & cartes */
   .glass-dark {
     background: rgba(7, 21, 16, 0.85);
     backdrop-filter: blur(16px);

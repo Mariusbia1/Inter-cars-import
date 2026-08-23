@@ -12,7 +12,7 @@ export const RecentDeliveries = () => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [activeCategory, setActiveCategory] = useState('Tous');
 
-  const categories = ['Tous', 'Supercar', 'Sportive', 'SUV Prestige', 'Berline GT'];
+  const categories = ['Tous', 'Sportive', 'Berline & Break', 'SUV & 4x4'];
 
   const filteredVehicles = vehicles
     .filter(v => activeCategory === 'Tous' || v.category === activeCategory)
@@ -22,9 +22,9 @@ export const RecentDeliveries = () => {
     <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeader
-          badge="Vitrine d'Excellence"
+          badge="Vitrine des Ventes"
           title="Véhicules Récemment Livrés"
-          subtitle="Découvrez une sélection de supercars et GT d'exception importées pour le compte de nos clients avec des économies substantielles."
+          subtitle="Découvrez notre sélection de véhicules vendus et livrés en toute confiance partout en France."
         />
 
         {/* Filtres par catégorie */}
@@ -63,7 +63,7 @@ export const RecentDeliveries = () => {
             size="lg"
             icon={ArrowRight}
           >
-            Consulter la galerie complète ({vehicles.length}+ véhicules)
+            Consulter tous les véhicules disponibles ({vehicles.length}+ véhicules)
           </LuxuryButton>
         </div>
       </div>

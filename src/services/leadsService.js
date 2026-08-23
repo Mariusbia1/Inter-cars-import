@@ -7,46 +7,46 @@ const initialDemoLeads = [
     full_name: 'Guillaume de Montmirail',
     email: 'g.montmirail@lux-holdings.com',
     phone: '+33 6 42 18 90 22',
-    vehicle_type: 'Supercar',
+    vehicle_type: 'Sportive',
     brand_sought: 'Porsche',
     model_sought: '911 (992) GT3 RS',
     preferred_timeline: 'Moins de 30 jours',
     fuel_type: 'Essence',
     transmission: 'Automatique (PDK)',
-    message: 'Recherche active d’un exemplaire en teinte exclusive (Vert Python ou Shark Blue), moins de 5 000 km, historique constructeur vérifié.',
+    message: 'Recherche active d’un exemplaire avec carnet constructeur à jour, moins de 15 000 km, audit complet.',
     status: 'Nouveau',
-    admin_notes: 'Client très sérieux, profil VIP. Contact direct par téléphone prévu.',
-    source: 'Configurateur Web'
+    admin_notes: 'Client très sérieux. Contact direct par téléphone prévu.',
+    source: 'Formulaire Web'
   },
   {
     full_name: 'Frédéric Bellegarde',
     email: 'f.bellegarde@cabinet-avocats.fr',
     phone: '+33 6 11 88 34 50',
-    vehicle_type: 'Sportive',
+    vehicle_type: 'Berline & Break',
     brand_sought: 'Audi',
     model_sought: 'RS6 Avant Performance',
     preferred_timeline: '1 à 2 mois',
     fuel_type: 'Hybride / Essence',
     transmission: 'Automatique',
-    message: 'Véhicule de direction recherché, première main certifiée constructeur. Toit panoramique et sono Bang & Olufsen indispensables.',
+    message: 'Véhicule de direction recherché, première main certifiée constructeur avec carnet d’entretien.',
     status: 'En cours',
-    admin_notes: 'Deux opportunités conformes identifiées. En attente du retour de la concession.',
-    source: 'Formulaire Contact'
+    admin_notes: 'Deux opportunités conformes identifiées chez nos concessions partenaires.',
+    source: 'Formulaire Web'
   },
   {
     full_name: 'Arthur Saint-Germain',
     email: 'arthur.stg@monaco-yachts.mc',
     phone: '+377 98 00 23 11',
-    vehicle_type: 'SUV Prestige',
+    vehicle_type: 'SUV & 4x4',
     brand_sought: 'Mercedes-Benz',
-    model_sought: 'G 63 AMG Grand Edition',
+    model_sought: 'G 63 AMG',
     preferred_timeline: 'Immédiat',
     fuel_type: 'Essence V8',
     transmission: 'Automatique',
-    message: 'Édition limitée recherchée pour livraison à Monaco avec audit complet.',
+    message: 'Modèle recherché pour livraison à Cannes avec audit complet 150 points.',
     status: 'Devis envoyé',
-    admin_notes: 'Proposition transmise avec audit complet du véhicule.',
-    source: 'Configurateur Web'
+    admin_notes: 'Proposition transmise avec rapport d’audit du véhicule.',
+    source: 'Formulaire Web'
   }
 ];
 
@@ -101,7 +101,7 @@ export const leadsService = {
         const payload = {
           created_at: new Date().toISOString(),
           status: 'Nouveau',
-          source: 'Web Conciergerie',
+          source: 'Formulaire Web',
           ...leadData
         };
         delete payload.id; // Laisser Supabase attribuer le UUID
@@ -126,7 +126,7 @@ export const leadsService = {
       id: 'lead-' + Date.now(),
       created_at: new Date().toISOString(),
       status: 'Nouveau',
-      source: 'Web Conciergerie',
+      source: 'Formulaire Web',
       ...leadData
     };
 

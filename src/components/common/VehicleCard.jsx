@@ -19,6 +19,9 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
           src={vehicle.image_url}
           alt={vehicle.title}
           loading="lazy"
+          decoding="async"
+          width="600"
+          height="340"
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
@@ -35,11 +38,11 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
           )}
         </div>
 
-        {/* Pays de Provenance */}
+        {/* Réseau Partenaire */}
         <div className="absolute top-3 right-3">
           <span className="px-2.5 py-1 rounded bg-black/60 backdrop-blur-md text-slate-200 text-xs font-medium flex items-center gap-1.5 border border-white/10">
             <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            {vehicle.origin_country.split(' ')[0]}
+            {vehicle.origin_country || 'Réseau France'}
           </span>
         </div>
 

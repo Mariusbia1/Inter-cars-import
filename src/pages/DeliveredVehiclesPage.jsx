@@ -18,7 +18,7 @@ export const DeliveredVehiclesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
 
-  const categories = ['Tous', 'Supercar', 'Sportive', 'SUV Prestige', 'Berline GT'];
+  const categories = ['Tous', 'Sportive', 'Berline & Break', 'SUV & 4x4'];
 
   // Reset pagination on filter change
   useEffect(() => {
@@ -33,8 +33,8 @@ export const DeliveredVehiclesPage = () => {
           v.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           v.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
           v.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          v.origin_country.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          v.delivery_city.toLowerCase().includes(searchQuery.toLowerCase());
+          (v.origin_country || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (v.delivery_city || '').toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
       })
       .sort((a, b) => {
@@ -62,8 +62,10 @@ export const DeliveredVehiclesPage = () => {
       <section className="bg-rolex-dark text-white py-14 sm:py-20 relative overflow-hidden border-b border-gold/30">
         <div className="absolute inset-0 z-0 opacity-20">
           <img
-            src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=2000&q=80"
-            alt="Véhicules Livrés Inter Cars Import"
+            src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=75"
+            alt="Véhicules Livrés Inter Cars"
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover"
           />
         </div>
@@ -77,11 +79,11 @@ export const DeliveredVehiclesPage = () => {
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">
             La Galerie de nos <br />
-            <span className="text-gold-gradient">Livraisons de Prestige</span>
+            <span className="text-gold-gradient">Véhicules Vendus & Livrés</span>
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Parcourez les supercars, GT et SUV haut de gamme sourcés, audités 150 points et livrés à domicile pour le compte de nos acquéreurs en France et à Monaco.
+            Parcourez notre sélection de véhicules audités en 150 points de contrôle et livrés à domicile pour le compte de nos clients partout en France.
           </p>
         </div>
       </section>
@@ -148,17 +150,17 @@ export const DeliveredVehiclesPage = () => {
           {loading ? (
             <div className="text-center py-20">
               <div className="w-12 h-12 border-4 border-rolex border-t-gold rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-sm font-medium text-slate-600">Chargement de la galerie de prestige...</p>
+              <p className="text-sm font-medium text-slate-600">Chargement de la galerie...</p>
             </div>
           ) : filteredVehicles.length === 0 ? (
             <div className="text-center py-20 p-8 rounded-2xl bg-white border border-slate-200 max-w-lg mx-auto">
               <Sparkles className="w-12 h-12 text-gold mx-auto mb-4" />
               <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">Aucun véhicule ne correspond à vos critères</h3>
               <p className="text-xs text-slate-500 mb-6">
-                Notre réseau source tous les jours de nouveaux modèles en Europe. Contactez notre conciergerie pour une recherche personnalisée.
+                Notre réseau de partenaires en France dispose d'un stock dynamique. Contactez notre équipe pour connaître les nouveaux arrivages.
               </p>
               <LuxuryButton to="/contact" variant="gold" size="md">
-                Lancer une recherche sur mesure
+                Nous contacter
               </LuxuryButton>
             </div>
           ) : (
@@ -173,7 +175,7 @@ export const DeliveredVehiclesPage = () => {
                 ))}
               </div>
 
-              {/* Barre de Pagination Luxueuse */}
+              {/* Barre de Pagination */}
               {totalPages > 1 && (
                 <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
                   <span className="text-xs text-slate-500 font-medium">

@@ -38,13 +38,13 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">1. Collecte des Données Personnelles</h3>
                 <p>
-                  Dans le cadre de son activité de conciergerie et de courtage automobile, <strong>Inter Cars Import</strong> collecte exclusivement les données strictement nécessaires au traitement des demandes de devis et à l'établissement des certificats d'immatriculation (Nom, prénom, email, téléphone, adresse postale).
+                  Dans le cadre de son activité de vente automobile et de relation client, <strong>Inter Cars</strong> collecte exclusivement les données strictement nécessaires au traitement des demandes de devis et à l'établissement des formalités administratives de carte grise (Nom, prénom, email, téléphone, adresse postale).
                 </p>
               </div>
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">2. Confidentialité & Non-Cession</h3>
                 <p>
-                  Vos coordonnées privées ne font l'objet d'aucune cession, revente ou transfert à des tiers à des fins publicitaires. Elles sont conservées sous chiffrement sécurisé.
+                  Vos coordonnées restent strictement confidentielles et ne font l'objet d'aucune cession, revente ou transfert à des tiers à des fins publicitaires.
                 </p>
               </div>
               <div>
@@ -57,21 +57,21 @@ export const LegalPage = () => {
           ) : isCgv ? (
             <>
               <div>
-                <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">1. Objet du Mandat de Recherche</h3>
+                <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">1. Objet du Contrat de Vente</h3>
                 <p>
-                  Inter Cars Import agit en qualité de mandataire et curateur automobile indépendant. Le mandat définit les critères exclusifs de recherche convenus avec le mandant (marque, modèle, tolérance kilométrique, budget plafond).
+                  Inter Cars propose la vente de véhicules d'occasion rigoureusement contrôlés, en partenariat avec son réseau de concessions officielles en France. Le bon de commande définit les caractéristiques précises du véhicule retenu.
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">2. Audit & Sécurisation des Fonds</h3>
+                <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">2. Audit & Sécurisation de la Vente</h3>
                 <p>
-                  Toute transaction d'achat est subordonnée à la validation préalable du rapport d'audit 150 points de contrôle. Les fonds sont déposés sur un compte séquestre bancaire dédié et ne sont transférés qu'après accord formel du client.
+                  Toute vente est subordonnée à la validation du protocole d'audit en 150 points de contrôle et à la conformité du dossier administratif. Les règlements sont effectués selon les modalités contractuelles convenues.
                 </p>
               </div>
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">3. Délais & Livraison</h3>
                 <p>
-                  La livraison s'effectue sous 7 à 14 jours ouvrés suivant la validation de l'audit et l'obtention des documents d'immatriculation provisoires.
+                  La mise à disposition ou livraison du véhicule s'effectue sous 5 à 10 jours ouvrés suivant la validation de la commande et la finalisation des formalités de carte grise.
                 </p>
               </div>
             </>
@@ -80,9 +80,9 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">1. Éditeur de la Plateforme</h3>
                 <p>
-                  Le site web <strong>Inter Cars Import</strong> est édité par la société Inter Cars Import SAS, au capital de 100 000 €, immatriculée au RCS de Cannes.<br />
-                  Siège social : Showroom Privé, Axe Cannes — Monaco.<br />
-                  Directeur de la publication : Julien Marciano.
+                  Le site web <strong>Inter Cars</strong> est édité par la société Inter Cars SAS, immatriculée au RCS de Cannes.<br />
+                  Siège social : Showroom Commercial, Axe Cannes — Monaco.<br />
+                  Directeur de la publication : Direction Générale Inter Cars.
                 </p>
               </div>
               <div>
@@ -94,7 +94,7 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">3. Propriété Intellectuelle</h3>
                 <p>
-                  L'ensemble des visuels, logos, textes et éléments graphiques sont la propriété exclusive d'Inter Cars Import. Toute reproduction sans autorisation est formellement prohibée.
+                  L'ensemble des visuels, logos, textes et éléments graphiques sont la propriété exclusive d'Inter Cars. Toute reproduction sans autorisation préalable est interdite.
                 </p>
               </div>
             </>

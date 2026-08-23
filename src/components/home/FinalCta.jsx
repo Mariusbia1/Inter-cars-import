@@ -2,8 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Phone, MessageSquare, ShieldCheck, Sparkles } from 'lucide-react';
 import { LuxuryButton } from '../common/LuxuryButton';
+import { useSettings } from '../../context/SettingsContext';
 
 export const FinalCta = () => {
+  const { settings } = useSettings();
+
   return (
     <section className="py-20 lg:py-28 bg-gradient-to-br from-rolex-forest via-rolex to-rolex-forest text-white relative overflow-hidden shadow-2xl border-t border-gold/40">
       {/* Texture de fond dorée */}
@@ -30,8 +33,8 @@ export const FinalCta = () => {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white tracking-tight leading-tight"
         >
-          Prêt à trouver la configuration de vos rêves <br className="hidden sm:inline" />
-          <span className="text-gold-gradient">au meilleur prix européen ?</span>
+          Prêt à trouver votre prochain véhicule <br className="hidden sm:inline" />
+          <span className="text-gold-gradient">avec nos partenaires en France ?</span>
         </motion.h2>
 
         <motion.p
@@ -41,7 +44,7 @@ export const FinalCta = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-base sm:text-lg text-slate-200 max-w-2xl mx-auto font-light leading-relaxed"
         >
-          Confiez-nous votre cahier des charges. Notre équipe de curateurs vous présente les premières opportunités vérifiées sous 48 heures ouvrées.
+          Transmettez-nous vos souhaits. Notre équipe vous propose les opportunités conformes issues de notre réseau de concessions partenaires en France.
         </motion.p>
 
         <motion.div
@@ -56,13 +59,13 @@ export const FinalCta = () => {
             variant="gold"
             size="lg"
             icon={ArrowRight}
-            className="w-full sm:w-auto shadow-gold-glow"
+            className="w-full sm:w-auto shadow-gold-glow font-bold"
           >
-            Lancer ma recherche personnalisée
+            Démarrer mon projet d'achat
           </LuxuryButton>
 
           <a
-            href="tel:+33493000000"
+            href={`tel:${settings.phoneRaw || '+33493000000'}`}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-sm bg-white/10 hover:bg-white/20 border border-white/30 text-white text-sm font-semibold uppercase tracking-wider transition-colors"
           >
             <Phone className="w-4 h-4 text-gold" />

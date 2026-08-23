@@ -10,7 +10,7 @@ const defaultSettings = {
   phoneRaw: '+33493000000',
   email: 'contact@inter-cars-import.fr',
   notificationEmail: 'direction@intercarsimport.fr',
-  address: "Showroom Privé & Bureau Sourcing, Axe Cannes — Monaco",
+  address: "Showroom Commercial, Axe Cannes — Monaco",
 };
 
 export const SettingsProvider = ({ children }) => {

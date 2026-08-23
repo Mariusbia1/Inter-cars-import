@@ -7,27 +7,27 @@ export const HeroSection = () => {
   const slides = [
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=2400&q=90',
-      badge: "Achat & Vente de Véhicules d'Exception",
-      title: "L'Excellence Automobile",
-      highlight: 'Sur Mesure.',
-      subtitle: "Achat, vente, recherche personnalisée et audit technique rigoureux en 150 points de contrôle. Nous sélectionnons les plus beaux modèles avec traçabilité intégrale."
+      image: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1400&q=75',
+      badge: "Vente de Véhicules d'Occasion Certifiés",
+      title: "L'Exigence Automobile",
+      highlight: 'En France.',
+      subtitle: "Vente de véhicules d'occasion audités en 150 points de contrôle, issus de notre réseau exclusif de concessions partenaires en France."
     },
     {
       id: 2,
-      image: 'https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=2400&q=90',
-      badge: 'Supercars & Véhicules de Prestige',
-      title: 'La Haute Horlogerie',
-      highlight: 'Mécanique.',
-      subtitle: "Accès privilégié aux plus belles configurations : sportives, supercars et SUV haut de gamme rigoureusement audités et prêts à prendre la route."
+      image: 'https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1400&q=75',
+      badge: 'Réseau Partenaire Exclusif en France',
+      title: 'Des Véhicules Sélectionnés',
+      highlight: 'Avec Rigueur.',
+      subtitle: "Sportives, berlines et SUV soigneusement contrôlés, garantis avec historique constructeur vérifié et prêts à prendre la route."
     },
     {
       id: 3,
-      image: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=2400&q=90',
+      image: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1400&q=75',
       badge: 'Service Clé en Main',
       title: 'La Sérénité Absolue',
       highlight: 'De A à Z.',
-      subtitle: "Prise en charge intégrale des démarches administratives, contrôle approfondi et livraison sécurisée directement à votre domicile ou en showroom."
+      subtitle: "Prise en charge intégrale des formalités administratives, carte grise et livraison sécurisée directement chez vous ou en showroom."
     }
   ];
 
@@ -43,7 +43,7 @@ export const HeroSection = () => {
   }, [isPaused, slides.length]);
 
   const prevSlide = () => {
-    setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   const nextSlide = () => {
@@ -65,6 +65,8 @@ export const HeroSection = () => {
             key={currentSlide.id}
             src={currentSlide.image}
             alt={currentSlide.title}
+            decoding="async"
+            fetchPriority="high"
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}

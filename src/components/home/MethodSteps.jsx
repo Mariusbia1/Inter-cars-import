@@ -8,31 +8,31 @@ export const MethodSteps = () => {
   const steps = [
     {
       number: '01',
-      title: 'Échange & Cahier des Charges',
-      description: 'Audit précis de vos souhaits : modèle, motorisation, options indispensables, budget maximal et tolérance kilométrique.',
+      title: 'Échange & Sélection du Véhicule',
+      description: 'Définition précise de vos critères : modèle, motorisation, finitions indispensables, budget et attentes kilométriques.',
       icon: MessageSquare,
-      detail: 'Entretien téléphonique ou physique avec votre conseiller dédié sous 24h.'
+      detail: 'Entretien téléphonique ou physique avec votre conseiller dédié.'
     },
     {
       number: '02',
-      title: 'Sélection Ciblée & Négociation',
-      description: 'Recherche rigoureuse parmi nos réseaux officiels partenaires avec vérification complète de l’historique et négociation des meilleures conditions.',
+      title: 'Validation via nos Partenaires France',
+      description: 'Sélection rigoureuse au sein de notre réseau de concessions partenaires officielles en France avec historique vérifié.',
       icon: Search,
-      detail: 'Présentation d’un dossier comparatif complet avec photos et historique.'
+      detail: 'Véhicules certifiés avec carnet constructeur officiel à jour.'
     },
     {
       number: '03',
       title: 'Audit 150 Points & Sécurisation',
-      description: 'Contrôle technique approfondi sur place, vérification des calculateurs électroniques et paiement via compte séquestre garanti.',
+      description: 'Contrôle technique approfondi, vérification des calculateurs électroniques, mesure de carrosserie et essai dynamique.',
       icon: ShieldCheck,
-      detail: 'Rapport d’inspection de 40 pages transmis avant tout engagement financier.'
+      detail: 'Rapport d’inspection 150 points remis avant finalisation.'
     },
     {
       number: '04',
-      title: 'Homologation & Livraison VIP',
-      description: 'Gestion intégrale du quitus fiscal, de la carte grise française et livraison à votre porte par transporteur confidentiel fermé.',
+      title: 'Préparation & Livraison Clé en Main',
+      description: 'Gestion intégrale de la carte grise française, préparation esthétique minutieuse et livraison soignée à votre adresse.',
       icon: Truck,
-      detail: 'Plaques d’immatriculation posées et véhicule préparé dans un état concours.'
+      detail: 'Plaques posées, garantie activée et véhicule prêt à rouler.'
     }
   ];
 
@@ -40,9 +40,9 @@ export const MethodSteps = () => {
     <section className="py-20 lg:py-28 bg-surface relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeader
-          badge="Notre Méthode"
-          title="Un Processus Linéaire & Rigoureux en 4 Étapes"
-          subtitle="De la première prise de contact jusqu'à la remise des clés dans votre allée, chaque jalon est maîtrisé avec une précision chirurgicale."
+          badge="Notre Processus de Vente"
+          title="Un Parcours d'Achat Sécurisé en 4 Étapes"
+          subtitle="De la définition de votre projet jusqu'à la remise des clés de votre véhicule, chaque étape est gérée en toute transparence."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
@@ -57,7 +57,7 @@ export const MethodSteps = () => {
                 transition={{ duration: 0.5, delay: index * 0.12 }}
                 className="group relative bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 hover:border-gold/60 shadow-luxury-card hover:shadow-luxury-hover transition-all duration-300 flex flex-col justify-between"
               >
-                {/* Numéro Doré Géant */}
+                {/* Numéro Doré */}
                 <div className="flex items-center justify-between mb-6">
                   <span className="font-serif font-black text-3xl sm:text-4xl text-gold/30 group-hover:text-gold transition-colors">
                     {step.number}
@@ -92,7 +92,7 @@ export const MethodSteps = () => {
             size="lg"
             icon={ArrowRight}
           >
-            Découvrir le détail complet de notre méthode
+            Découvrir le détail de notre méthode
           </LuxuryButton>
         </div>
       </div>

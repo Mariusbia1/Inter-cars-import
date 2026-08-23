@@ -31,6 +31,8 @@ export const VehicleModal = ({ vehicle, onClose, onOpenQuotation }) => {
             <img
               src={vehicle.image_url}
               alt={vehicle.title}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
@@ -124,7 +126,7 @@ export const VehicleModal = ({ vehicle, onClose, onOpenQuotation }) => {
                     </div>
                     <div>
                       <h5 className="text-sm font-bold text-slate-900">{vehicle.client_name}</h5>
-                      <p className="text-xs text-slate-500">Acquéreur Inter Cars Import ({vehicle.client_city})</p>
+                      <p className="text-xs text-slate-500">Client Inter Cars ({vehicle.client_city})</p>
                     </div>
                   </div>
                   <div className="flex text-gold">
@@ -143,7 +145,7 @@ export const VehicleModal = ({ vehicle, onClose, onOpenQuotation }) => {
           {/* Footer Action */}
           <div className="p-6 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-xs text-slate-500 text-center sm:text-left">
-              Vous recherchez une configuration similaire ? Notre conciergerie lance la recherche sous 48h.
+              Vous recherchez un modèle similaire ? Notre équipe vérifie la disponibilité auprès de nos partenaires en France sous 48h.
             </div>
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <LuxuryButton
@@ -157,7 +159,7 @@ export const VehicleModal = ({ vehicle, onClose, onOpenQuotation }) => {
                 className="w-full sm:w-auto font-bold tracking-wider"
                 icon={ExternalLink}
               >
-                Rechercher un modèle similaire
+                Demander des informations
               </LuxuryButton>
             </div>
           </div>
