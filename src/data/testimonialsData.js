@@ -7,7 +7,7 @@ export const testimonialsList = [
     rating: 5,
     date: 'Février 2026',
     comment: "Une prise en charge d'une efficacité rare. Véhicule trouvé auprès de leur concessionnaire partenaire officiel, révisé et livré à mon domicile avec l'ensemble des justificatifs en moins de 10 jours.",
-    avatar: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Partenaire Officiel France'
   },
@@ -19,7 +19,7 @@ export const testimonialsList = [
     rating: 5,
     date: 'Février 2026',
     comment: "Je cherchais une configuration précise avec intérieur cuir étendu et toit panoramique. L'équipe d'Inter Cars a trouvé le modèle idéal avec un carnet d'entretien rigoureusement à jour. Bravo pour l'audit 150 points.",
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Audit 150 Points'
   },
@@ -31,7 +31,7 @@ export const testimonialsList = [
     rating: 5,
     date: 'Janvier 2026',
     comment: "Un niveau de professionnalisme exemplaire. Les vérifications mécaniques et le rapport d'état m'ont rassuré dès le début. Aucune mauvaise surprise, démarche de carte grise effectuée directement.",
-    avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Achat Clé en Main'
   },
@@ -43,7 +43,7 @@ export const testimonialsList = [
     rating: 5,
     date: 'Janvier 2026',
     comment: "Excellent contact avec les conseillers. Véhicule d'occasion dans un état proche du neuf avec une garantie complète. Livraison soignée en camion plateau et présentation irréprochable.",
-    avatar: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Livraison Soignée'
   },
@@ -55,7 +55,7 @@ export const testimonialsList = [
     rating: 5,
     date: 'Janvier 2026',
     comment: "Contrôle de santé de la batterie (SOH) certifié à 98% avant livraison. Suivi étape par étape par téléphone et email. Je recommande vivement pour tout achat automobile sécurisé.",
-    avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Véhicule Certifié'
   },
@@ -67,7 +67,7 @@ export const testimonialsList = [
     rating: 5,
     date: 'Décembre 2025',
     comment: "Rigueur et transparence totale sur le contrat de vente. J'ai particulièrement apprécié l'accès au réseau de partenaires en France qui garantit l'origine et l'entretien du véhicule.",
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Garantie Constructeur'
   },
@@ -79,7 +79,7 @@ export const testimonialsList = [
     rating: 5,
     date: 'Décembre 2025',
     comment: "Achat passion pour cette Vantage en teinte sur mesure. Rapport d'inspection de 150 points d'une grande précision et véhicule livré prêt à rouler avec carte grise française.",
-    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Sélection Exclusivité'
   },
@@ -91,7 +91,7 @@ export const testimonialsList = [
     rating: 5,
     date: 'Novembre 2025',
     comment: "Un service clé en main qui fait gagner un temps précieux. Le véhicule est arrivé nettoyé, lustré et avec tous ses accessoires d'origine. Une équipe très réactive et à l'écoute.",
-    avatar: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Réseau Partenaire France'
   },
@@ -103,7 +103,7 @@ export const testimonialsList = [
     rating: 5,
     date: 'Novembre 2025',
     comment: "Une transaction menée de main de maître. La cote du véhicule et son historique de révisions ont été parfaitement analysés. Je ferai de nouveau appel à Inter Cars pour mon prochain achat.",
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Traçabilité Totale'
   },
@@ -115,8 +115,32 @@ export const testimonialsList = [
     rating: 5,
     date: 'Octobre 2025',
     comment: "Suivi administratif sans faute et livraison rapide directement à mon bureau. Les équipes ont répondu à toutes mes questions avec clarté et professionnalisme.",
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Service Clé en Main'
+  },
+  {
+    id: 'test-11',
+    client_name: 'Antoine Delcroix',
+    client_city: 'Rennes (35)',
+    vehicle_model: 'BMW M8 Competition Gran Coupé',
+    rating: 5,
+    date: 'Octobre 2025',
+    comment: "Un achat réalisé en toute confiance. La traçabilité de l'historique et l'audit technique en 150 points m'ont totalement rassuré. Livraison à domicile impeccable.",
+    avatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=150&h=150&q=80',
+    verified: true,
+    tag: 'Audit 150 Points'
+  },
+  {
+    id: 'test-12',
+    client_name: 'Sandrine Perrot',
+    client_city: 'Grenoble (38)',
+    vehicle_model: 'Porsche Macan GTS',
+    rating: 5,
+    date: 'Septembre 2025',
+    comment: "Je recommande sans hésitation. Inter Cars m'a guidée sur le meilleur choix et a négocié pour moi auprès de leur partenaire. Véhicule irréprochable.",
+    avatar: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?auto=format&fit=crop&w=150&h=150&q=80',
+    verified: true,
+    tag: 'Achat Réseau France'
   }
 ];

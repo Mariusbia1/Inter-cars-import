@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import { Star, ChevronLeft, ChevronRight, CheckCircle2, Award, Quote } from 'lucide-react';
 import { SectionHeader } from '../common/SectionHeader';
+import { testimonialsList } from '../../data/testimonialsData';
 import { testimonialsService } from '../../services/testimonialsService';
 
 // Import des styles Swiper
@@ -13,12 +14,14 @@ import 'swiper/css/navigation';
 export const TestimonialsSlider = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-  const [testimonials, setTestimonials] = useState([]);
+  const [testimonials, setTestimonials] = useState(testimonialsList);
 
   useEffect(() => {
     const loadTestimonials = async () => {
       const data = await testimonialsService.getAllTestimonials();
-      setTestimonials(data || []);
+      if (data && data.length > 0) {
+        setTestimonials(data);
+      }
     };
     loadTestimonials();
   }, []);
@@ -35,7 +38,7 @@ export const TestimonialsSlider = () => {
             align="left"
             badge="Avis & Témoignages"
             title="La Confiance de nos Clients en France"
-            subtitle="Découvrez les retours d'expérience authentiques d'acquéreurs partout en France qui ont concrétisé leur achat à nos côtés."
+            subtitle="Découvrez les retours d'expérience authentiques de nos acquéreurs partout en France."
             className="mb-0 max-w-2xl"
           />
 
@@ -64,14 +67,15 @@ export const TestimonialsSlider = () => {
             modules={[Autoplay, Pagination, Navigation]}
             spaceBetween={24}
             slidesPerView={1}
-            speed={750}
+            speed={800}
+            grabCursor={true}
             breakpoints={{
               640: { slidesPerView: 1 },
               768: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
             }}
             autoplay={{
-              delay: 3500,
+              delay: 3000,
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
             }}
@@ -121,7 +125,7 @@ export const TestimonialsSlider = () => {
                   {/* Profil Client */}
                   <div className="pt-4 border-t border-white/10 flex items-center gap-3">
                     <img
-                      src={item.avatar_url || item.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=75'}
+                      src={item.avatar_url || item.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80'}
                       alt={item.client_name}
                       loading="lazy"
                       decoding="async"
