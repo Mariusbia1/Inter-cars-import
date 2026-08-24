@@ -12,7 +12,7 @@ export const RecentDeliveries = () => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [activeCategory, setActiveCategory] = useState('Tous');
 
-  const categories = ['Tous', 'Sportive', 'Berline & Break', 'SUV & 4x4'];
+  const categories = ['Tous', 'Compacte & Citadine', 'Berline & Break', 'SUV & 4x4', 'Sportive'];
 
   const filteredVehicles = vehicles
     .filter(v => activeCategory === 'Tous' || v.category === activeCategory)
