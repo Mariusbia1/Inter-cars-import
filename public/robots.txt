@@ -1,0 +1,24 @@
+# ==============================================================================
+# INTER CARS IMPORT — Robots.txt pour l'indexation par Google & moteurs de recherche
+# ==============================================================================
+
+User-agent: *
+Allow: /
+Allow: /vehicules-livres
+Allow: /notre-histoire
+Allow: /notre-methode
+Allow: /garanties
+Allow: /contact
+Allow: /mentions-legales
+Allow: /confidentialite
+Allow: /cgv
+
+# Interdire l'indexation de l'espace administration privé
+Disallow: /admin
+Disallow: /admin/
+Disallow: /login
+Disallow: /api/
+
+# Déclaration du Sitemap XML officiel
+Sitemap: https://inter-cars-import.fr/sitemap.xml
+Sitemap: https://www.inter-cars-import.fr/sitemap.xml
