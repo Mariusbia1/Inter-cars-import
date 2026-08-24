@@ -18,7 +18,7 @@ export const DeliveredVehiclesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
 
-  const categories = ['Tous', 'Sportive', 'Berline & Break', 'SUV & 4x4'];
+  const categories = ['Tous', 'Compacte & Citadine', 'Berline & Break', 'SUV & 4x4', 'Sportive'];
 
   // Reset pagination on filter change
   useEffect(() => {

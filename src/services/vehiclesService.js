@@ -1,10 +1,10 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { initialVehicles } from '../data/vehiclesData';
 
-const LOCAL_STORAGE_VEHICLES_KEY = 'intercars_vehicles_catalog';
+const LOCAL_STORAGE_VEHICLES_KEY = 'intercars_vehicles_v4';
 
 export const vehiclesService = {
-  // Récupérer tous les véhicules (avec auto-initialisation si la base Supabase est vide)
+  // Récupérer tous les véhicules (avec synchronisation propre vers Supabase si connecté)
   async getAllVehicles() {
     if (isSupabaseConfigured()) {
       try {
@@ -13,12 +13,12 @@ export const vehiclesService = {
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (!error && data && data.length > 0) {
+        if (!error && data && data.length >= 8) {
           return data;
         }
 
-        // Si la table Supabase est vide, on l'initialise automatiquement avec notre catalogue sans plaque
-        if (!error && data && data.length === 0 && initialVehicles.length > 0) {
+        // Si la table Supabase a moins d'éléments ou est vide, on l'actualise avec nos 8 véhicules propres
+        if (!error && initialVehicles.length > 0) {
           try {
             const seedPayload = initialVehicles.map(v => {
               const { id, ...rest } = v;
@@ -28,6 +28,7 @@ export const vehiclesService = {
                 gallery: [v.image_url]
               };
             });
+            await supabase.from('delivered_vehicles').delete().neq('id', '00000000-0000-0000-0000-000000000000');
             const { data: inserted } = await supabase
               .from('delivered_vehicles')
               .insert(seedPayload)
@@ -44,23 +45,8 @@ export const vehiclesService = {
       }
     }
 
-    const stored = localStorage.getItem(LOCAL_STORAGE_VEHICLES_KEY);
-    if (!stored) {
-      localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
-      return initialVehicles;
-    }
-    try {
-      const parsed = JSON.parse(stored);
-      // Si la liste locale a moins d'éléments ou de vieilles URLs, on met à jour
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
-      }
-      localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
-      return initialVehicles;
-    } catch {
-      localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
-      return initialVehicles;
-    }
+    localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
+    return initialVehicles;
   },
 
   // Forcer la synchronisation du catalogue propre vers Supabase et LocalStorage
@@ -76,7 +62,6 @@ export const vehiclesService = {
           };
         });
 
-        // Nettoyage et réinsertion propre
         await supabase.from('delivered_vehicles').delete().neq('id', '00000000-0000-0000-0000-000000000000');
         const { data: inserted } = await supabase
           .from('delivered_vehicles')
@@ -106,7 +91,7 @@ export const vehiclesService = {
           rating: 5,
           ...vehicleData
         };
-        delete payload.id; // Laisser Supabase générer le UUID
+        delete payload.id;
 
         const { data, error } = await supabase
           .from('delivered_vehicles')
