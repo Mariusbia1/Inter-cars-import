@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Gauge, Zap, Calendar, MapPin, ArrowUpRight, ShieldCheck, CheckCircle2, Award } from 'lucide-react';
+import { Gauge, Zap, Calendar, MapPin, ArrowUpRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { LuxuryButton } from './LuxuryButton';
 
 export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
@@ -13,7 +13,7 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
       transition={{ duration: 0.35, ease: 'easeOut' }}
       className={`group bg-white rounded-xl overflow-hidden border border-slate-200/80 hover:border-gold/60 shadow-luxury-card hover:shadow-luxury-hover transition-all duration-300 flex flex-col ${className}`}
     >
-      {/* Image Container */}
+      {/* Image du véhicule - 100% Propre et Dégagée sans aucun badge ni superposition */}
       <div className="relative h-60 sm:h-64 overflow-hidden bg-slate-900">
         <img
           src={vehicle.image_url}
@@ -24,55 +24,22 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
           height="340"
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
-
-        {/* Badges Flottants */}
-        <div className="absolute top-3 left-3 flex flex-wrap gap-2">
-          <span className="px-2.5 py-1 rounded bg-rolex/90 backdrop-blur-md text-white text-[11px] font-semibold tracking-wider uppercase border border-gold/40">
-            {vehicle.category}
-          </span>
-          {vehicle.is_featured && (
-            <span className="px-2.5 py-1 rounded bg-gold/90 backdrop-blur-md text-rolex-950 text-[11px] font-bold tracking-wider uppercase">
-              Exclusivité
-            </span>
-          )}
-        </div>
-
-        {/* Réseau Partenaire */}
-        <div className="absolute top-3 right-3">
-          <span className="px-2.5 py-1 rounded bg-black/60 backdrop-blur-md text-slate-200 text-xs font-medium flex items-center gap-1.5 border border-white/10">
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            {vehicle.origin_country || 'Réseau France'}
-          </span>
-        </div>
-
-        {/* Badge Certification & Sécurité (Zéro prix) */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-          <div className="bg-rolex-forest/90 backdrop-blur-md border border-gold/40 px-3 py-1.5 rounded-lg flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-gold" />
-            <div>
-              <p className="text-[10px] text-gold font-bold uppercase tracking-wider">Audit 150 Points</p>
-              <p className="text-xs font-semibold text-white">{vehicle.certification || 'Concession Officielle'}</p>
-            </div>
-          </div>
-          <span className="text-white/80 text-xs flex items-center gap-1">
-            <MapPin className="w-3.5 h-3.5 text-gold" />
-            {vehicle.delivery_city}
-          </span>
-        </div>
       </div>
 
-      {/* Content */}
+      {/* Contenu Texte sous l'image */}
       <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between bg-white">
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs uppercase font-bold tracking-widest text-gold-dark">{vehicle.brand}</span>
-            <span className="text-xs text-slate-400 flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-rolex" /> {vehicle.warranty || 'Garantie Incluse'}
+          {/* Ligne catégorie & localisation */}
+          <div className="flex items-center justify-between gap-2 mb-2 text-xs">
+            <span className="font-bold uppercase tracking-wider text-rolex bg-rolex-50 px-2.5 py-1 rounded border border-rolex/20">
+              {vehicle.category}
+            </span>
+            <span className="text-slate-500 flex items-center gap-1 font-medium">
+              <MapPin className="w-3.5 h-3.5 text-gold" /> {vehicle.delivery_city || 'France'}
             </span>
           </div>
 
-          <h3 className="text-lg sm:text-xl font-serif font-bold text-slate-900 group-hover:text-rolex transition-colors line-clamp-1 mb-4">
+          <h3 className="text-lg sm:text-xl font-serif font-bold text-slate-900 group-hover:text-rolex transition-colors line-clamp-1 mb-3">
             {vehicle.title}
           </h3>
 
@@ -94,9 +61,19 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
               <span className="text-[10px] text-slate-400">Puissance</span>
             </div>
           </div>
+
+          {/* Badge Audit & Garantie sous les specs */}
+          <div className="flex items-center justify-between text-xs text-slate-600 mb-4 px-1">
+            <span className="flex items-center gap-1.5 font-semibold text-rolex-900">
+              <ShieldCheck className="w-4 h-4 text-gold" /> Audit 150 points validé
+            </span>
+            <span className="flex items-center gap-1 text-slate-400 text-[11px]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> {vehicle.warranty || 'Garantie incluse'}
+            </span>
+          </div>
         </div>
 
-        <div className="pt-2">
+        <div className="pt-1">
           <LuxuryButton
             onClick={() => onSelect && onSelect(vehicle)}
             variant="rolex"
@@ -104,7 +81,7 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
             className="w-full justify-between font-semibold"
             icon={ArrowUpRight}
           >
-            Fiche de livraison & audit
+            Fiche détaillée du véhicule
           </LuxuryButton>
         </div>
       </div>
