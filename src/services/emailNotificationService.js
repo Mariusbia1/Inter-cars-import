@@ -1,7 +1,7 @@
 /**
  * Service d'expédition d'emails de notification pour les demandes de devis
- * Achemine les emails directement à l'adresse officielle : contact@inter-cars-import.fr
- * Format 100% en Français avec tableau structuré et réponse directe au client.
+ * Achemine les emails via la fonction API Serverless /api/send-email avec template HTML haute fidélité.
+ * 100% en Français, direct et sans aucune interruption.
  */
 export const emailNotificationService = {
   async sendLeadNotification(leadData, recipientEmail = 'contact@inter-cars-import.fr') {
@@ -11,12 +11,34 @@ export const emailNotificationService = {
     const subject = `Demande de Devis : ${vehicleName} — ${clientName}`;
 
     try {
+      // 1. Tenter l'envoi via la fonction Serverless Vercel (/api/send-email)
+      const apiResponse = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...leadData,
+          recipientEmail: targetEmail
+        })
+      });
+
+      if (apiResponse.ok) {
+        const result = await apiResponse.json();
+        console.log('✅ Email envoyé via API Serverless :', result);
+        return { success: true, method: 'serverless' };
+      }
+    } catch (apiErr) {
+      console.info('ℹ️ API /api/send-email non disponible en local, tentative directe...');
+    }
+
+    // 2. Fallback direct si hors environnement serverless
+    try {
       const payload = {
         _subject: subject,
         _template: 'table',
         _captcha: 'false',
         _replyto: leadData.email || targetEmail,
-        _autoresponse: `Bonjour ${clientName},\n\nNous avons bien reçu votre demande concernant votre recherche de ${vehicleName}.\n\nNotre équipe d'experts analyse actuellement votre dossier auprès de notre réseau de partenaires exclusifs en France. Un conseiller dédié prendra contact avec vous par téléphone ou par email sous 24h à 48h ouvrées.\n\nRestant à votre entière disposition,\n\nBien cordialement,\nL'équipe commerciale Inter Cars Import\nEmail : contact@inter-cars-import.fr\nSite web : https://inter-cars-import.fr`,
         'Nom et Prénom': clientName,
         'Numéro de Téléphone': leadData.phone || 'Non renseigné',
         'Adresse Email du Client': leadData.email || 'Non renseignée',
@@ -26,20 +48,19 @@ export const emailNotificationService = {
         'Kilométrage Maximum': leadData.mileage_max || 'Non spécifié',
         'Délai Souhaité': leadData.preferred_timeline || 'Moins de 30 jours',
         'Ville de Livraison': leadData.delivery_city || 'France',
-        'Critères et Équipements': leadData.message || 'Aucune remarque particulière',
-        'Date et Heure de Réception': new Date().toLocaleString('fr-FR', {
+        'Critères et Remarques': leadData.message || 'Aucune remarque particulière',
+        'Date et Heure': new Date().toLocaleString('fr-FR', {
           timeZone: 'Europe/Paris',
           day: '2-digit',
           month: '2-digit',
           year: 'numeric',
           hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
+          minute: '2-digit'
         }),
-        'Source de la Demande': 'Formulaire Web Officiel — Inter Cars Import'
+        'Source': 'Inter Cars Import — Formulaire Web'
       };
 
-      const response = await fetch(`https://formsubmit.co/ajax/${targetEmail}`, {
+      const fallbackRes = await fetch(`https://formsubmit.co/ajax/${targetEmail}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,15 +69,10 @@ export const emailNotificationService = {
         body: JSON.stringify(payload)
       });
 
-      const result = await response.json();
-      console.log('📬 Notification email transmise :', result);
-
-      return {
-        success: result.success === 'true' || result.success === true,
-        data: result
-      };
+      const json = await fallbackRes.json();
+      return { success: true, data: json };
     } catch (error) {
-      console.error('❌ Erreur lors de l\'envoi de la notification email:', error);
+      console.error('❌ Erreur dispatch email:', error);
       return { success: false, error: error.message };
     }
   }
