@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
-  // Configurer les en-têtes CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -19,6 +18,7 @@ export default async function handler(req, res) {
     const recipientEmail = process.env.NOTIFICATION_EMAIL || process.env.EMAIL || 'contact@inter-cars-import.fr';
     const vehicleName = `${leadData.brand_sought || 'Véhicule'} ${leadData.model_sought || ''}`.trim();
     const clientName = leadData.full_name || 'Client';
+    const clientEmail = leadData.email || '';
     const subject = `Demande de Devis : ${vehicleName} — ${clientName}`;
 
     const dateFormatted = new Date().toLocaleString('fr-FR', {
@@ -31,40 +31,41 @@ export default async function handler(req, res) {
       second: '2-digit'
     });
 
-    // Modèle HTML soigné et professionnel
+    // Modèle HTML soigné et sobre (Sans emoji, Typographie haut de gamme)
     const htmlContent = `
     <!DOCTYPE html>
     <html>
     <head>
       <meta charset="utf-8">
       <style>
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 20px; color: #1e293b; }
-        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        .header { background: #004d2e; padding: 30px; text-align: center; color: #ffffff; border-bottom: 3px solid #c6a15b; }
-        .header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; color: #ffffff; }
-        .header p { margin: 6px 0 0 0; color: #c6a15b; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .content { padding: 30px; }
-        .section-title { font-size: 14px; font-weight: 700; color: #004d2e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; border-bottom: 2px solid #f1f5f9; padding-bottom: 6px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 13px; }
-        th, td { padding: 10px 12px; text-align: left; vertical-align: top; }
-        th { width: 38%; color: #64748b; font-weight: 600; background: #f8fafc; border-radius: 6px 0 0 6px; }
-        td { color: #0f172a; font-weight: 500; background: #f8fafc; border-radius: 0 6px 6px 0; }
-        tr { border-bottom: 4px solid #ffffff; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; margin: 0; padding: 24px; color: #0f172a; }
+        .container { max-width: 620px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .header { background: #004d2e; padding: 28px 24px; text-align: center; color: #ffffff; border-bottom: 3px solid #c6a15b; }
+        .header h1 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: 1px; color: #ffffff; text-transform: uppercase; }
+        .header p { margin: 6px 0 0 0; color: #e2c285; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; }
+        .content { padding: 28px 24px; }
+        .section-header { font-size: 13px; font-weight: 700; color: #004d2e; text-transform: uppercase; letter-spacing: 0.8px; margin: 20px 0 10px 0; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
+        .section-header:first-child { margin-top: 0; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 13px; }
+        th, td { padding: 9px 12px; text-align: left; vertical-align: middle; }
+        th { width: 36%; color: #64748b; font-weight: 600; background: #f8fafc; border-radius: 4px 0 0 4px; }
+        td { color: #0f172a; font-weight: 500; background: #f8fafc; border-radius: 0 4px 4px 0; }
+        tr { border-bottom: 3px solid #ffffff; }
         .highlight { color: #004d2e; font-weight: 700; font-size: 14px; }
-        .message-box { background: #f1f5f9; border-left: 4px solid #c6a15b; padding: 14px; border-radius: 0 8px 8px 0; font-size: 13px; color: #334155; line-height: 1.5; margin-bottom: 24px; }
-        .footer { background: #0b1f17; padding: 20px; text-align: center; color: #94a3b8; font-size: 11px; }
+        .message-box { background: #f1f5f9; border-left: 3px solid #c6a15b; padding: 12px 16px; border-radius: 0 6px 6px 0; font-size: 13px; color: #334155; line-height: 1.6; margin-bottom: 20px; }
+        .footer { background: #072418; padding: 20px; text-align: center; color: #94a3b8; font-size: 11px; line-height: 1.6; }
         .footer a { color: #c6a15b; text-decoration: none; font-weight: 600; }
       </style>
     </head>
     <body>
       <div class="container">
         <div class="header">
-          <h1>INTER CARS IMPORT</h1>
-          <p>Nouvelle Demande de Devis Entrante</p>
+          <h1>Inter Cars Import</h1>
+          <p>Nouvelle Demande de Devis</p>
         </div>
         
         <div class="content">
-          <div class="section-title">👤 Coordonnées du Prospect</div>
+          <div class="section-header">Coordonnées du Client</div>
           <table>
             <tr>
               <th>Nom & Prénom</th>
@@ -76,7 +77,7 @@ export default async function handler(req, res) {
             </tr>
             <tr>
               <th>Adresse Email</th>
-              <td><a href="mailto:${leadData.email}" style="color: #004d2e; text-decoration: none;">${leadData.email || 'Non renseignée'}</a></td>
+              <td><a href="mailto:${clientEmail}" style="color: #004d2e; text-decoration: none;">${clientEmail || 'Non renseignée'}</a></td>
             </tr>
             <tr>
               <th>Ville de Livraison</th>
@@ -84,7 +85,7 @@ export default async function handler(req, res) {
             </tr>
           </table>
 
-          <div class="section-title">🚘 Véhicule & Critères Souhaités</div>
+          <div class="section-header">Véhicule Recherché & Critères</div>
           <table>
             <tr>
               <th>Véhicule Recherché</th>
@@ -108,25 +109,26 @@ export default async function handler(req, res) {
             </tr>
           </table>
 
-          <div class="section-title">📝 Message & Remarques du Client</div>
+          <div class="section-header">Critères & Remarques du Client</div>
           <div class="message-box">
-            ${leadData.message ? leadData.message.replace(/\n/g, '<br>') : '<em>Aucune remarque supplémentaire indiquée.</em>'}
+            ${leadData.message ? leadData.message.replace(/\n/g, '<br>') : '<em>Aucune remarque particulière indiquée.</em>'}
           </div>
 
-          <p style="font-size: 11px; color: #94a3b8; text-align: center; margin: 0;">
-            Reçu le ${dateFormatted} via le formulaire en ligne de <a href="https://inter-cars-import.fr" style="color: #004d2e; font-weight: 600;">inter-cars-import.fr</a>
+          <p style="font-size: 11px; color: #94a3b8; text-align: center; margin: 16px 0 0 0;">
+            Demande enregistrée le ${dateFormatted} via le site officiel <a href="https://inter-cars-import.fr" style="color: #004d2e; font-weight: 600;">inter-cars-import.fr</a>
           </p>
         </div>
 
         <div class="footer">
-          © 2026 Inter Cars Import — Vente de Véhicules d'Occasion & Partenaires en France
+          Inter Cars Import SAS — Vente de Véhicules d'Occasion & Partenaires Exclusifs en France<br>
+          <a href="https://inter-cars-import.fr">www.inter-cars-import.fr</a> • <a href="mailto:contact@inter-cars-import.fr">contact@inter-cars-import.fr</a>
         </div>
       </div>
     </body>
     </html>
     `;
 
-    // 1. Si SMTP configuré dans les variables d'environnement Vercel
+    // 1. Si SMTP configuré
     if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
       const transporter = nodemailer.createTransporter({
         host: process.env.SMTP_HOST,
@@ -138,40 +140,30 @@ export default async function handler(req, res) {
         },
       });
 
+      // Email à l'administrateur
       await transporter.sendMail({
         from: `"Inter Cars Import" <${process.env.SMTP_USER}>`,
         to: recipientEmail,
-        replyTo: leadData.email || recipientEmail,
+        replyTo: clientEmail || recipientEmail,
         subject: subject,
         html: htmlContent,
       });
 
+      // Accusé de réception automatique envoyé au client
+      if (clientEmail) {
+        await transporter.sendMail({
+          from: `"Inter Cars Import" <${process.env.SMTP_USER}>`,
+          to: clientEmail,
+          replyTo: recipientEmail,
+          subject: `Confirmation de votre demande de devis : ${vehicleName}`,
+          text: leadData.clientConfirmationMessage || `Bonjour ${clientName},\n\nNous avons bien reçu votre demande de devis pour votre recherche de ${vehicleName}.\nUn conseiller commercial prendra contact avec vous sous 24 à 48 heures.\n\nCordialement,\nL'équipe Inter Cars Import\ncontact@inter-cars-import.fr`
+        });
+      }
+
       return res.status(200).json({ success: true, method: 'smtp' });
     }
 
-    // 2. Si Resend API configuré
-    if (process.env.RESEND_API_KEY) {
-      const resendResponse = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          from: 'Inter Cars Import <devis@inter-cars-import.fr>',
-          to: [recipientEmail],
-          reply_to: leadData.email,
-          subject: subject,
-          html: htmlContent
-        })
-      });
-
-      if (resendResponse.ok) {
-        return res.status(200).json({ success: true, method: 'resend' });
-      }
-    }
-
-    // 3. Fallback direct serveur sans popup
+    // 2. Fallback direct serveur sans emoji
     const fallbackResponse = await fetch(`https://formsubmit.co/ajax/${recipientEmail}`, {
       method: 'POST',
       headers: {
@@ -180,20 +172,22 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         _subject: subject,
-        _template: 'table',
+        _template: 'box',
         _captcha: 'false',
-        _replyto: leadData.email || recipientEmail,
-        'Nom et Prénom': clientName,
-        'Téléphone': leadData.phone || 'Non renseigné',
-        'Email Client': leadData.email || 'Non renseignée',
-        'Véhicule Recherché': vehicleName,
-        'Catégorie': leadData.vehicle_type || 'Non spécifiée',
-        'Motorisation': leadData.fuel_type || 'Indifférent',
-        'Kilométrage Maximum': leadData.mileage_max || 'Non spécifié',
-        'Délai Souhaité': leadData.preferred_timeline || 'Moins de 30 jours',
-        'Ville de Livraison': leadData.delivery_city || 'France',
-        'Message Client': leadData.message || 'Aucun message particulier',
-        'Date de Réception': dateFormatted
+        _replyto: clientEmail || recipientEmail,
+        _autoresponse: leadData.clientConfirmationMessage || '',
+        'email': clientEmail,
+        'Nom et Prenom': clientName,
+        'Telephone': leadData.phone || 'Non renseigne',
+        'Email': clientEmail || 'Non renseignee',
+        'Vehicule': vehicleName,
+        'Categorie': leadData.vehicle_type || 'Non specifiee',
+        'Motorisation': leadData.fuel_type || 'Indifferent',
+        'Kilometrage Max': leadData.mileage_max || 'Non specifie',
+        'Delai': leadData.preferred_timeline || 'Moins de 30 jours',
+        'Ville': leadData.delivery_city || 'France',
+        'Remarques': leadData.message || 'Aucune remarque',
+        'Date': dateFormatted
       })
     });
 
