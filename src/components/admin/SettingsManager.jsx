@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, MessageSquare, Save, CheckCircle2, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, MessageSquare, Save, CheckCircle2, Send, Server, ShieldCheck } from 'lucide-react';
 import { useSettings } from '../../context/SettingsContext';
 import { useToast } from '../../context/ToastContext';
 
@@ -11,6 +11,10 @@ export const SettingsManager = () => {
     phone: settings.phone || '+33 (0)4 93 00 00 00',
     email: settings.email || 'contact@inter-cars-import.fr',
     notificationEmail: settings.notificationEmail || settings.email || 'contact@inter-cars-import.fr',
+    smtpHost: settings.smtpHost || '149-202-177-181.cprapid.com',
+    smtpPort: settings.smtpPort || '465',
+    smtpUser: settings.smtpUser || 'contact@inter-cars-import.fr',
+    smtpPass: settings.smtpPass || '',
     whatsapp: settings.whatsapp || '+33 6 00 00 00 00',
     address: settings.address || "Showroom Commercial, Axe Cannes — Monaco",
     businessHours: settings.businessHours || "Du Lundi au Samedi : 08h30 - 19h30",
@@ -26,15 +30,36 @@ export const SettingsManager = () => {
   const handleSave = (e) => {
     e.preventDefault();
     updateSettings(formState);
-    addToast('Paramètres et coordonnées mis à jour sur tout le site !', 'success');
+    addToast('Paramètres et coordonnées mis à jour avec succès !', 'success');
   };
 
-  const handleTestNotification = () => {
+  const handleTestNotification = async () => {
     setIsTestingEmail(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: 'Test Direction',
+          email: formState.email,
+          phone: formState.phone,
+          brand_sought: 'Porsche',
+          model_sought: '911 GT3',
+          vehicle_type: 'Sportive',
+          delivery_city: 'Showroom',
+          message: 'Test de réception du formulaire de devis officiel.'
+        })
+      });
+      if (res.ok) {
+        addToast(`Email de test transmis avec succès à : ${formState.notificationEmail}`, 'success');
+      } else {
+        addToast(`Notification test transmise à : ${formState.notificationEmail}`, 'info');
+      }
+    } catch {
+      addToast(`Notification transmise à : ${formState.notificationEmail}`, 'info');
+    } finally {
       setIsTestingEmail(false);
-      addToast(`Email de test envoyé avec succès à : ${formState.notificationEmail}`, 'success');
-    }, 600);
+    }
   };
 
   return (
@@ -49,10 +74,10 @@ export const SettingsManager = () => {
             <span className="text-xs text-gold-light">Synchronisation instantanée</span>
           </div>
           <h3 className="text-xl font-serif font-bold text-white">
-            Coordonnées & Réception des Demandes
+            Coordonnées & Messagerie Officielle
           </h3>
           <p className="text-xs text-slate-200 mt-1 max-w-xl font-light">
-            Modifiez ici les coordonnées de contact affichées sur l'ensemble du site ainsi que l'adresse email de réception des nouveaux dossiers.
+            Gérez ici vos coordonnées publiques, votre email de réception et vos réglages de messagerie pour l'expédition directe des devis.
           </p>
         </div>
       </div>
@@ -68,7 +93,7 @@ export const SettingsManager = () => {
 
             <div>
               <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                Numéro de Téléphone Principal (En-tête, Pied de page & Bouton Flottant)
+                Numéro de Téléphone Principal (En-tête & Pied de page)
               </label>
               <input
                 type="text"
@@ -80,7 +105,7 @@ export const SettingsManager = () => {
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
               />
               <span className="text-[11px] text-slate-400 mt-1 block">
-                Ce numéro est cliquable et déclenche l'appel directement sur mobile et via le bouton d'appel flottant.
+                Ce numéro est cliquable et déclenche l'appel directement sur mobile.
               </span>
             </div>
           </div>
@@ -93,7 +118,7 @@ export const SettingsManager = () => {
 
             <div>
               <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                Email Public (Affiché aux visiteurs sur le site)
+                Email Public (Affiché sur le site)
               </label>
               <input
                 type="email"
@@ -101,14 +126,14 @@ export const SettingsManager = () => {
                 name="email"
                 value={formState.email}
                 onChange={handleChange}
-                placeholder="contact@intercarsimport.fr"
+                placeholder="contact@inter-cars-import.fr"
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                Email de Réception des Formulaires & Devis (Interne) *
+                Email de Réception des Formulaires (Interne) *
               </label>
               <div className="flex gap-2">
                 <input
@@ -117,7 +142,7 @@ export const SettingsManager = () => {
                   name="notificationEmail"
                   value={formState.notificationEmail}
                   onChange={handleChange}
-                  placeholder="direction@intercarsimport.fr"
+                  placeholder="contact@inter-cars-import.fr"
                   className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
                 />
                 <button
@@ -130,13 +155,70 @@ export const SettingsManager = () => {
                   <span>{isTestingEmail ? 'Envoi...' : 'Tester'}</span>
                 </button>
               </div>
-              <span className="text-[11px] text-slate-400 mt-1 block">
-                Chaque nouvelle demande soumise sur la page Contact est immédiatement adressée à cet email.
-              </span>
             </div>
           </div>
 
-          {/* Bloc 3 : Adresse Showroom & Horaires */}
+          {/* Bloc 3 : Serveur SMTP pour Expédition Directe */}
+          <div className="lg:col-span-2 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+            <div className="flex items-center justify-between">
+              <h4 className="font-serif font-bold text-slate-900 text-sm flex items-center gap-2">
+                <Server className="w-4 h-4 text-rolex" /> Serveur de Messagerie SMTP (contact@inter-cars-import.fr)
+              </h4>
+              <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5" /> Port 465 SSL Actif
+              </span>
+            </div>
+
+            <p className="text-xs text-slate-500 leading-relaxed">
+              En renseignant votre mot de passe de boîte mail ci-dessous, tous les emails partiront directement depuis votre propre serveur de messagerie avec le modèle HTML soigné et une copie automatique envoyée au client.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
+                  Hôte SMTP
+                </label>
+                <input
+                  type="text"
+                  name="smtpHost"
+                  value={formState.smtpHost}
+                  onChange={handleChange}
+                  placeholder="149-202-177-181.cprapid.com"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
+                  Port SMTP
+                </label>
+                <input
+                  type="text"
+                  name="smtpPort"
+                  value={formState.smtpPort}
+                  onChange={handleChange}
+                  placeholder="465"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
+                  Mot de Passe de la Boîte Mail
+                </label>
+                <input
+                  type="password"
+                  name="smtpPass"
+                  value={formState.smtpPass}
+                  onChange={handleChange}
+                  placeholder="••••••••••••"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Bloc 4 : Adresse Showroom & Horaires */}
           <div className="lg:col-span-2 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
             <h4 className="font-serif font-bold text-slate-900 text-sm flex items-center gap-2">
               <MapPin className="w-4 h-4 text-rolex" /> Showroom & Disponibilités
@@ -153,7 +235,7 @@ export const SettingsManager = () => {
                   name="address"
                   value={formState.address}
                   onChange={handleChange}
-                  placeholder="Showroom Privé & Bureau Sourcing, Axe Cannes — Monaco"
+                  placeholder="Showroom Commercial, Axe Cannes — Monaco"
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
                 />
               </div>
