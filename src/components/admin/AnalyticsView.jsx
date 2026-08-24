@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Globe, Users, Clock, Eye, ChevronLeft, ChevronRight, Activity, Smartphone, Monitor } from 'lucide-react';
+import { Globe, Users, Clock, Eye, ChevronLeft, ChevronRight, Activity, Smartphone, Monitor, Calendar } from 'lucide-react';
 import { analyticsService } from '../../services/analyticsService';
 
 export const AnalyticsView = () => {
@@ -56,7 +56,7 @@ export const AnalyticsView = () => {
         <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Taux de Conversion Devis</span>
           <div className="text-2xl font-serif font-bold text-gold-dark">{data.conversionRate}</div>
-          <span className="text-[10px] text-slate-400">Demandes de devis générées</span>
+          <span className="text-[10px] text-slate-400">Demandes de devis réelles</span>
         </div>
 
         <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
@@ -117,7 +117,7 @@ export const AnalyticsView = () => {
         </div>
       </div>
 
-      {/* Journal des Dernières Visites avec Pagination */}
+      {/* Journal des Dernières Visites avec Date ET Heure Complètes */}
       <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <h4 className="font-serif font-bold text-slate-900 text-base flex items-center gap-2">
@@ -137,30 +137,52 @@ export const AnalyticsView = () => {
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider">
                 <tr>
-                  <th className="py-2.5 px-4">Heure / Date</th>
-                  <th className="py-2.5 px-4">Page Consultée</th>
-                  <th className="py-2.5 px-4">Provenance</th>
-                  <th className="py-2.5 px-4">Appareil & Navigateur</th>
-                  <th className="py-2.5 px-4">Durée Estimée</th>
+                  <th className="py-3 px-4">Date & Heure de Visite</th>
+                  <th className="py-3 px-4">Page Consultée</th>
+                  <th className="py-3 px-4">Provenance</th>
+                  <th className="py-3 px-4">Appareil & Navigateur</th>
+                  <th className="py-3 px-4">Durée Estimée</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-600">
-                {paginatedVisits.map((v, idx) => (
-                  <tr key={v.id || idx} className="hover:bg-slate-50/60 transition-colors">
-                    <td className="py-3 px-4 font-mono text-[11px] text-slate-400">
-                      {new Date(v.visited_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                    </td>
-                    <td className="py-3 px-4 font-semibold text-rolex">
-                      {v.page_name || "Page d'Accueil"}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-slate-800">{v.country}</td>
-                    <td className="py-3 px-4 text-slate-500 flex items-center gap-1.5 py-3.5">
-                      {v.device === 'Mobile' ? <Smartphone className="w-3.5 h-3.5 text-slate-400" /> : <Monitor className="w-3.5 h-3.5 text-slate-400" />}
-                      <span>{v.device} • {v.browser}</span>
-                    </td>
-                    <td className="py-3 px-4 text-emerald-600 font-semibold">{v.duration}s</td>
-                  </tr>
-                ))}
+                {paginatedVisits.map((v, idx) => {
+                  const visitDate = v.visited_at ? new Date(v.visited_at) : new Date();
+                  const formattedDate = visitDate.toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                  });
+                  const formattedTime = visitDate.toLocaleTimeString('fr-FR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                  });
+
+                  return (
+                    <tr key={v.id || idx} className="hover:bg-slate-50/60 transition-colors">
+                      <td className="py-3.5 px-4">
+                        <div className="flex items-center gap-1.5 font-bold text-slate-900 text-xs">
+                          <Calendar className="w-3.5 h-3.5 text-rolex shrink-0" />
+                          <span>{formattedDate}</span>
+                        </div>
+                        <div className="text-[11px] text-slate-500 font-mono pl-5">
+                          à {formattedTime}
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4 font-semibold text-rolex">
+                        {v.page_name || "Page d'Accueil"}
+                      </td>
+                      <td className="py-3.5 px-4 font-medium text-slate-800">{v.country}</td>
+                      <td className="py-3.5 px-4 text-slate-500">
+                        <div className="flex items-center gap-1.5">
+                          {v.device === 'Mobile' ? <Smartphone className="w-3.5 h-3.5 text-slate-400" /> : <Monitor className="w-3.5 h-3.5 text-slate-400" />}
+                          <span>{v.device} • {v.browser}</span>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4 text-emerald-600 font-semibold">{v.duration}s</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

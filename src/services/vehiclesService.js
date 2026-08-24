@@ -1,10 +1,28 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { initialVehicles } from '../data/vehiclesData';
 
-const LOCAL_STORAGE_VEHICLES_KEY = 'intercars_vehicles_v5';
+const LOCAL_STORAGE_VEHICLES_KEY = 'intercars_vehicles_live_v1';
+
+// Mappage des catégories pour compatibilité avec la base de données Supabase
+const mapCategoryToDb = (category) => {
+  if (category === 'Berline & Break') return 'Berline GT';
+  if (category === 'SUV & 4x4') return 'SUV Prestige';
+  if (category === 'Compacte & Citadine') return 'Sportive';
+  return category || 'Sportive';
+};
+
+const mapCategoryFromDb = (dbCategory, model = '') => {
+  if (dbCategory === 'Berline GT') return 'Berline & Break';
+  if (dbCategory === 'SUV Prestige') return 'SUV & 4x4';
+  if (dbCategory === 'Supercar') return 'Sportive';
+  if (model && (model.includes('Golf') || model.includes('Mini') || model.includes('A3'))) {
+    return 'Compacte & Citadine';
+  }
+  return dbCategory || 'Sportive';
+};
 
 export const vehiclesService = {
-  // Récupérer tous les véhicules (avec synchronisation forcée et garantie vers Supabase si connecté)
+  // Récupérer tous les véhicules depuis Supabase
   async getAllVehicles() {
     if (isSupabaseConfigured()) {
       try {
@@ -13,103 +31,56 @@ export const vehiclesService = {
           .select('*')
           .order('created_at', { ascending: false });
 
-        // Vérifier si Supabase contient déjà le catalogue à jour (Golf 8, Peugeot 3008, etc.)
-        const isUpToDate =
-          !error &&
-          data &&
-          data.length >= 8 &&
-          data.some(v => v.title && v.title.includes('Volkswagen Golf 8'));
-
-        if (isUpToDate) {
-          return data;
-        }
-
-        // Si la base contient d'anciennes données ou est vide, synchronisation complète
-        if (!error && initialVehicles.length > 0) {
-          try {
-            const seedPayload = initialVehicles.map(v => {
-              const { id, ...rest } = v;
-              return {
-                ...rest,
-                rating: 5,
-                gallery: [v.image_url]
-              };
-            });
-
-            await supabase.from('delivered_vehicles').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-            const { data: inserted } = await supabase
-              .from('delivered_vehicles')
-              .insert(seedPayload)
-              .select();
-
-            if (inserted && inserted.length > 0) {
-              localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(inserted));
-              return inserted;
-            }
-          } catch (seedErr) {
-            console.warn('Sync vehicles to Supabase failed:', seedErr);
-          }
+        if (!error && data && data.length > 0) {
+          return data.map(v => ({
+            ...v,
+            category: mapCategoryFromDb(v.category, v.model)
+          }));
         }
       } catch (err) {
         console.warn('Supabase vehicles fetch failed, using local storage fallback', err);
       }
     }
 
-    localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
-    return initialVehicles;
-  },
-
-  // Forcer la synchronisation du catalogue propre vers Supabase et LocalStorage
-  async syncCatalog() {
-    if (isSupabaseConfigured()) {
-      try {
-        const seedPayload = initialVehicles.map(v => {
-          const { id, ...rest } = v;
-          return {
-            ...rest,
-            rating: 5,
-            gallery: [v.image_url]
-          };
-        });
-
-        await supabase.from('delivered_vehicles').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-        const { data: inserted } = await supabase
-          .from('delivered_vehicles')
-          .insert(seedPayload)
-          .select();
-
-        if (inserted && inserted.length > 0) {
-          localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(inserted));
-          return inserted;
-        }
-      } catch (err) {
-        console.warn('Supabase catalog sync failed:', err);
-      }
+    const stored = localStorage.getItem(LOCAL_STORAGE_VEHICLES_KEY);
+    if (!stored) {
+      localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
+      return initialVehicles;
     }
-
-    localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
-    return initialVehicles;
+    try {
+      return JSON.parse(stored);
+    } catch {
+      return initialVehicles;
+    }
   },
 
-  // Ajouter un véhicule
+  // Ajouter un véhicule dans Supabase
   async addVehicle(vehicleData) {
+    const payload = {
+      created_at: new Date().toISOString(),
+      gallery: vehicleData.image_url ? [vehicleData.image_url] : [],
+      rating: 5,
+      ...vehicleData,
+      category: mapCategoryToDb(vehicleData.category)
+    };
+    delete payload.id;
+
     if (isSupabaseConfigured()) {
       try {
-        const payload = {
-          created_at: new Date().toISOString(),
-          gallery: [vehicleData.image_url],
-          rating: 5,
-          ...vehicleData
-        };
-        delete payload.id;
-
         const { data, error } = await supabase
           .from('delivered_vehicles')
           .insert([payload])
           .select();
 
         if (!error && data && data.length > 0) {
-          return data[0];
+          const created = {
+            ...data[0],
+            category: mapCategoryFromDb(data[0].category, data[0].model)
+          };
+          return created;
+        }
+        if (error) {
+          console.error('Supabase add vehicle error:', error);
         }
       } catch (err) {
         console.warn('Supabase add vehicle failed, using local fallback', err);
@@ -118,30 +89,34 @@ export const vehiclesService = {
 
     const newVehicle = {
       id: 'veh-' + Date.now(),
-      created_at: new Date().toISOString(),
-      gallery: [vehicleData.image_url],
-      rating: 5,
       ...vehicleData
     };
-
     const current = await this.getAllVehicles();
     const updated = [newVehicle, ...current];
     localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(updated));
     return newVehicle;
   },
 
-  // Modifier un véhicule
+  // Modifier un véhicule dans Supabase
   async updateVehicle(id, updates) {
+    const dbUpdates = { ...updates };
+    if (updates.category) {
+      dbUpdates.category = mapCategoryToDb(updates.category);
+    }
+
     if (isSupabaseConfigured()) {
       try {
         const { data, error } = await supabase
           .from('delivered_vehicles')
-          .update(updates)
+          .update(dbUpdates)
           .eq('id', id)
           .select();
 
         if (!error && data && data.length > 0) {
-          return data[0];
+          return {
+            ...data[0],
+            category: mapCategoryFromDb(data[0].category, data[0].model)
+          };
         }
       } catch (err) {
         console.warn('Supabase update vehicle failed', err);
@@ -154,7 +129,7 @@ export const vehiclesService = {
     return updated.find(i => i.id === id);
   },
 
-  // Supprimer un véhicule
+  // Supprimer un véhicule dans Supabase
   async deleteVehicle(id) {
     if (isSupabaseConfigured()) {
       try {

@@ -1,57 +1,10 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { emailNotificationService } from './emailNotificationService';
 
-const LOCAL_STORAGE_LEADS_KEY = 'intercars_leads_data';
-
-const initialDemoLeads = [
-  {
-    full_name: 'Guillaume de Montmirail',
-    email: 'g.montmirail@lux-holdings.com',
-    phone: '+33 6 42 18 90 22',
-    vehicle_type: 'Sportive',
-    brand_sought: 'Porsche',
-    model_sought: '911 (992) GT3 RS',
-    preferred_timeline: 'Moins de 30 jours',
-    fuel_type: 'Essence',
-    transmission: 'Automatique (PDK)',
-    message: 'Recherche active d’un exemplaire avec carnet constructeur à jour, moins de 15 000 km, audit complet.',
-    status: 'Nouveau',
-    admin_notes: 'Client très sérieux. Contact direct par téléphone prévu.',
-    source: 'Formulaire Web'
-  },
-  {
-    full_name: 'Frédéric Bellegarde',
-    email: 'f.bellegarde@cabinet-avocats.fr',
-    phone: '+33 6 11 88 34 50',
-    vehicle_type: 'Berline & Break',
-    brand_sought: 'Audi',
-    model_sought: 'RS6 Avant Performance',
-    preferred_timeline: '1 à 2 mois',
-    fuel_type: 'Hybride / Essence',
-    transmission: 'Automatique',
-    message: 'Véhicule de direction recherché, première main certifiée constructeur avec carnet d’entretien.',
-    status: 'En cours',
-    admin_notes: 'Deux opportunités conformes identifiées chez nos concessions partenaires.',
-    source: 'Formulaire Web'
-  },
-  {
-    full_name: 'Arthur Saint-Germain',
-    email: 'arthur.stg@monaco-yachts.mc',
-    phone: '+377 98 00 23 11',
-    vehicle_type: 'SUV & 4x4',
-    brand_sought: 'Mercedes-Benz',
-    model_sought: 'G 63 AMG',
-    preferred_timeline: 'Immédiat',
-    fuel_type: 'Essence V8',
-    transmission: 'Automatique',
-    message: 'Modèle recherché pour livraison à Cannes avec audit complet 150 points.',
-    status: 'Devis envoyé',
-    admin_notes: 'Proposition transmise avec rapport d’audit du véhicule.',
-    source: 'Formulaire Web'
-  }
-];
+const LOCAL_STORAGE_LEADS_KEY = 'intercars_leads_live_v1';
 
 export const leadsService = {
-  // Récupérer tous les leads
+  // Récupérer tous les leads réels depuis Supabase (avec fallback local si hors-ligne)
   async getAllLeads() {
     if (isSupabaseConfigured()) {
       try {
@@ -60,21 +13,12 @@ export const leadsService = {
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (!error && data && data.length > 0) {
-          return data;
-        }
-
-        // Auto-seed initial leads si la table est vide
-        if (!error && data && data.length === 0) {
-          try {
-            const { data: inserted } = await supabase
-              .from('leads')
-              .insert(initialDemoLeads)
-              .select();
-            if (inserted && inserted.length > 0) return inserted;
-          } catch (seedErr) {
-            console.warn('Auto-seed leads failed:', seedErr);
-          }
+        if (!error && data) {
+          // Filtrer les anciens faux leads de test contenant 'Supercar' ou 'VIP' si présents
+          const cleanLeads = data.filter(
+            l => !(l.vehicle_type === 'Supercar' || (l.admin_notes && l.admin_notes.includes('VIP')))
+          );
+          return cleanLeads;
         }
       } catch (err) {
         console.warn('Supabase leads fetch failed, using local storage fallback', err);
@@ -83,57 +27,83 @@ export const leadsService = {
 
     const stored = localStorage.getItem(LOCAL_STORAGE_LEADS_KEY);
     if (!stored) {
-      const demoWithIds = initialDemoLeads.map((l, i) => ({
-        id: `lead-demo-${i + 1}`,
-        created_at: new Date(Date.now() - (i + 1) * 3600 * 1000 * 12).toISOString(),
-        ...l
-      }));
-      localStorage.setItem(LOCAL_STORAGE_LEADS_KEY, JSON.stringify(demoWithIds));
-      return demoWithIds;
+      return [];
     }
-    return JSON.parse(stored);
+    try {
+      return JSON.parse(stored);
+    } catch {
+      return [];
+    }
   },
 
   // Créer une nouvelle demande de devis (reçue du formulaire Contact)
   async createLead(leadData) {
-    if (isSupabaseConfigured()) {
-      try {
-        const payload = {
-          created_at: new Date().toISOString(),
-          status: 'Nouveau',
-          source: 'Formulaire Web',
-          ...leadData
-        };
-        delete payload.id; // Laisser Supabase attribuer le UUID
-
-        const { data, error } = await supabase
-          .from('leads')
-          .insert([payload])
-          .select();
-
-        if (!error && data && data.length > 0) {
-          return { success: true, lead: data[0] };
-        }
-        if (error) {
-          console.error('Erreur insertion Lead Supabase:', error);
-        }
-      } catch (err) {
-        console.warn('Supabase insert lead failed, using local fallback', err);
-      }
-    }
-
-    const newLead = {
-      id: 'lead-' + Date.now(),
+    const newLeadPayload = {
       created_at: new Date().toISOString(),
       status: 'Nouveau',
       source: 'Formulaire Web',
-      ...leadData
+      full_name: leadData.full_name || 'Prospect',
+      email: leadData.email || '',
+      phone: leadData.phone || '',
+      vehicle_type: leadData.vehicle_type || 'Sportive',
+      brand_sought: leadData.brand_sought || '',
+      model_sought: leadData.model_sought || '',
+      budget_range: leadData.budget_range || null,
+      preferred_timeline: leadData.preferred_timeline || 'Moins de 30 jours',
+      fuel_type: leadData.fuel_type || 'Essence',
+      transmission: leadData.transmission || 'Automatique',
+      delivery_city: leadData.delivery_city || 'France',
+      message: leadData.message || '',
+      admin_notes: null
     };
 
-    const current = await this.getAllLeads();
-    const updated = [newLead, ...current];
-    localStorage.setItem(LOCAL_STORAGE_LEADS_KEY, JSON.stringify(updated));
-    return { success: true, lead: newLead };
+    let createdLead = null;
+
+    // 1. Enregistrement direct dans Supabase
+    if (isSupabaseConfigured()) {
+      try {
+        const { data, error } = await supabase
+          .from('leads')
+          .insert([newLeadPayload])
+          .select();
+
+        if (!error && data && data.length > 0) {
+          createdLead = data[0];
+          console.log('✅ Lead enregistré dans Supabase avec succès, ID:', createdLead.id);
+        } else if (error) {
+          console.error('❌ Erreur insertion Lead Supabase:', error);
+        }
+      } catch (err) {
+        console.error('❌ Exception Supabase insert lead:', err);
+      }
+    }
+
+    // 2. Si non créé par Supabase, création locale
+    if (!createdLead) {
+      createdLead = {
+        id: 'lead-' + Date.now(),
+        ...newLeadPayload
+      };
+    }
+
+    // 3. Mise à jour du cache local
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_LEADS_KEY);
+      const current = stored ? JSON.parse(stored) : [];
+      localStorage.setItem(LOCAL_STORAGE_LEADS_KEY, JSON.stringify([createdLead, ...current]));
+    } catch (e) {
+      console.warn('Storage cache error:', e);
+    }
+
+    // 4. Déclenchement de l'envoi de notification Email
+    try {
+      const recipient = leadData.routed_to_email || 'direction@intercarsimport.fr';
+      emailNotificationService.sendLeadNotification(createdLead, recipient);
+    } catch (emailErr) {
+      console.warn('Email dispatch warning:', emailErr);
+    }
+
+    return { success: true, lead: createdLead };
   },
 
   // Mettre à jour le statut ou les notes d'un lead
