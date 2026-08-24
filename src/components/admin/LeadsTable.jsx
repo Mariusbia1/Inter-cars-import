@@ -167,8 +167,13 @@ export const LeadsTable = () => {
                       <td className="py-4 px-4 font-medium text-slate-700">
                         {lead.preferred_timeline || 'Sous 30 jours'}
                       </td>
-                      <td className="py-4 px-4 text-xs text-slate-500">
-                        {new Date(lead.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
+                      <td className="py-4 px-4 text-xs">
+                        <div className="font-semibold text-slate-900">
+                          {new Date(lead.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                        </div>
+                        <div className="text-[10px] text-slate-400 font-mono">
+                          à {new Date(lead.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                        </div>
                       </td>
                       <td className="py-4 px-4">
                         <span className={`px-2.5 py-1 rounded-full text-[11px] border ${getStatusBadge(lead.status)}`}>

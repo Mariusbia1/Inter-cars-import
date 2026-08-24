@@ -1,22 +1,18 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Récupération des variables d'environnement Vite
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Configuration Supabase avec valeurs de secours permanentes garantissant la connexion en production
+const DEFAULT_SUPABASE_URL = 'https://tdbwbzotqsahnnmasjmb.supabase.co';
+const DEFAULT_SUPABASE_KEY = 'sb_publishable_j1KwauSScUFvfLCKuwOaeg_ELmkh3bY';
 
-// Vérification de la configuration
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || DEFAULT_SUPABASE_KEY;
+
+// Vérification de la configuration (toujours true grâce aux valeurs permanentes)
 export const isSupabaseConfigured = () => {
   return Boolean(supabaseUrl && supabaseAnonKey && supabaseUrl !== 'VOTRE_SUPABASE_URL');
 };
 
-// Client Supabase (initialisé uniquement si les clés sont valides)
-export const supabase = isSupabaseConfigured()
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
+// Client Supabase connecté en permanence
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Helper pour journaliser l'état
-if (isSupabaseConfigured()) {
-  console.log('✨ Supabase connecté avec succès à :', supabaseUrl);
-} else {
-  console.info('ℹ️ Supabase non configuré : le mode Mock LocalStorage est activé automatiquement.');
-}
+console.log('✨ Connexion Supabase active :', supabaseUrl);
