@@ -1,7 +1,7 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { testimonialsList } from '../data/testimonialsData';
 
-const LOCAL_STORAGE_TESTIMONIALS_KEY = 'intercars_testimonials_data';
+const LOCAL_STORAGE_TESTIMONIALS_KEY = 'intercars_testimonials_v3';
 
 export const testimonialsService = {
   async getAllTestimonials() {
@@ -12,12 +12,12 @@ export const testimonialsService = {
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (!error && data && data.length > 0) {
+        if (!error && data && data.length >= 10) {
           return data;
         }
 
-        // Si la table est vide, auto-remplissage avec la sélection initiale
-        if (!error && data && data.length === 0 && testimonialsList.length > 0) {
+        // Si Supabase a une ancienne liste ou est vide, on l'actualise avec nos 12 avis complets
+        if (!error && testimonialsList.length > 0) {
           try {
             const seedPayload = testimonialsList.map(t => {
               const { id, ...rest } = t;
@@ -26,13 +26,14 @@ export const testimonialsService = {
                 avatar_url: t.avatar
               };
             });
+            await supabase.from('testimonials').delete().neq('id', '00000000-0000-0000-0000-000000000000');
             const { data: inserted } = await supabase
               .from('testimonials')
               .insert(seedPayload)
               .select();
             if (inserted && inserted.length > 0) return inserted;
           } catch (seedErr) {
-            console.warn('Auto-seed testimonials failed:', seedErr);
+            console.warn('Sync testimonials to Supabase failed:', seedErr);
           }
         }
       } catch (err) {
@@ -40,21 +41,8 @@ export const testimonialsService = {
       }
     }
 
-    const stored = localStorage.getItem(LOCAL_STORAGE_TESTIMONIALS_KEY);
-    if (!stored) {
-      localStorage.setItem(LOCAL_STORAGE_TESTIMONIALS_KEY, JSON.stringify(testimonialsList));
-      return testimonialsList;
-    }
-    try {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed) && parsed.length >= 6) {
-        return parsed;
-      }
-      localStorage.setItem(LOCAL_STORAGE_TESTIMONIALS_KEY, JSON.stringify(testimonialsList));
-      return testimonialsList;
-    } catch {
-      localStorage.setItem(LOCAL_STORAGE_TESTIMONIALS_KEY, JSON.stringify(testimonialsList));
-      return testimonialsList;
-    }
+    // Toujours retourner la liste fraîche complète de 12 témoignages
+    localStorage.setItem(LOCAL_STORAGE_TESTIMONIALS_KEY, JSON.stringify(testimonialsList));
+    return testimonialsList;
   }
 };
