@@ -1,23 +1,23 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { initialVehicles } from '../data/vehiclesData';
 import { vehiclesService } from '../services/vehiclesService';
 import { useToast } from './ToastContext';
 
 const VehicleContext = createContext(null);
 
 export const VehicleProvider = ({ children }) => {
-  const [vehicles, setVehicles] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [vehicles, setVehicles] = useState(initialVehicles);
+  const [loading, setLoading] = useState(false);
   const { addToast } = useToast();
 
   const fetchVehicles = async () => {
     try {
-      setLoading(true);
       const data = await vehiclesService.getAllVehicles();
-      setVehicles(data || []);
+      if (data && data.length > 0) {
+        setVehicles(data);
+      }
     } catch (err) {
       console.error('Failed to load vehicles:', err);
-    } finally {
-      setLoading(false);
     }
   };
 
