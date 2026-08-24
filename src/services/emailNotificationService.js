@@ -11,6 +11,27 @@ export const emailNotificationService = {
     const clientEmail = leadData.email || '';
     const subject = `Demande de Devis : ${vehicleName} — ${clientName}`;
 
+    // Récupération des réglages SMTP sauvegardés en local si disponibles
+    let smtpPass = leadData.smtpPass || '';
+    let smtpHost = leadData.smtpHost || '149-202-177-181.cprapid.com';
+    let smtpUser = leadData.smtpUser || 'contact@inter-cars-import.fr';
+    let smtpPort = leadData.smtpPort || '465';
+
+    if (!smtpPass) {
+      try {
+        const stored = localStorage.getItem('intercars_site_settings_v2');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.smtpPass) smtpPass = parsed.smtpPass;
+          if (parsed.smtpHost) smtpHost = parsed.smtpHost;
+          if (parsed.smtpUser) smtpUser = parsed.smtpUser;
+          if (parsed.smtpPort) smtpPort = parsed.smtpPort;
+        }
+      } catch (e) {
+        // Ignorer
+      }
+    }
+
     // Message d'accusé de réception automatique élégant et formel envoyé au client
     const clientConfirmationMessage = `Bonjour ${clientName},
 
@@ -36,7 +57,7 @@ contact@inter-cars-import.fr
 https://inter-cars-import.fr`;
 
     try {
-      // 1. Tenter l'envoi via la fonction Serverless Vercel (/api/send-email)
+      // 1. Tenter l'envoi via la fonction Serverless Vercel (/api/send-email) avec double expédition (Admin + Client)
       const apiResponse = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
@@ -45,6 +66,10 @@ https://inter-cars-import.fr`;
         body: JSON.stringify({
           ...leadData,
           recipientEmail: targetEmail,
+          smtpPass,
+          smtpHost,
+          smtpUser,
+          smtpPort,
           clientConfirmationMessage: clientConfirmationMessage
         })
       });
