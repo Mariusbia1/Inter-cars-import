@@ -1,6 +1,6 @@
 export const salesFaqs = [
   {
-    question: "Pourquoi acheter votre véhicule chez Inter Cars ?",
+    question: "Pourquoi acheter votre véhicule chez Inter Cars Import ?",
     answer: "Nous collaborons avec un réseau de concessions partenaires exclusifs en France. Chaque véhicule vendu fait l'objet d'un contrôle rigoureux en 150 points, d'un historique d'entretien officiel vérifié et d'une garantie complète pour un achat en toute sérénité."
   },
   {

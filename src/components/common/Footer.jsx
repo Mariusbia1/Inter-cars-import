@@ -53,12 +53,12 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
           {/* Colonne 1 & 2 : Présentation & Wordmark */}
           <div className="lg:col-span-2 space-y-5">
-            <Link to="/" className="inline-block group" aria-label="Accueil Inter Cars">
+            <Link to="/" className="inline-block group" aria-label="Accueil Inter Cars Import">
               <BrandLogo size="lg" />
             </Link>
 
             <p className="text-sm text-slate-300 leading-relaxed max-w-md font-light">
-              Spécialiste de la vente de véhicules d'occasion rigoureusement audités en 150 points de contrôle, en partenariat exclusif avec les concessions officielles en France.
+              <strong>Inter Cars Import</strong> est spécialiste de la vente de véhicules d'occasion rigoureusement audités en 150 points de contrôle, en partenariat exclusif avec les concessions officielles en France.
             </p>
           </div>
 
@@ -160,7 +160,7 @@ export const Footer = () => {
         {/* Barre Inférieure */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <div>
-            © {new Date().getFullYear()} Inter Cars. Tous droits réservés.
+            © {new Date().getFullYear()} Inter Cars Import. Tous droits réservés.
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">

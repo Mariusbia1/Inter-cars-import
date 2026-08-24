@@ -171,7 +171,7 @@ export const MethodPage = () => {
                 <div className="lg:col-span-4 flex items-center justify-center">
                   <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-br from-rolex to-rolex-800 border-2 border-gold/40 shadow-rolex-glow flex flex-col items-center justify-center text-gold group">
                     <Icon className="w-14 h-14 mb-2 group-hover:scale-110 transition-transform" />
-                    <span className="text-xs font-serif font-bold tracking-widest uppercase text-white/90">Inter Cars</span>
+                    <span className="text-xs font-serif font-bold tracking-widest uppercase text-white/90">Inter Cars Import</span>
                   </div>
                 </div>
               </motion.div>
@@ -186,7 +186,7 @@ export const MethodPage = () => {
           <SectionHeader
             dark
             badge="Comparatif du Marché"
-            title="Pourquoi Choisir Inter Cars ?"
+            title="Pourquoi Choisir Inter Cars Import ?"
             subtitle="Analyse comparative objective entre notre service avec partenaires exclusifs, l'achat entre particuliers et d'autres circuits."
           />
 
@@ -196,7 +196,7 @@ export const MethodPage = () => {
                 <tr>
                   <th className="p-4 sm:p-6">Critère de Vente</th>
                   <th className="p-4 sm:p-6 text-center text-gold-light font-bold bg-rolex/60 border-x border-gold/30">
-                    Inter Cars
+                    Inter Cars Import
                   </th>
                   <th className="p-4 sm:p-6 text-center text-slate-300">Achat entre Particuliers</th>
                   <th className="p-4 sm:p-6 text-center text-slate-300">Vendeur Traditionnel</th>

@@ -122,7 +122,7 @@ export const GuaranteesPage = () => {
 
               <div className="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
                 <p>
-                  Chez <strong>Inter Cars</strong>, chaque transaction est encadrée par un contrat de vente officiel. Nous vous garantissons une clarté totale sur le prix, les garanties et les caractéristiques du véhicule.
+                  Chez <strong>Inter Cars Import</strong>, chaque transaction est encadrée par un contrat de vente officiel. Nous vous garantissons une clarté totale sur le prix, les garanties et les caractéristiques du véhicule.
                 </p>
                 <p>
                   Les fonds sont sécurisés et la vente n'est conclue qu'après validation complète de la conformité technique du véhicule et de son dossier administratif.

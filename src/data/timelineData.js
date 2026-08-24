@@ -2,7 +2,7 @@ export const companyMilestones = [
   {
     year: '2016',
     title: 'Fondation & Vente Automobile',
-    description: "Création d'Inter Cars par des passionnés d'automobile, avec une mission limpide : proposer des véhicules d'occasion rigoureusement contrôlés avec une traçabilité totale et un service transparent."
+    description: "Création d'Inter Cars Import par des passionnés d'automobile, avec une mission limpide : proposer des véhicules d'occasion rigoureusement contrôlés avec une traçabilité totale et un service transparent."
   },
   {
     year: '2019',

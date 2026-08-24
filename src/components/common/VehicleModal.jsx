@@ -126,7 +126,7 @@ export const VehicleModal = ({ vehicle, onClose, onOpenQuotation }) => {
                     </div>
                     <div>
                       <h5 className="text-sm font-bold text-slate-900">{vehicle.client_name}</h5>
-                      <p className="text-xs text-slate-500">Client Inter Cars ({vehicle.client_city})</p>
+                      <p className="text-xs text-slate-500">Client Inter Cars Import ({vehicle.client_city})</p>
                     </div>
                   </div>
                   <div className="flex text-gold">
