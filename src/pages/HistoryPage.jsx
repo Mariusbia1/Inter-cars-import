@@ -55,7 +55,7 @@ export const HistoryPage = () => {
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Découvrez la genèse d'Inter Cars, notre engagement envers la transparence et notre réseau de concessions partenaires exclusifs en France.
+            Découvrez la genèse d'Inter Cars Import, notre engagement envers la transparence et notre réseau de concessions partenaires exclusifs en France.
           </p>
         </div>
       </section>
@@ -78,7 +78,7 @@ export const HistoryPage = () => {
                   Acheter un véhicule d'occasion doit être une expérience sereine, transparente et sécurisée. Trop souvent, le marché de l'occasion manque de clarté sur l'historique réel des entretiens et l'état mécanique approfondi.
                 </p>
                 <p>
-                  Chez <strong>Inter Cars</strong>, nous avons fait le choix de la rigueur absolue. Grâce à nos accords avec des concessions officielles partenaires en France, chaque véhicule proposé est rigoureusement audité sur 150 points de contrôle, révisé et garanti avec son carnet constructeur à jour.
+                  Chez <strong>Inter Cars Import</strong>, nous avons fait le choix de la rigueur absolue. Grâce à nos accords avec des concessions officielles partenaires en France, chaque véhicule proposé est rigoureusement audité sur 150 points de contrôle, révisé et garanti avec son carnet constructeur à jour.
                 </p>
               </div>
 
@@ -186,7 +186,7 @@ export const HistoryPage = () => {
           <SectionHeader
             badge="L'Équipe"
             title="Des Spécialistes Dévoués à Votre Projet"
-            subtitle="Chaque membre d'Inter Cars apporte une expertise pointue en mécanique automobile, gestion de dossiers et accompagnement client."
+            subtitle="Chaque membre d'Inter Cars Import apporte une expertise pointue en mécanique automobile, gestion de dossiers et accompagnement client."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

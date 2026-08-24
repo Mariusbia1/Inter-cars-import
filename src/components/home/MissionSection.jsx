@@ -66,7 +66,7 @@ export const MissionSection = () => {
               align="left"
               badge="Notre Mission"
               title="L'Excellence Automobile avec nos Partenaires en France"
-              subtitle="Inter Cars s'engage à vous proposer des véhicules d'occasion rigoureusement contrôlés, issus directement de concessions partenaires officielles en France."
+              subtitle="Inter Cars Import s'engage à vous proposer des véhicules d'occasion rigoureusement contrôlés, issus directement de concessions partenaires officielles en France."
               className="mb-6"
             />
 

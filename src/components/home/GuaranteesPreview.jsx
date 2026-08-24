@@ -36,7 +36,7 @@ export const GuaranteesPreview = () => {
           dark
           badge="Sécurité & Confiance"
           title="Nos Garanties Contractuelles"
-          subtitle="Acheter un véhicule chez Inter Cars ne doit comporter aucun doute. Nous engageons notre responsabilité sur chaque véhicule livré."
+          subtitle="Acheter un véhicule chez Inter Cars Import ne doit comporter aucun doute. Nous engageons notre responsabilité sur chaque véhicule livré."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">

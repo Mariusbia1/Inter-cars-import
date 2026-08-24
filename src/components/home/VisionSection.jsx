@@ -83,7 +83,9 @@ export const VisionSection = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gold/40">
               <img
                 src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1200&q=80"
-                alt="Véhicule vendu par Inter Cars"
+                alt="Véhicule vendu par Inter Cars Import"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-[400px] sm:h-[500px] object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />

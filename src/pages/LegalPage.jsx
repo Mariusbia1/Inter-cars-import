@@ -59,7 +59,7 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">1. Objet du Contrat de Vente</h3>
                 <p>
-                  Inter Cars propose la vente de véhicules d'occasion rigoureusement contrôlés, en partenariat avec son réseau de concessions officielles en France. Le bon de commande définit les caractéristiques précises du véhicule retenu.
+                  Inter Cars Import propose la vente de véhicules d'occasion rigoureusement contrôlés, en partenariat avec son réseau de concessions officielles en France. Le bon de commande définit les caractéristiques précises du véhicule retenu.
                 </p>
               </div>
               <div>
@@ -80,9 +80,9 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">1. Éditeur de la Plateforme</h3>
                 <p>
-                  Le site web <strong>Inter Cars</strong> est édité par la société Inter Cars SAS, immatriculée au RCS de Cannes.<br />
+                  Le site web <strong>Inter Cars Import</strong> est édité par la société Inter Cars Import SAS, immatriculée au RCS de Cannes.<br />
                   Siège social : Showroom Commercial, Axe Cannes — Monaco.<br />
-                  Directeur de la publication : Direction Générale Inter Cars.
+                  Directeur de la publication : Direction Générale Inter Cars Import.
                 </p>
               </div>
               <div>
@@ -94,7 +94,7 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">3. Propriété Intellectuelle</h3>
                 <p>
-                  L'ensemble des visuels, logos, textes et éléments graphiques sont la propriété exclusive d'Inter Cars. Toute reproduction sans autorisation préalable est interdite.
+                  L'ensemble des visuels, logos, textes et éléments graphiques sont la propriété exclusive d'Inter Cars Import. Toute reproduction sans autorisation préalable est interdite.
                 </p>
               </div>
             </>

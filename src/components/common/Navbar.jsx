@@ -49,7 +49,7 @@ export const Navbar = () => {
           {/* LIGNE DU HAUT : Logo officiel à gauche | Téléphone & Bouton d'action à droite */}
           <div className="flex items-center justify-between py-2 sm:py-2.5 border-b border-white/15 transition-colors duration-300">
             {/* Logo Officiel */}
-            <Link to="/" className="flex items-center group py-0.5" aria-label="Accueil Inter Cars">
+            <Link to="/" className="flex items-center group py-0.5" aria-label="Accueil Inter Cars Import">
               <BrandLogo size="md" />
             </Link>
 

@@ -70,7 +70,7 @@ export const WhyUsGrid = () => {
                   </p>
                 </div>
                 <div className="pt-4 mt-4 border-t border-slate-100/80 flex items-center text-xs font-semibold text-gold group-hover:text-gold-dark">
-                  <span>Engagement Inter Cars</span>
+                  <span>Engagement Inter Cars Import</span>
                 </div>
               </motion.div>
             );
