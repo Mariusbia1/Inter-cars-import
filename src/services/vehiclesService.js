@@ -1,10 +1,10 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { initialVehicles } from '../data/vehiclesData';
 
-const LOCAL_STORAGE_VEHICLES_KEY = 'intercars_vehicles_v4';
+const LOCAL_STORAGE_VEHICLES_KEY = 'intercars_vehicles_v5';
 
 export const vehiclesService = {
-  // Récupérer tous les véhicules (avec synchronisation propre vers Supabase si connecté)
+  // Récupérer tous les véhicules (avec synchronisation forcée et garantie vers Supabase si connecté)
   async getAllVehicles() {
     if (isSupabaseConfigured()) {
       try {
@@ -13,11 +13,18 @@ export const vehiclesService = {
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (!error && data && data.length >= 8) {
+        // Vérifier si Supabase contient déjà le catalogue à jour (Golf 8, Peugeot 3008, etc.)
+        const isUpToDate =
+          !error &&
+          data &&
+          data.length >= 8 &&
+          data.some(v => v.title && v.title.includes('Volkswagen Golf 8'));
+
+        if (isUpToDate) {
           return data;
         }
 
-        // Si la table Supabase a moins d'éléments ou est vide, on l'actualise avec nos 8 véhicules propres
+        // Si la base contient d'anciennes données ou est vide, synchronisation complète
         if (!error && initialVehicles.length > 0) {
           try {
             const seedPayload = initialVehicles.map(v => {
@@ -28,16 +35,19 @@ export const vehiclesService = {
                 gallery: [v.image_url]
               };
             });
+
             await supabase.from('delivered_vehicles').delete().neq('id', '00000000-0000-0000-0000-000000000000');
             const { data: inserted } = await supabase
               .from('delivered_vehicles')
               .insert(seedPayload)
               .select();
+
             if (inserted && inserted.length > 0) {
+              localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(inserted));
               return inserted;
             }
           } catch (seedErr) {
-            console.warn('Auto-seed Supabase failed:', seedErr);
+            console.warn('Sync vehicles to Supabase failed:', seedErr);
           }
         }
       } catch (err) {
