@@ -1,6 +1,7 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
-const ADMIN_SESSION_KEY = 'intercars_admin_session_v1';
+const ADMIN_SESSION_KEY = 'intercars_admin_session_v2';
+const SESSION_MAX_AGE_MS = 4 * 60 * 60 * 1000; // 4 Heures d'inactivité max
 
 // Hachage cryptographique SHA-256 standard Web Crypto API
 const computeHash = async (value) => {
@@ -26,14 +27,14 @@ const AUTHORIZED_ADMIN_EMAILS = [
 
 // Mots de passe d'administration acceptés
 const VALID_PASSWORD_HASHES = [
-  '2d93d9c5ab8ea64037fc02f35c60a358d13e9bf8317f7e4de1db4de62be3d3cc', // Empreinte d'origine
-  'c3d505577ec35d3be7f5097822274971ca8e8af3457e989e410dc3278a5f47cf', // InterCars2026!
-  '36d8ad45f1f1b5519b041454677111370855325609af747d8516ea1c1078b026', // intercars2026!
-  '04445e6487736590d1ef50186b414e737e0164683cbbec64e00e73c000fd3bef'  // Admin2026!
+  '2d93d9c5ab8ea64037fc02f35c60a358d13e9bf8317f7e4de1db4de62be3d3cc',
+  'c3d505577ec35d3be7f5097822274971ca8e8af3457e989e410dc3278a5f47cf',
+  '36d8ad45f1f1b5519b041454677111370855325609af747d8516ea1c1078b026',
+  '04445e6487736590d1ef50186b414e737e0164683cbbec64e00e73c000fd3bef'
 ];
 
 export const authService = {
-  // Connexion sécurisée
+  // Connexion sécurisée avec horodatage d'expiration
   async login(email, password) {
     const cleanEmail = (email || '').toLowerCase().trim();
     const cleanPassword = (password || '').trim();
@@ -55,7 +56,8 @@ export const authService = {
             id: data.user.id,
             email: data.user.email,
             role: 'Super Administrateur',
-            authenticated_at: new Date().toISOString()
+            authenticated_at: new Date().toISOString(),
+            expires_at: Date.now() + SESSION_MAX_AGE_MS
           };
           localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(user));
           return { success: true, user };
@@ -76,7 +78,8 @@ export const authService = {
         email: cleanEmail,
         name: 'Direction Inter Cars Import',
         role: 'Super Administrateur',
-        authenticated_at: new Date().toISOString()
+        authenticated_at: new Date().toISOString(),
+        expires_at: Date.now() + SESSION_MAX_AGE_MS
       };
       localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(user));
       return { success: true, user };
@@ -88,11 +91,19 @@ export const authService = {
     };
   },
 
-  // Récupérer la session active
+  // Récupérer la session active (avec contrôle de délai d'expiration)
   getCurrentUser() {
     try {
       const stored = localStorage.getItem(ADMIN_SESSION_KEY);
-      return stored ? JSON.parse(stored) : null;
+      if (!stored) return null;
+
+      const user = JSON.parse(stored);
+      // Vérification de la date limite d'expiration
+      if (user.expires_at && Date.now() > user.expires_at) {
+        localStorage.removeItem(ADMIN_SESSION_KEY);
+        return null;
+      }
+      return user;
     } catch {
       return null;
     }

@@ -9,6 +9,7 @@ import { ScrollToTop } from './components/common/ScrollToTop';
 
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
+import { AdminFloatingBar } from './components/common/AdminFloatingBar';
 
 // Pages Publiques
 import { HomePage } from './pages/HomePage';
@@ -57,6 +58,7 @@ const MainContent = () => {
         </Routes>
       </main>
       {!isAdminRoute && <Footer />}
+      <AdminFloatingBar />
     </div>
   );
 };
