@@ -3,13 +3,13 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 const SettingsContext = createContext();
 
-const SETTINGS_STORAGE_KEY = 'intercars_site_settings';
+const SETTINGS_STORAGE_KEY = 'intercars_site_settings_v2';
 
 const defaultSettings = {
   phone: '+33 (0)4 93 00 00 00',
   phoneRaw: '+33493000000',
   email: 'contact@inter-cars-import.fr',
-  notificationEmail: 'direction@intercarsimport.fr',
+  notificationEmail: 'contact@inter-cars-import.fr',
   address: "Showroom Commercial, Axe Cannes — Monaco",
 };
 
@@ -39,7 +39,7 @@ export const SettingsProvider = ({ children }) => {
             phone: data.phone || defaultSettings.phone,
             phoneRaw: (data.phone || defaultSettings.phone).replace(/[^0-9+]/g, ''),
             email: data.email || defaultSettings.email,
-            notificationEmail: data.notification_email || defaultSettings.notificationEmail,
+            notificationEmail: data.notification_email || data.email || defaultSettings.notificationEmail,
             address: data.address || defaultSettings.address,
           };
           setSettings(remoteConfig);
@@ -75,7 +75,7 @@ export const SettingsProvider = ({ children }) => {
             id: 'main_settings',
             phone: updated.phone,
             email: updated.email,
-            notification_email: updated.notificationEmail,
+            notification_email: updated.notificationEmail || updated.email,
             address: updated.address,
             updated_at: new Date().toISOString()
           });

@@ -9,8 +9,8 @@ export const SettingsManager = () => {
 
   const [formState, setFormState] = useState({
     phone: settings.phone || '+33 (0)4 93 00 00 00',
-    email: settings.email || 'contact@intercarsimport.fr',
-    notificationEmail: settings.notificationEmail || 'direction@intercarsimport.fr',
+    email: settings.email || 'contact@inter-cars-import.fr',
+    notificationEmail: settings.notificationEmail || settings.email || 'contact@inter-cars-import.fr',
     whatsapp: settings.whatsapp || '+33 6 00 00 00 00',
     address: settings.address || "Showroom Commercial, Axe Cannes — Monaco",
     businessHours: settings.businessHours || "Du Lundi au Samedi : 08h30 - 19h30",
