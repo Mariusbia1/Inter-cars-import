@@ -97,7 +97,7 @@ export const leadsService = {
 
     // 4. Déclenchement de l'envoi de notification Email
     try {
-      const recipient = leadData.routed_to_email || 'direction@intercarsimport.fr';
+      const recipient = leadData.routed_to_email || 'contact@inter-cars-import.fr';
       emailNotificationService.sendLeadNotification(createdLead, recipient);
     } catch (emailErr) {
       console.warn('Email dispatch warning:', emailErr);
