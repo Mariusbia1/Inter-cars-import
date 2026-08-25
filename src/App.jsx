@@ -10,6 +10,7 @@ import { ScrollToTop } from './components/common/ScrollToTop';
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
 import { AdminFloatingBar } from './components/common/AdminFloatingBar';
+import { CookieConsent } from './components/common/CookieConsent';
 
 // Pages Publiques
 import { HomePage } from './pages/HomePage';
@@ -59,6 +60,7 @@ const MainContent = () => {
       </main>
       {!isAdminRoute && <Footer />}
       <AdminFloatingBar />
+      {!isAdminRoute && <CookieConsent />}
     </div>
   );
 };
