@@ -24,10 +24,10 @@ export const keyStats = [
     description: 'Sélection de véhicules disponibles via notre réseau partenaire en France'
   },
   {
-    value: 10,
-    suffix: ' ans',
+    value: 'Plusieurs',
+    suffix: ' années',
     label: "D'Expérience Automobile",
-    description: 'Réseau de concessions officielles et partenaires exclusifs en France'
+    description: 'Une solide expertise et un réseau de concessions partenaires officielles en France'
   },
   {
     value: 0,
