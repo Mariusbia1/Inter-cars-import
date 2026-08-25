@@ -149,7 +149,7 @@ export const HistoryPage = () => {
             subtitle="Près d'une décennie d'exigence, de partenariats exclusifs en France et d'innovations de service."
           />
 
-          <div className="relative border-l-2 border-gold/40 ml-4 sm:ml-48 space-y-12 pl-6 sm:pl-10">
+          <div className="relative border-l-2 border-gold/40 ml-4 sm:ml-64 space-y-12 pl-6 sm:pl-10">
             {companyMilestones.map((m, idx) => (
               <motion.div
                 key={idx}
@@ -162,8 +162,8 @@ export const HistoryPage = () => {
                 {/* Pastille dorée centrée sur la ligne */}
                 <div className="absolute -left-[35px] sm:-left-[51px] top-1.5 w-5 h-5 rounded-full bg-rolex border-4 border-gold shadow-gold-glow z-10" />
 
-                {/* Année / Libellé aligné à droite avant la pastille sans chevauchement */}
-                <div className="sm:absolute sm:-left-48 sm:w-36 text-left sm:text-right font-serif font-bold text-base sm:text-lg text-rolex mb-2 sm:mb-0 top-1 whitespace-nowrap">
+                {/* Année / Libellé avec espacement généreux et sécurisé avant la pastille */}
+                <div className="sm:absolute sm:-left-64 sm:w-48 text-left sm:text-right font-serif font-bold text-base sm:text-lg text-rolex mb-2 sm:mb-0 top-1 whitespace-nowrap pr-7 tracking-wide">
                   {m.year}
                 </div>
 
