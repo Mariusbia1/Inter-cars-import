@@ -7,10 +7,12 @@ import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
 import { useLeads } from '../context/LeadsContext';
 import { useSettings } from '../context/SettingsContext';
+import { useToast } from '../context/ToastContext';
 
 export const ContactPage = () => {
   const { createLead } = useLeads();
   const { settings } = useSettings();
+  const { addToast } = useToast();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);

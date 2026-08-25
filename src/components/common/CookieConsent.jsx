@@ -9,24 +9,30 @@ export const CookieConsent = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Vérifier si le choix a déjà été enregistré
-    const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
-    if (!consent) {
-      // Déclencher après un court délai pour une apparition fluide
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 1200);
-      return () => clearTimeout(timer);
+    try {
+      const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+      if (!consent) {
+        const timer = setTimeout(() => {
+          setIsVisible(true);
+        }, 1200);
+        return () => clearTimeout(timer);
+      }
+    } catch (e) {
+      // Ignorer si restriction navigateur
     }
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, 'accepted');
+    try {
+      localStorage.setItem(COOKIE_CONSENT_KEY, 'accepted');
+    } catch (e) {}
     setIsVisible(false);
   };
 
   const handleDecline = () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, 'declined');
+    try {
+      localStorage.setItem(COOKIE_CONSENT_KEY, 'declined');
+    } catch (e) {}
     setIsVisible(false);
   };
 
