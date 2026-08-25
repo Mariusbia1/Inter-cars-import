@@ -149,7 +149,7 @@ export const HistoryPage = () => {
             subtitle="Près d'une décennie d'exigence, de partenariats exclusifs en France et d'innovations de service."
           />
 
-          <div className="relative border-l-2 border-gold/40 ml-4 sm:ml-32 space-y-12 pl-6 sm:pl-10">
+          <div className="relative border-l-2 border-gold/40 ml-4 sm:ml-48 space-y-12 pl-6 sm:pl-10">
             {companyMilestones.map((m, idx) => (
               <motion.div
                 key={idx}
@@ -159,12 +159,13 @@ export const HistoryPage = () => {
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="relative"
               >
-                {/* Pastille dorée */}
-                <div className="absolute -left-[31px] sm:-left-[47px] top-1.5 w-5 h-5 rounded-full bg-rolex border-4 border-gold shadow-gold-glow" />
+                {/* Pastille dorée centrée sur la ligne */}
+                <div className="absolute -left-[35px] sm:-left-[51px] top-1.5 w-5 h-5 rounded-full bg-rolex border-4 border-gold shadow-gold-glow z-10" />
 
-                <span className="sm:absolute sm:-left-36 top-1 font-serif font-black text-xl text-rolex block sm:inline">
+                {/* Année / Libellé aligné à droite avant la pastille sans chevauchement */}
+                <div className="sm:absolute sm:-left-48 sm:w-36 text-left sm:text-right font-serif font-bold text-base sm:text-lg text-rolex mb-2 sm:mb-0 top-1 whitespace-nowrap">
                   {m.year}
-                </span>
+                </div>
 
                 <div className="p-6 rounded-xl bg-surface border border-slate-200 shadow-sm hover:border-gold/60 transition-colors">
                   <h4 className="text-lg font-serif font-bold text-slate-900 mb-2">
