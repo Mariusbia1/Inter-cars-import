@@ -4,13 +4,13 @@ import { X, Mail, Phone, Calendar, MapPin, CheckCircle2, MessageSquare, Send, Tr
 import { useToast } from '../../context/ToastContext';
 
 export const LeadDetailModal = ({ lead, onClose, onUpdateStatus, onDelete }) => {
-  if (!lead) return null;
-
   const { addToast } = useToast();
-  const [currentStatus, setCurrentStatus] = useState(lead.status || 'Nouveau');
-  const [adminNotes, setAdminNotes] = useState(lead.admin_notes || '');
+  const [currentStatus, setCurrentStatus] = useState(lead?.status || 'Nouveau');
+  const [adminNotes, setAdminNotes] = useState(lead?.admin_notes || '');
   const [replyMessage, setReplyMessage] = useState('');
   const [isSendingReply, setIsSendingReply] = useState(false);
+
+  if (!lead) return null;
 
   const handleSaveStatus = () => {
     onUpdateStatus(lead.id, currentStatus, adminNotes);
