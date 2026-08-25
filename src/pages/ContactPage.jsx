@@ -28,7 +28,8 @@ export const ContactPage = () => {
     email: '',
     phone: '',
     delivery_city: '',
-    message: ''
+    message: '',
+    accept_privacy: false
   });
 
   const handleChange = (e) => {
@@ -47,6 +48,17 @@ export const ContactPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (step < 3) {
+      setStep((prev) => Math.min(prev + 1, 3));
+      return;
+    }
+
+    if (!formData.accept_privacy) {
+      addToast('Veuillez accepter la politique de confidentialité pour envoyer votre demande.', 'error');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -418,6 +430,31 @@ export const ContactPage = () => {
                             placeholder="ex: Paris, Cannes, Lyon, Bordeaux..."
                             className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm bg-white outline-none focus:border-rolex"
                           />
+                        </div>
+
+                        {/* Case à cocher obligatoire RGPD & Politique de Confidentialité */}
+                        <div className="pt-2">
+                          <label className="flex items-start gap-3 cursor-pointer select-none group">
+                            <input
+                              type="checkbox"
+                              name="accept_privacy"
+                              required
+                              checked={formData.accept_privacy}
+                              onChange={(e) => setFormData((prev) => ({ ...prev, accept_privacy: e.target.checked }))}
+                              className="mt-0.5 w-4 h-4 rounded border-slate-300 text-rolex focus:ring-rolex cursor-pointer shrink-0"
+                            />
+                            <span className="text-xs text-slate-600 leading-relaxed group-hover:text-slate-800 transition-colors">
+                              J'accepte la{' '}
+                              <Link
+                                to="/confidentialite"
+                                target="_blank"
+                                className="text-rolex font-semibold underline hover:text-gold transition-colors"
+                              >
+                                politique de confidentialité
+                              </Link>{' '}
+                              et j'autorise Inter Cars Import à collecter et traiter mes coordonnées dans le cadre strict de ma demande de devis.
+                            </span>
+                          </label>
                         </div>
                       </motion.div>
                     )}
