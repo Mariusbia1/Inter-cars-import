@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Database, CheckCircle2, AlertCircle, Copy, Check, Terminal, Shield, ExternalLink, Sparkles } from 'lucide-react';
+import { Database, CheckCircle2, AlertCircle, Copy, Check, Terminal, Shield, ExternalLink } from 'lucide-react';
 import { isSupabaseConfigured } from '../../lib/supabase';
 import { useToast } from '../../context/ToastContext';
 

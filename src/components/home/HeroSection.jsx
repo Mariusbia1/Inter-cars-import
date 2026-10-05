@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ShieldCheck, Award, Sparkles, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Award, ChevronLeft, ChevronRight, CheckCircle2, Car, Phone } from 'lucide-react';
 import { LuxuryButton } from '../common/LuxuryButton';
 
 export const HeroSection = () => {
@@ -8,26 +8,26 @@ export const HeroSection = () => {
     {
       id: 1,
       image: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1400&q=75',
-      badge: "Vente de Véhicules d'Occasion Certifiés",
-      title: "L'Exigence Automobile",
-      highlight: 'En France.',
-      subtitle: "Vente de véhicules d'occasion audités en 150 points de contrôle, issus de notre réseau exclusif de concessions partenaires en France."
+      badge: "Véhicules Disponibles & Prêts à Partir",
+      title: "Des Véhicules d'Occasion",
+      highlight: 'Disponibles Immédiatement.',
+      subtitle: "Consultez notre sélection de véhicules récents rigoureusement audités en 150 points de contrôle, issus directement de nos concessions partenaires en France."
     },
     {
       id: 2,
       image: 'https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1400&q=75',
-      badge: 'Réseau Partenaire Exclusif en France',
-      title: 'Des Véhicules Sélectionnés',
-      highlight: 'Avec Rigueur.',
-      subtitle: "Sportives, berlines et SUV soigneusement contrôlés, garantis avec historique constructeur vérifié et prêts à prendre la route."
+      badge: 'Stock & Arrivages Réguliers en France',
+      title: 'Une Sélection Exigeante',
+      highlight: 'Pour Chaque Client.',
+      subtitle: "Sportives, berlines familiales et SUV de prestige contrôlés par nos techniciens, avec historique constructeur vérifié et garantie complète."
     },
     {
       id: 3,
       image: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1400&q=75',
-      badge: 'Service Clé en Main',
-      title: 'La Sérénité Absolue',
-      highlight: 'De A à Z.',
-      subtitle: "Prise en charge intégrale des formalités administratives, carte grise et livraison sécurisée directement chez vous ou en showroom."
+      badge: 'Accompagnement Humain & Personnalisé',
+      title: 'Votre Projet Automobile',
+      highlight: 'En Toute Sérénité.',
+      subtitle: "Un conseiller dédié vous accompagne à chaque étape : de la réservation jusqu'à la livraison à votre domicile avec prise en charge intégrale de la carte grise."
     }
   ];
 
@@ -58,7 +58,7 @@ export const HeroSection = () => {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background Image Carousel - Lumineux et net */}
+      {/* Background Image Carousel */}
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">
           <motion.img
@@ -75,7 +75,7 @@ export const HeroSection = () => {
           />
         </AnimatePresence>
 
-        {/* Dégradé fluide sombre sans flash */}
+        {/* Dégradé fluide sombre */}
         <div className="absolute inset-0 bg-gradient-to-r from-rolex-dark/90 via-rolex-dark/65 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-rolex-dark/80 via-transparent to-rolex-dark/40" />
       </div>
@@ -92,7 +92,7 @@ export const HeroSection = () => {
               transition={{ duration: 0.4 }}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rolex-forest/90 border border-gold/50 text-gold text-xs font-bold uppercase tracking-widest shadow-gold-glow backdrop-blur-md"
             >
-              <Sparkles className="w-3.5 h-3.5 text-gold" />
+              <Car className="w-3.5 h-3.5 text-gold" />
               <span>{currentSlide.badge}</span>
             </motion.div>
           </AnimatePresence>
@@ -134,22 +134,23 @@ export const HeroSection = () => {
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2"
           >
             <LuxuryButton
-              to="/contact"
+              to="/vehicules-livres"
               variant="gold"
               size="md"
-              icon={ArrowRight}
+              icon={Car}
               className="shadow-gold-glow font-bold tracking-wider text-xs sm:text-sm"
             >
-              Démarrer mon projet
+              Découvrir nos véhicules disponibles
             </LuxuryButton>
 
             <LuxuryButton
-              to="/vehicules-livres"
+              to="/contact"
               variant="outline-white"
               size="md"
+              icon={Phone}
               className="font-semibold tracking-wider text-xs sm:text-sm"
             >
-              Explorer les véhicules disponibles
+              Contacter un conseiller
             </LuxuryButton>
           </motion.div>
 
@@ -157,15 +158,15 @@ export const HeroSection = () => {
           <div className="pt-4 sm:pt-6 grid grid-cols-2 sm:grid-cols-3 gap-3 border-t border-white/15 text-xs text-slate-200">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-gold shrink-0" />
-              <span>Achat & Vente Sécurisés</span>
+              <span>Véhicules en Stock & Arrivages</span>
             </div>
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-gold shrink-0" />
-              <span>Audit 150 points certifié</span>
+              <span>Audit 150 points par nos experts</span>
             </div>
             <div className="flex items-center gap-2 col-span-2 sm:col-span-1">
               <Award className="w-4 h-4 text-gold shrink-0" />
-              <span>180+ véhicules livrés</span>
+              <span>Garantie & Suivi Personnalisé</span>
             </div>
           </div>
         </div>

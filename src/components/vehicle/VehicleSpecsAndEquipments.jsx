@@ -12,7 +12,7 @@ import {
   Award, 
   Car, 
   Layers, 
-  Sparkles,
+  Wrench,
   Calculator,
   ChevronRight,
   Info
@@ -44,7 +44,7 @@ export const VehicleSpecsAndEquipments = ({ vehicle }) => {
     { icon: Car, label: 'Carrosserie / Portes', value: `${vehicle?.category || 'Berline'} • ${vehicle?.specs?.doors || '5 portes'}` },
     { icon: Layers, label: 'Nombre de places', value: vehicle?.specs?.seats || '5 places' },
     { icon: Award, label: 'Historique', value: vehicle?.specs?.owners_count || '1ère Main' },
-    { icon: Sparkles, label: 'Garantie incluse', value: vehicle?.warranty || 'Garantie Constructeur' },
+    { icon: ShieldCheck, label: 'Garantie incluse', value: vehicle?.warranty || 'Garantie Constructeur' },
   ];
 
   const auditCategories = [
@@ -147,7 +147,7 @@ export const VehicleSpecsAndEquipments = ({ vehicle }) => {
                 : 'border-transparent text-slate-500 hover:text-slate-900'
             }`}
           >
-            <Sparkles className="w-4 h-4 text-gold" />
+            <Wrench className="w-4 h-4 text-gold" />
             Équipements & Options ({vehicle?.equipments?.reduce((acc, g) => acc + g.items.length, 0) || 16})
           </button>
 

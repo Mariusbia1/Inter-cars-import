@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Award, HeartHandshake, Eye, Sparkles, ChevronRight, ArrowRight } from 'lucide-react';
+import { Shield, Award, HeartHandshake, Eye, ChevronRight, ArrowRight } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
 import { companyMilestones, teamMembers } from '../data/timelineData';

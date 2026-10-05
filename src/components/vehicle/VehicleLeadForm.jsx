@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, CheckCircle2, ShieldCheck, Lock, Phone, Mail, User, MapPin, Sparkles } from 'lucide-react';
+import { Send, CheckCircle2, ShieldCheck, Lock, Phone, Mail, User, MapPin, Car } from 'lucide-react';
 import { useLeads } from '../../context/LeadsContext';
 import { useToast } from '../../context/ToastContext';
 import { Link } from 'react-router-dom';

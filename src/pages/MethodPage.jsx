@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, Check, X, Shield, Search, FileCheck, Truck, HelpCircle, ChevronDown, Sparkles } from 'lucide-react';
+import { ChevronRight, Check, X, Shield, Search, FileCheck, Truck, HelpCircle, ChevronDown } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
 import { salesFaqs } from '../data/faqData';

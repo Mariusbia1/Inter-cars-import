@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Car, CheckCircle2 } from 'lucide-react';
 import { SectionHeader } from '../common/SectionHeader';
 import { VehicleCard } from '../common/VehicleCard';
-import { VehicleModal } from '../common/VehicleModal';
 import { LuxuryButton } from '../common/LuxuryButton';
 import { useVehicles } from '../../context/VehicleContext';
 
 export const RecentDeliveries = () => {
   const { vehicles } = useVehicles();
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [activeCategory, setActiveCategory] = useState('Tous');
 
   const categories = ['Tous', 'Compacte & Citadine', 'Berline & Break', 'SUV & 4x4', 'Sportive'];
@@ -22,9 +19,9 @@ export const RecentDeliveries = () => {
     <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeader
-          badge="Vitrine des Ventes"
-          title="Véhicules Récemment Livrés"
-          subtitle="Découvrez notre sélection de véhicules vendus et livrés en toute confiance partout en France."
+          badge="Stock & Nouveaux Arrivages"
+          title="Nos Véhicules Disponibles Immédiatement"
+          subtitle="Découvrez notre sélection de véhicules d'occasion récents rigoureusement inspectés, révisés et prêts pour une livraison rapide à votre domicile."
         />
 
         {/* Filtres par catégorie */}
@@ -50,7 +47,6 @@ export const RecentDeliveries = () => {
             <VehicleCard
               key={vehicle.id}
               vehicle={vehicle}
-              onSelect={(v) => setSelectedVehicle(v)}
             />
           ))}
         </div>
@@ -63,16 +59,10 @@ export const RecentDeliveries = () => {
             size="lg"
             icon={ArrowRight}
           >
-            Consulter tous les véhicules disponibles ({vehicles.length}+ véhicules)
+            Consulter tous les véhicules disponibles en stock ({vehicles.length}+ modèles)
           </LuxuryButton>
         </div>
       </div>
-
-      {/* Modal Détails Véhicule */}
-      <VehicleModal
-        vehicle={selectedVehicle}
-        onClose={() => setSelectedVehicle(null)}
-      />
     </section>
   );
 };

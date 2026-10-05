@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Compass, Eye, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Compass, Eye, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { SectionHeader } from '../common/SectionHeader';
 import { LuxuryButton } from '../common/LuxuryButton';
 

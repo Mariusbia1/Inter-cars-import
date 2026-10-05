@@ -1,15 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, ChevronLeft, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Search, SlidersHorizontal, Car, CheckCircle2, Phone, ShieldCheck } from 'lucide-react';
 import { VehicleCard } from '../components/common/VehicleCard';
-import { VehicleModal } from '../components/common/VehicleModal';
 import { LuxuryButton } from '../components/common/LuxuryButton';
 import { useVehicles } from '../context/VehicleContext';
 import { FinalCta } from '../components/home/FinalCta';
 
 export const DeliveredVehiclesPage = () => {
   const { vehicles, loading } = useVehicles();
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Tous');
   const [sortBy, setSortBy] = useState('recent');
@@ -38,10 +36,12 @@ export const DeliveredVehiclesPage = () => {
         return matchesCategory && matchesSearch;
       })
       .sort((a, b) => {
+        if (sortBy === 'price_asc') return (a.price || 0) - (b.price || 0);
+        if (sortBy === 'price_desc') return (b.price || 0) - (a.price || 0);
         if (sortBy === 'year') return (b.year || 0) - (a.year || 0);
         if (sortBy === 'power') return (b.power_hp || 0) - (a.power_hp || 0);
         if (sortBy === 'mileage') return (a.mileage || 0) - (b.mileage || 0);
-        return new Date(b.created_at || b.delivery_date) - new Date(a.created_at || a.delivery_date);
+        return new Date(b.created_at || b.delivery_date || 0) - new Date(a.created_at || a.delivery_date || 0);
       });
   }, [vehicles, searchQuery, selectedCategory, sortBy]);
 
@@ -63,7 +63,7 @@ export const DeliveredVehiclesPage = () => {
         <div className="absolute inset-0 z-0 opacity-20">
           <img
             src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=75"
-            alt="Véhicules Livrés Inter Cars"
+            alt="Véhicules Disponibles Inter Cars"
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover"
@@ -74,17 +74,29 @@ export const DeliveredVehiclesPage = () => {
           <div className="flex items-center justify-center gap-2 text-xs text-slate-400 mb-4 uppercase tracking-widest">
             <Link to="/" className="hover:text-gold transition-colors">Accueil</Link>
             <ChevronRight className="w-3.5 h-3.5 text-gold" />
-            <span className="text-gold font-semibold">Véhicules Livrés</span>
+            <span className="text-gold font-semibold">Véhicules Disponibles</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">
-            La Galerie de nos <br />
-            <span className="text-gold-gradient">Véhicules Vendus & Livrés</span>
+            Notre Sélection de <br />
+            <span className="text-gold-gradient">Véhicules Disponibles & En Stock</span>
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Parcourez notre sélection de véhicules audités en 150 points de contrôle et livrés à domicile pour le compte de nos clients partout en France.
+            Consultez nos véhicules d'occasion récents rigoureusement audités en 150 points de contrôle, disponibles immédiatement pour achat avec garantie constructeur et livraison à domicile partout en France.
           </p>
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-300">
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Disponibles immédiatement
+            </span>
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-gold" /> Audit 150 points certifié
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Car className="w-4 h-4 text-emerald-400" /> Livraison clé en main sous 7 jours
+            </span>
+          </div>
         </div>
       </section>
 
@@ -104,7 +116,7 @@ export const DeliveredVehiclesPage = () => {
               />
             </div>
 
-            {/* Tri sélectif sans notion de prix */}
+            {/* Tri sélectif */}
             <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
               <span className="text-xs text-slate-500 font-medium flex items-center gap-1">
                 <SlidersHorizontal className="w-3.5 h-3.5 text-gold" /> Trier par :
@@ -112,9 +124,11 @@ export const DeliveredVehiclesPage = () => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 bg-surface outline-none focus:border-rolex"
+                className="px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 bg-surface outline-none focus:border-rolex cursor-pointer"
               >
-                <option value="recent">Livraisons les plus récentes</option>
+                <option value="recent">Nouveaux arrivages en premier</option>
+                <option value="price_asc">Prix croissant</option>
+                <option value="price_desc">Prix décroissant</option>
                 <option value="year">Année la plus récente</option>
                 <option value="power">Puissance moteur (ch)</option>
                 <option value="mileage">Kilométrage le plus faible</option>
@@ -138,7 +152,7 @@ export const DeliveredVehiclesPage = () => {
               </button>
             ))}
             <span className="text-xs text-slate-400 ml-auto hidden sm:block">
-              {filteredVehicles.length} véhicule(s) au total
+              {filteredVehicles.length} véhicule(s) disponible(s)
             </span>
           </div>
         </div>
@@ -150,17 +164,17 @@ export const DeliveredVehiclesPage = () => {
           {loading ? (
             <div className="text-center py-20">
               <div className="w-12 h-12 border-4 border-rolex border-t-gold rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-sm font-medium text-slate-600">Chargement de la galerie...</p>
+              <p className="text-sm font-medium text-slate-600">Chargement des véhicules...</p>
             </div>
           ) : filteredVehicles.length === 0 ? (
             <div className="text-center py-20 p-8 rounded-2xl bg-white border border-slate-200 max-w-lg mx-auto">
-              <Sparkles className="w-12 h-12 text-gold mx-auto mb-4" />
+              <Car className="w-12 h-12 text-gold mx-auto mb-4" />
               <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">Aucun véhicule ne correspond à vos critères</h3>
               <p className="text-xs text-slate-500 mb-6">
-                Notre réseau de partenaires en France dispose d'un stock dynamique. Contactez notre équipe pour connaître les nouveaux arrivages.
+                Notre réseau de partenaires dispose d'un stock dynamique. Contactez directement un conseiller pour connaître les arrivages de la semaine.
               </p>
               <LuxuryButton to="/contact" variant="gold" size="md">
-                Nous contacter
+                Contacter un conseiller
               </LuxuryButton>
             </div>
           ) : (
@@ -170,7 +184,6 @@ export const DeliveredVehiclesPage = () => {
                   <VehicleCard
                     key={vehicle.id}
                     vehicle={vehicle}
-                    onSelect={(v) => setSelectedVehicle(v)}
                   />
                 ))}
               </div>
@@ -221,12 +234,6 @@ export const DeliveredVehiclesPage = () => {
           )}
         </div>
       </section>
-
-      {/* Modal Détails Véhicule */}
-      <VehicleModal
-        vehicle={selectedVehicle}
-        onClose={() => setSelectedVehicle(null)}
-      />
 
       {/* Final CTA */}
       <FinalCta />

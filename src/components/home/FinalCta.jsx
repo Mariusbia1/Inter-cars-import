@@ -1,6 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Phone, MessageSquare, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, Phone, MessageSquare, ShieldCheck, CheckCircle2, UserCheck } from 'lucide-react';
 import { LuxuryButton } from '../common/LuxuryButton';
 import { useSettings } from '../../context/SettingsContext';
 
@@ -8,70 +7,64 @@ export const FinalCta = () => {
   const { settings } = useSettings();
 
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-br from-rolex-forest via-rolex to-rolex-forest text-white relative overflow-hidden shadow-2xl border-t border-gold/40">
-      {/* Texture de fond dorée */}
-      <div className="absolute inset-0 bg-[radial-gradient(#C6A15B_1px,transparent_1px)] [background-size:24px_24px] opacity-15" />
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-gold/10 rounded-full blur-3xl" />
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+    <section className="py-20 lg:py-28 bg-gradient-to-b from-slate-900 to-rolex-dark text-white relative overflow-hidden">
+      {/* Halo lumineux subtil */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-rolex/20 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8">
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-gold/40 text-gold text-xs font-semibold uppercase tracking-widest backdrop-blur-md"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-gold animate-spin" style={{ animationDuration: '6s' }} />
-          <span>Votre Projet Automobile Clé en Main</span>
-        </motion.div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <div className="max-w-3xl mx-auto space-y-6">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-gold/40 text-gold text-xs font-bold uppercase tracking-widest backdrop-blur-md">
+            <UserCheck className="w-3.5 h-3.5 text-gold" />
+            <span>Votre Conseiller Commercial Dédié</span>
+          </div>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white tracking-tight leading-tight"
-        >
-          Prêt à trouver votre prochain véhicule <br className="hidden sm:inline" />
-          <span className="text-gold-gradient">avec nos partenaires en France ?</span>
-        </motion.h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white tracking-tight">
+            Vous Avez Trouvé Votre Véhicule ? <br />
+            <span className="text-gold-gradient">Échangeons Directement Par Téléphone.</span>
+          </h2>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-base sm:text-lg text-slate-200 max-w-2xl mx-auto font-light leading-relaxed"
-        >
-          Transmettez-nous vos souhaits. Notre équipe vous propose les opportunités conformes issues de notre réseau de concessions partenaires en France.
-        </motion.p>
+          <p className="text-sm sm:text-base text-slate-300 font-light leading-relaxed max-w-2xl mx-auto">
+            Nos conseillers automobiles vous répondent du lundi au samedi pour vous présenter les véhicules en stock, organiser une visite ou préparer votre devis personnalisé.
+          </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
-        >
-          <LuxuryButton
-            to="/contact"
-            variant="gold"
-            size="lg"
-            icon={ArrowRight}
-            className="w-full sm:w-auto shadow-gold-glow font-bold"
-          >
-            Démarrer mon projet d'achat
-          </LuxuryButton>
+          {/* Boutons d'Action */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <LuxuryButton
+              to="/contact"
+              variant="gold"
+              size="lg"
+              icon={ArrowRight}
+              className="w-full sm:w-auto shadow-gold-glow font-bold tracking-wider"
+            >
+              Demander un devis personnalisé
+            </LuxuryButton>
 
-          <a
-            href={`tel:${settings.phoneRaw || '+33493000000'}`}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-sm bg-white/10 hover:bg-white/20 border border-white/30 text-white text-sm font-semibold uppercase tracking-wider transition-colors"
-          >
-            <Phone className="w-4 h-4 text-gold" />
-            <span>Échanger par téléphone</span>
-          </a>
-        </motion.div>
+            <a
+              href={`tel:${settings.phoneRaw || '+33493000000'}`}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-sm transition-all backdrop-blur-sm"
+            >
+              <Phone className="w-4 h-4 text-gold" />
+              <span>Appeler le {settings.phone}</span>
+            </a>
+          </div>
+
+          {/* Garanties rassurantes en bas */}
+          <div className="pt-8 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-300">
+            <div className="flex items-center justify-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-gold shrink-0" />
+              <span>Audit 150 points certifié</span>
+            </div>
+            <div className="flex items-center justify-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>Véhicules garantis 12 à 24 mois</span>
+            </div>
+            <div className="flex items-center justify-center gap-2">
+              <MessageSquare className="w-4 h-4 text-gold shrink-0" />
+              <span>Réponse garantie sous 2h ouvrées</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

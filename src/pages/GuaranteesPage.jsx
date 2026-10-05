@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRight, ShieldCheck, CheckCircle2, Landmark, FileText, Sparkles, Scale, Wrench, FileCheck2 } from 'lucide-react';
+import { ChevronRight, ShieldCheck, CheckCircle2, Landmark, FileText, Scale, Wrench, FileCheck2 } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
 import { FinalCta } from '../components/home/FinalCta';

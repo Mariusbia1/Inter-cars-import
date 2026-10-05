@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Maximize2, X, Eye, ShieldCheck, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, X, Eye, ShieldCheck } from 'lucide-react';
 
 export const VehicleGallery = ({ vehicle, activeColor }) => {
   const photos = (vehicle?.gallery && vehicle.gallery.length > 0)

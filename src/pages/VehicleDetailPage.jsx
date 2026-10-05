@@ -12,7 +12,6 @@ import {
   Gauge, 
   Zap, 
   Phone,
-  Sparkles,
   Car
 } from 'lucide-react';
 import { useVehicles } from '../context/VehicleContext';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronUp, Phone, ShieldCheck, CheckCircle2, Truck, FileCheck, Award, Sparkles, ArrowRight, Clock } from 'lucide-react';
+import { ChevronUp, Phone, ShieldCheck, CheckCircle2, Truck, FileCheck, Award, ArrowRight, Clock } from 'lucide-react';
 import { useSettings } from '../../context/SettingsContext';
 
 export const VehicleBuyBox = ({

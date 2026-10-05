@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRight, Phone, Mail, MapPin, MessageSquare, Send, CheckCircle2, ShieldCheck, Sparkles, Clock, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ChevronRight, Phone, Mail, MapPin, MessageSquare, Send, CheckCircle2, ShieldCheck, Clock, ArrowRight, ArrowLeft, Car } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
@@ -151,7 +151,7 @@ export const ContactPage = () => {
                     className="text-center py-10 space-y-6"
                   >
                     <div className="w-20 h-20 rounded-full bg-rolex text-gold border-2 border-gold flex items-center justify-center mx-auto shadow-gold-glow">
-                      <Sparkles className="w-10 h-10 animate-pulse" />
+                      <CheckCircle2 className="w-10 h-10" />
                     </div>
 
                     <h3 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900">
@@ -508,7 +508,7 @@ export const ContactPage = () => {
               <div className="p-8 rounded-3xl bg-rolex-dark text-white border border-gold/40 shadow-2xl space-y-6">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-rolex border border-gold flex items-center justify-center text-gold shadow-gold-glow">
-                    <Sparkles className="w-5 h-5" />
+                    <Phone className="w-5 h-5" />
                   </div>
                   <div>
                     <h3 className="font-serif font-bold text-lg text-white">Conseil & Vente Automobile</h3>

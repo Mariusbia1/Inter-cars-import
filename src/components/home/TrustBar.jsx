@@ -9,7 +9,7 @@ export const TrustBar = () => {
       icon: Award,
       count: 185,
       suffix: '+',
-      title: 'Véhicules Livrés',
+      title: 'Clients Accompagnés',
       subtitle: 'Partout en France & Monaco'
     },
     {
