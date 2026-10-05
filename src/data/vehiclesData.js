@@ -1,7 +1,7 @@
 // Données enrichies des véhicules d'occasion certifiés Inter Cars Import
 
-// Photos professionnelles haute résolution pour les galeries
-const sampleGalleries = {
+// Photos professionnelles haute résolution par défaut pour les galeries
+export const sampleGalleries = {
   golf: [
     'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=1200&q=80',
     'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80',
@@ -10,6 +10,14 @@ const sampleGalleries = {
     'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
     'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80',
     'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
+  ],
+  suv: [
+    'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
   ],
   peugeot: [
     'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80',
@@ -62,6 +70,121 @@ const sampleGalleries = {
     'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&q=80',
     'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1200&q=80',
   ]
+};
+
+// Fonction intelligente pour regrouper une liste d'options à plat en catégories structurées
+export const categorizeEquipments = (rawOptions = []) => {
+  if (!rawOptions || rawOptions.length === 0) return [];
+
+  // Si c'est déjà un tableau avec { category, items }
+  if (rawOptions[0] && typeof rawOptions[0] === 'object' && rawOptions[0].category) {
+    return rawOptions;
+  }
+
+  const flatList = rawOptions
+    .map((item) => (typeof item === 'string' ? item.trim() : item))
+    .filter(Boolean);
+
+  const groups = {
+    securite: { category: 'Sécurité & Aides à la conduite', items: [] },
+    confort: { category: 'Confort, Sièges & Intérieur', items: [] },
+    multimedia: { category: 'Multimédia, Audio & Connectivité', items: [] },
+    eclairage: { category: 'Éclairage & Visibilité', items: [] },
+    exterieur: { category: 'Extérieur, Châssis & Jantes', items: [] },
+    divers: { category: 'Équipements Spécifiques', items: [] }
+  };
+
+  flatList.forEach((opt) => {
+    const l = opt.toLowerCase();
+    if (
+      l.includes('assist') ||
+      l.includes('frein') ||
+      l.includes('radar') ||
+      l.includes('camera') ||
+      l.includes('caméra') ||
+      l.includes('park') ||
+      l.includes('lane') ||
+      l.includes('front') ||
+      l.includes('angle mort') ||
+      l.includes('isofix') ||
+      l.includes('alarme') ||
+      l.includes('régulateur') ||
+      l.includes('limiteur') ||
+      l.includes('sécurité') ||
+      l.includes('e-call')
+    ) {
+      groups.securite.items.push(opt);
+    } else if (
+      l.includes('siège') ||
+      l.includes('siege') ||
+      l.includes('cuir') ||
+      l.includes('volant') ||
+      l.includes('toit') ||
+      l.includes('climat') ||
+      l.includes('keyless') ||
+      l.includes('hayon') ||
+      l.includes('chauffant') ||
+      l.includes('massant') ||
+      l.includes('ventilé') ||
+      l.includes('accoudoir') ||
+      l.includes('démarrage')
+    ) {
+      groups.confort.items.push(opt);
+    } else if (
+      l.includes('cockpit') ||
+      l.includes('écran') ||
+      l.includes('ecran') ||
+      l.includes('navigation') ||
+      l.includes('discover') ||
+      l.includes('audio') ||
+      l.includes('harman') ||
+      l.includes('bose') ||
+      l.includes('carplay') ||
+      l.includes('android') ||
+      l.includes('bluetooth') ||
+      l.includes('charge') ||
+      l.includes('induction') ||
+      l.includes('dab') ||
+      l.includes('usb') ||
+      l.includes('app-connect') ||
+      l.includes('voix') ||
+      l.includes('vocale')
+    ) {
+      groups.multimedia.items.push(opt);
+    } else if (
+      l.includes('led') ||
+      l.includes('phare') ||
+      l.includes('feu') ||
+      l.includes('iq.light') ||
+      l.includes('matrix') ||
+      l.includes('clignotant') ||
+      l.includes('ambiance') ||
+      l.includes('pluie') ||
+      l.includes('lumineux')
+    ) {
+      groups.eclairage.items.push(opt);
+    } else if (
+      l.includes('jante') ||
+      l.includes('châssis') ||
+      l.includes('chassis') ||
+      l.includes('pneu') ||
+      l.includes('r-line') ||
+      l.includes('pack') ||
+      l.includes('rétroviseur') ||
+      l.includes('retroviseur') ||
+      l.includes('becquet') ||
+      l.includes('échappement') ||
+      l.includes('pedalier') ||
+      l.includes('pédalier') ||
+      l.includes('seuil')
+    ) {
+      groups.exterieur.items.push(opt);
+    } else {
+      groups.divers.items.push(opt);
+    }
+  });
+
+  return Object.values(groups).filter((g) => g.items.length > 0);
 };
 
 export const vehiclesList = [
@@ -491,41 +614,69 @@ export const enrichVehicleData = (vehicle) => {
     (vehicle.title && v.title.toLowerCase().includes(vehicle.title.toLowerCase()))
   );
 
+  const fallbackGallery = vehicle.category === 'SUV & 4x4'
+    ? sampleGalleries.suv
+    : (match?.gallery || sampleGalleries.golf);
+
   const baseGallery = (vehicle.gallery && vehicle.gallery.length > 0)
     ? vehicle.gallery
-    : (match?.gallery || [vehicle.image_url, ...sampleGalleries.golf.slice(1)]);
+    : [vehicle.image_url || fallbackGallery[0], ...fallbackGallery.slice(1)];
 
   const price = vehicle.price || match?.price || 29990;
   const discount_percent = vehicle.discount_percent || match?.discount_percent || 12;
   const monthly_price = vehicle.monthly_price || match?.monthly_price || Math.round(price / 110);
 
-  const colors = (vehicle.colors && vehicle.colors.length > 0)
-    ? vehicle.colors
-    : (match?.colors || [
-        { name: 'Dover White / Blanc Pur', hex: '#FFFFFF', status: 'ARRIVAGE', isDefault: true },
-        { name: 'Noir Intense Nacré', hex: '#1A1A1A', status: 'EN STOCK' },
-        { name: 'Gris Minéral Métallisé', hex: '#72767D', status: 'DISPONIBLE' },
-        { name: 'Bleu Profond', hex: '#1C355E', status: 'SUR COMMANDE' }
-      ]);
+  // Couleurs configurées ou déduites
+  let colors = [];
+  if (vehicle.colors && vehicle.colors.length > 0) {
+    colors = vehicle.colors;
+  } else if (vehicle.color_ext) {
+    colors = [
+      { name: vehicle.color_ext, hex: '#7D848C', status: vehicle.availability_status || 'ARRIVAGE', isDefault: true },
+      { name: 'Noir Intense', hex: '#1A1A1A', status: 'EN STOCK' },
+      { name: 'Blanc Pur', hex: '#FFFFFF', status: 'DISPONIBLE' }
+    ];
+  } else if (match?.colors) {
+    colors = match.colors;
+  } else {
+    colors = [
+      { name: 'Dover White / Blanc Pur', hex: '#FFFFFF', status: 'ARRIVAGE', isDefault: true },
+      { name: 'Noir Intense Nacré', hex: '#1A1A1A', status: 'EN STOCK' },
+      { name: 'Gris Minéral Métallisé', hex: '#72767D', status: 'DISPONIBLE' },
+      { name: 'Bleu Profond', hex: '#1C355E', status: 'SUR COMMANDE' }
+    ];
+  }
 
-  const specs = vehicle.specs || match?.specs || {
-    co2: '135 g/km (Crit’Air 1)',
-    doors: '5 portes',
-    seats: '5 places',
-    boot_volume: '420 L à 1 300 L',
-    consumption: '6.2 L / 100km mixte',
-    drivetrain: 'Traction / Intégrale',
-    first_reg_date: `${vehicle.year || '2023'}`,
-    chassis_number: 'VF3******' + (vehicle.id || '001'),
-    owners_count: '1ère Main'
+  // Spécifications techniques
+  const specs = {
+    co2: vehicle.specs?.co2 || vehicle.co2 || match?.specs?.co2 || 'Crit’Air 1',
+    doors: vehicle.specs?.doors || vehicle.doors || match?.specs?.doors || '5 portes',
+    seats: vehicle.specs?.seats || vehicle.seats || match?.specs?.seats || '5 places',
+    boot_volume: vehicle.specs?.boot_volume || vehicle.boot_volume || match?.specs?.boot_volume || '420 L à 1 300 L',
+    consumption: vehicle.specs?.consumption || vehicle.consumption || match?.specs?.consumption || '5.8 L / 100km mixte',
+    drivetrain: vehicle.specs?.drivetrain || vehicle.drivetrain || match?.specs?.drivetrain || 'Traction avant',
+    first_reg_date: vehicle.specs?.first_reg_date || vehicle.first_reg_date || match?.specs?.first_reg_date || `${vehicle.year || '2024'}`,
+    chassis_number: vehicle.specs?.chassis_number || 'VF3******' + (vehicle.id || '001'),
+    owners_count: vehicle.specs?.owners_count || match?.specs?.owners_count || '1ère Main Certifiée',
+    color_int: vehicle.specs?.color_int || vehicle.color_int || 'Noir',
+    fiscal_power: vehicle.fiscal_power || match?.fiscal_power || 8,
+    engine_cylinders: vehicle.engine || match?.engine || '2.0L Turbo'
   };
 
-  const equipments = vehicle.equipments || match?.equipments || [
-    { category: 'Sécurité & Aides à la conduite', items: ['Régulateur de vitesse adaptatif ACC', 'Freinage autonome d’urgence', 'Aide au maintien dans la voie', 'Caméra de recul et radars 360°', 'Phares Full LED adaptatifs'] },
-    { category: 'Confort & Intérieur', items: ['Climatisation automatique bi-zone', 'Sièges chauffants réglables', 'Volant multifonction en cuir', 'Accès et démarrage mains libres'] },
-    { category: 'Multimédia & Son', items: ['Écran tactile HD avec navigation GPS', 'Apple CarPlay et Android Auto', 'Bluetooth et ports USB-C', 'Système audio haute fidélité'] },
-    { category: 'Extérieur & Châssis', items: ['Jantes alliage diamantées', 'Rétroviseurs électriques et dégivrants', 'Vitres arrière surteintées', 'Contrôle de pression des pneumatiques'] }
-  ];
+  // Traitement et catégorisation des équipements
+  let equipments = [];
+  if (vehicle.equipments && vehicle.equipments.length > 0) {
+    equipments = categorizeEquipments(vehicle.equipments);
+  } else if (match?.equipments) {
+    equipments = match.equipments;
+  } else {
+    equipments = [
+      { category: 'Sécurité & Aides à la conduite', items: ['Régulateur de vitesse adaptatif ACC', 'Freinage autonome d’urgence', 'Aide au maintien dans la voie', 'Caméra de recul et radars 360°', 'Phares Full LED adaptatifs'] },
+      { category: 'Confort & Intérieur', items: ['Climatisation automatique bi-zone', 'Sièges chauffants réglables', 'Volant multifonction en cuir', 'Accès et démarrage mains libres'] },
+      { category: 'Multimédia & Son', items: ['Écran tactile HD avec navigation GPS', 'Apple CarPlay et Android Auto', 'Bluetooth et ports USB-C', 'Système audio haute fidélité'] },
+      { category: 'Extérieur & Châssis', items: ['Jantes alliage diamantées', 'Rétroviseurs électriques et dégivrants', 'Vitres arrière surteintées', 'Contrôle de pression des pneumatiques'] }
+    ];
+  }
 
   return {
     ...vehicle,
@@ -537,7 +688,7 @@ export const enrichVehicleData = (vehicle) => {
     specs,
     equipments,
     availability_status: vehicle.availability_status || match?.availability_status || 'ARRIVAGE',
-    fiscal_power: vehicle.fiscal_power || match?.fiscal_power || 10,
-    fuel_type: vehicle.fuel_type || match?.fuel_type || 'Essence / Hybride'
+    fiscal_power: vehicle.fiscal_power || match?.fiscal_power || 8,
+    fuel_type: vehicle.fuel_type || match?.fuel_type || 'Diesel / Essence'
   };
 };

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Search, MapPin, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react';
+import { Plus, Edit2, Trash2, Search, MapPin, ChevronLeft, ChevronRight, AlertCircle, ExternalLink, Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useVehicles } from '../../context/VehicleContext';
 import { VehicleFormModal } from './VehicleFormModal';
 import { LuxuryButton } from '../common/LuxuryButton';
@@ -23,7 +24,8 @@ export const VehicleManager = () => {
       (v) =>
         (v.title || '').toLowerCase().includes(search.toLowerCase()) ||
         (v.brand || '').toLowerCase().includes(search.toLowerCase()) ||
-        (v.delivery_city || '').toLowerCase().includes(search.toLowerCase())
+        (v.delivery_city || '').toLowerCase().includes(search.toLowerCase()) ||
+        (v.category || '').toLowerCase().includes(search.toLowerCase())
     );
   }, [vehicles, search]);
 
@@ -61,7 +63,7 @@ export const VehicleManager = () => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Rechercher un véhicule au catalogue..."
+            placeholder="Rechercher par marque, titre, catégorie..."
             className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm bg-surface outline-none focus:border-rolex"
           />
         </div>
@@ -74,7 +76,7 @@ export const VehicleManager = () => {
           iconPosition="left"
           className="font-bold tracking-wider text-xs"
         >
-          Ajouter un véhicule livré
+          Ajouter un véhicule (Auto-remplissage)
         </LuxuryButton>
       </div>
 
@@ -96,67 +98,113 @@ export const VehicleManager = () => {
         <>
           {/* Grille des Véhicules en Gestion */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginatedVehicles.map((vehicle) => (
-              <div
-                key={vehicle.id}
-                className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between group"
-              >
-                <div>
-                  <div className="relative h-44 bg-slate-900 overflow-hidden">
-                    <img
-                      src={vehicle.image_url}
-                      alt={vehicle.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-2 left-2 flex gap-1">
-                      <span className="px-2 py-0.5 rounded bg-rolex text-white text-[10px] font-bold uppercase">
-                        {vehicle.category}
-                      </span>
+            {paginatedVehicles.map((vehicle) => {
+              const status = vehicle.availability_status || 'ARRIVAGE';
+              const statusColor = status === 'EN STOCK' 
+                ? 'bg-emerald-600 text-white' 
+                : status === 'DISPONIBLE EN CONCESSION' || status === 'DISPONIBLE'
+                ? 'bg-blue-600 text-white'
+                : status === 'RÉSERVÉ'
+                ? 'bg-amber-600 text-white'
+                : 'bg-rolex text-gold';
+
+              return (
+                <div
+                  key={vehicle.id}
+                  className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between group hover:shadow-md transition-shadow"
+                >
+                  <div>
+                    <div className="relative h-48 bg-slate-900 overflow-hidden">
+                      <img
+                        src={vehicle.image_url}
+                        alt={vehicle.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => {
+                          e.target.src = 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=600&q=80';
+                        }}
+                      />
+                      <div className="absolute top-2 left-2 flex gap-1">
+                        <span className="px-2 py-0.5 rounded bg-rolex-dark/90 text-gold text-[10px] font-bold uppercase border border-gold/30">
+                          {vehicle.category}
+                        </span>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${statusColor}`}>
+                          {status}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/75 backdrop-blur-sm text-gold text-[10px] font-bold">
+                        {vehicle.certification || 'Audit 150 Pts'}
+                      </div>
                     </div>
-                    <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/70 backdrop-blur-sm text-gold text-[10px] font-bold">
-                      {vehicle.certification || 'Audit 150 Pts'}
+
+                    <div className="p-4 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-gold-dark">{vehicle.brand}</span>
+                        {vehicle.price ? (
+                          <span className="text-sm font-extrabold text-rolex font-sans">
+                            {Number(vehicle.price).toLocaleString('fr-FR')} €
+                          </span>
+                        ) : (
+                          <span className="text-xs font-bold text-slate-600">Sur devis</span>
+                        )}
+                      </div>
+
+                      <h4 className="font-serif font-bold text-slate-900 text-base line-clamp-1 hover:text-rolex transition-colors">
+                        <Link to={`/vehicules/${vehicle.id}`} target="_blank" rel="noopener noreferrer">
+                          {vehicle.title}
+                        </Link>
+                      </h4>
+
+                      <div className="flex items-center justify-between text-xs text-slate-500 pt-1 border-t border-slate-100">
+                        <span>{vehicle.year} • {vehicle.mileage ? `${Number(vehicle.mileage).toLocaleString('fr-FR')} km` : 'Faible km'}</span>
+                        <span>{vehicle.power_hp ? `${vehicle.power_hp} ch` : vehicle.engine}</span>
+                      </div>
+
+                      <div className="text-[11px] text-slate-400 flex items-center justify-between">
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3 text-rolex" /> {vehicle.delivery_city || 'France'}
+                        </span>
+                        <span className="text-slate-400 font-mono text-[10px]">
+                          {vehicle.fuel_type || 'Diesel'}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="p-4 space-y-2">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-gold-dark">{vehicle.brand}</span>
-                    <h4 className="font-serif font-bold text-slate-900 text-base line-clamp-1">{vehicle.title}</h4>
-                    <div className="flex items-center justify-between text-xs text-slate-500 pt-1 border-t border-slate-100">
-                      <span>{vehicle.year} • {vehicle.mileage?.toLocaleString('fr-FR')} km</span>
-                      <span>{vehicle.power_hp} ch</span>
-                    </div>
-                    <div className="text-[11px] text-slate-400 flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-rolex" /> Livré à {vehicle.delivery_city}
-                    </div>
-                  </div>
-                </div>
+                  {/* Actions Bar */}
+                  <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <Link
+                      to={`/vehicules/${vehicle.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs font-semibold text-slate-600 hover:text-rolex flex items-center gap-1 transition-colors"
+                      title="Voir la fiche client en direct"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" /> Fiche produit
+                    </Link>
 
-                {/* Actions Bar */}
-                <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-[10px] text-slate-400 font-mono">
-                    {typeof vehicle.id === 'string' && vehicle.id.length > 12 ? `${vehicle.id.slice(0, 8)}...` : vehicle.id}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => handleOpenEdit(vehicle)}
-                      className="px-2.5 py-1 rounded bg-white hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1 transition-colors"
-                    >
-                      <Edit2 className="w-3 h-3" /> Modifier
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (window.confirm(`Supprimer "${vehicle.title}" du catalogue ?`)) {
-                          deleteVehicle(vehicle.id);
-                        }
-                      }}
-                      className="p-1 rounded text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => handleOpenEdit(vehicle)}
+                        className="px-2.5 py-1 rounded bg-white hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1 transition-colors"
+                      >
+                        <Edit2 className="w-3 h-3" /> Modifier
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (window.confirm(`Supprimer "${vehicle.title}" du catalogue ?`)) {
+                            deleteVehicle(vehicle.id);
+                          }
+                        }}
+                        className="p-1 rounded text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                        title="Supprimer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Pagination */}
@@ -214,3 +262,4 @@ export const VehicleManager = () => {
     </div>
   );
 };
+
