@@ -1,5 +1,5 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { initialVehicles } from '../data/vehiclesData';
+import { initialVehicles, enrichVehicleData } from '../data/vehiclesData';
 
 const LOCAL_STORAGE_VEHICLES_KEY = 'intercars_vehicles_live_v1';
 
@@ -32,7 +32,7 @@ export const vehiclesService = {
           .order('created_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
-          return data.map(v => ({
+          return data.map(v => enrichVehicleData({
             ...v,
             category: mapCategoryFromDb(v.category, v.model)
           }));
@@ -44,21 +44,51 @@ export const vehiclesService = {
 
     const stored = localStorage.getItem(LOCAL_STORAGE_VEHICLES_KEY);
     if (!stored) {
-      localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(initialVehicles));
-      return initialVehicles;
+      const enrichedInitial = initialVehicles.map(v => enrichVehicleData(v));
+      localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(enrichedInitial));
+      return enrichedInitial;
     }
     try {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      return parsed.map(v => enrichVehicleData(v));
     } catch {
-      return initialVehicles;
+      return initialVehicles.map(v => enrichVehicleData(v));
     }
+  },
+
+  // Récupérer un véhicule spécifique par son ID
+  async getVehicleById(id) {
+    if (!id) return null;
+
+    if (isSupabaseConfigured()) {
+      try {
+        const { data, error } = await supabase
+          .from('delivered_vehicles')
+          .select('*')
+          .eq('id', id)
+          .maybeSingle();
+
+        if (!error && data) {
+          return enrichVehicleData({
+            ...data,
+            category: mapCategoryFromDb(data.category, data.model)
+          });
+        }
+      } catch (err) {
+        console.warn('Supabase single vehicle fetch failed', err);
+      }
+    }
+
+    const all = await this.getAllVehicles();
+    const found = all.find(v => String(v.id) === String(id));
+    return found ? enrichVehicleData(found) : null;
   },
 
   // Ajouter un véhicule dans Supabase
   async addVehicle(vehicleData) {
     const payload = {
       created_at: new Date().toISOString(),
-      gallery: vehicleData.image_url ? [vehicleData.image_url] : [],
+      gallery: vehicleData.gallery && vehicleData.gallery.length > 0 ? vehicleData.gallery : [vehicleData.image_url],
       rating: 5,
       ...vehicleData,
       category: mapCategoryToDb(vehicleData.category)
@@ -73,10 +103,10 @@ export const vehiclesService = {
           .select();
 
         if (!error && data && data.length > 0) {
-          const created = {
+          const created = enrichVehicleData({
             ...data[0],
             category: mapCategoryFromDb(data[0].category, data[0].model)
-          };
+          });
           return created;
         }
         if (error) {
@@ -87,10 +117,10 @@ export const vehiclesService = {
       }
     }
 
-    const newVehicle = {
+    const newVehicle = enrichVehicleData({
       id: 'veh-' + Date.now(),
       ...vehicleData
-    };
+    });
     const current = await this.getAllVehicles();
     const updated = [newVehicle, ...current];
     localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(updated));
@@ -113,10 +143,10 @@ export const vehiclesService = {
           .select();
 
         if (!error && data && data.length > 0) {
-          return {
+          return enrichVehicleData({
             ...data[0],
             category: mapCategoryFromDb(data[0].category, data[0].model)
-          };
+          });
         }
       } catch (err) {
         console.warn('Supabase update vehicle failed', err);
@@ -124,7 +154,7 @@ export const vehiclesService = {
     }
 
     const current = await this.getAllVehicles();
-    const updated = current.map(item => (item.id === id ? { ...item, ...updates } : item));
+    const updated = current.map(item => (item.id === id ? enrichVehicleData({ ...item, ...updates }) : item));
     localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(updated));
     return updated.find(i => i.id === id);
   },

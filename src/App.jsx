@@ -18,6 +18,7 @@ import { HistoryPage } from './pages/HistoryPage';
 import { MethodPage } from './pages/MethodPage';
 import { GuaranteesPage } from './pages/GuaranteesPage';
 import { DeliveredVehiclesPage } from './pages/DeliveredVehiclesPage';
+import { VehicleDetailPage } from './pages/VehicleDetailPage';
 import { ContactPage } from './pages/ContactPage';
 import { LegalPage } from './pages/LegalPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -42,6 +43,8 @@ const MainContent = () => {
           <Route path="/notre-methode" element={<MethodPage />} />
           <Route path="/garanties" element={<GuaranteesPage />} />
           <Route path="/vehicules-livres" element={<DeliveredVehiclesPage />} />
+          <Route path="/vehicules/:id" element={<VehicleDetailPage />} />
+          <Route path="/vehicule/:id" element={<VehicleDetailPage />} />
           <Route path="/contact" element={<ContactPage />} />
           
           {/* Pages Légales */}

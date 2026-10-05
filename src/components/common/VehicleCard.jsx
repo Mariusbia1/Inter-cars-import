@@ -1,9 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Gauge, Zap, Calendar, MapPin, ArrowUpRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Gauge, Zap, Calendar, MapPin, ArrowUpRight, ShieldCheck, CheckCircle2, Tag } from 'lucide-react';
 import { LuxuryButton } from './LuxuryButton';
 
 export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
+  if (!vehicle) return null;
+
+  const vehicleUrl = `/vehicules/${vehicle.id}`;
+
+  const formattedPrice = vehicle.price
+    ? vehicle.price.toLocaleString('fr-FR') + ' €'
+    : '17 998 €';
+
+  const discount = vehicle.discount_percent || 12;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -13,8 +24,8 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
       transition={{ duration: 0.35, ease: 'easeOut' }}
       className={`group bg-white rounded-xl overflow-hidden border border-slate-200/80 hover:border-gold/60 shadow-luxury-card hover:shadow-luxury-hover transition-all duration-300 flex flex-col ${className}`}
     >
-      {/* Image du véhicule - 100% Propre et Dégagée sans aucun badge ni superposition */}
-      <div className="relative h-60 sm:h-64 overflow-hidden bg-slate-900">
+      {/* Image du véhicule - Lien cliquable vers la page produit */}
+      <Link to={vehicleUrl} className="relative h-60 sm:h-64 overflow-hidden bg-slate-900 block">
         <img
           src={vehicle.image_url}
           alt={vehicle.title}
@@ -24,7 +35,17 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
           height="340"
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
         />
-      </div>
+
+        {/* Badge Prix & Remise superposé avec style discret */}
+        <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10 pointer-events-none">
+          <span className="bg-slate-950/80 backdrop-blur-md text-white font-extrabold text-xs px-2.5 py-1 rounded-md border border-white/20 shadow-md">
+            {formattedPrice}
+          </span>
+          <span className="bg-[#fcd34d] text-slate-950 font-extrabold text-[11px] px-2 py-1 rounded-md shadow-md">
+            -{discount}%
+          </span>
+        </div>
+      </Link>
 
       {/* Contenu Texte sous l'image */}
       <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between bg-white">
@@ -34,14 +55,16 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
             <span className="font-bold uppercase tracking-wider text-rolex bg-rolex-50 px-2.5 py-1 rounded border border-rolex/20">
               {vehicle.category}
             </span>
-            <span className="text-slate-500 flex items-center gap-1 font-medium">
-              <MapPin className="w-3.5 h-3.5 text-gold" /> {vehicle.delivery_city || 'France'}
+            <span className="text-slate-500 flex items-center gap-1 font-medium truncate">
+              <MapPin className="w-3.5 h-3.5 text-gold shrink-0" /> {vehicle.delivery_city || 'France'}
             </span>
           </div>
 
-          <h3 className="text-lg sm:text-xl font-serif font-bold text-slate-900 group-hover:text-rolex transition-colors line-clamp-1 mb-3">
-            {vehicle.title}
-          </h3>
+          <Link to={vehicleUrl} className="block group-hover:text-rolex transition-colors">
+            <h3 className="text-lg sm:text-xl font-serif font-bold text-slate-900 line-clamp-1 mb-3 hover:text-rolex">
+              {vehicle.title}
+            </h3>
+          </Link>
 
           {/* Grille des caractéristiques */}
           <div className="grid grid-cols-3 gap-2 py-3 border-y border-slate-100 mb-4 text-xs text-slate-600">
@@ -53,7 +76,7 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
             <div className="flex flex-col items-center justify-center p-2 rounded bg-slate-50 text-center">
               <Gauge className="w-4 h-4 text-rolex mb-1" />
               <span className="font-semibold text-slate-900">{vehicle.mileage?.toLocaleString('fr-FR')} km</span>
-              <span className="text-[10px] text-slate-400">Kilométrage certifié</span>
+              <span className="text-[10px] text-slate-400">Kilométrage</span>
             </div>
             <div className="flex flex-col items-center justify-center p-2 rounded bg-slate-50 text-center">
               <Zap className="w-4 h-4 text-gold mb-1" />
@@ -75,6 +98,7 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
 
         <div className="pt-1">
           <LuxuryButton
+            to={vehicleUrl}
             onClick={() => onSelect && onSelect(vehicle)}
             variant="rolex"
             size="sm"
