@@ -2,12 +2,14 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Search, MapPin, ChevronLeft, ChevronRight, AlertCircle, ExternalLink, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useVehicles } from '../../context/VehicleContext';
-import { VehicleFormModal } from './VehicleFormModal';
+import { VehicleEditorView } from './VehicleEditorView';
 import { LuxuryButton } from '../common/LuxuryButton';
+import { useToast } from '../../context/ToastContext';
 
 export const VehicleManager = () => {
   const { vehicles, loading, addVehicle, updateVehicle, deleteVehicle } = useVehicles();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { addToast } = useToast();
+  const [viewMode, setViewMode] = useState('list'); // 'list' | 'editor'
   const [editingVehicle, setEditingVehicle] = useState(null);
   const [search, setSearch] = useState('');
 
@@ -37,22 +39,52 @@ export const VehicleManager = () => {
 
   const handleOpenAdd = () => {
     setEditingVehicle(null);
-    setIsModalOpen(true);
+    setViewMode('editor');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOpenEdit = (vehicle) => {
     setEditingVehicle(vehicle);
-    setIsModalOpen(true);
+    setViewMode('editor');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSaveVehicle = (vehicleData) => {
-    if (editingVehicle) {
-      updateVehicle(editingVehicle.id, vehicleData);
-    } else {
-      addVehicle(vehicleData);
+  const handleSaveVehicle = async (vehicleData) => {
+    try {
+      if (editingVehicle) {
+        await updateVehicle(editingVehicle.id, vehicleData);
+        addToast('Véhicule mis à jour avec succès !', 'success');
+      } else {
+        await addVehicle(vehicleData);
+        addToast('Nouveau véhicule ajouté au catalogue !', 'success');
+      }
+      setViewMode('list');
+      setEditingVehicle(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      console.error('Error saving vehicle:', err);
+      addToast("Erreur lors de l'enregistrement du véhicule", 'error');
     }
   };
 
+  const handleCancelEditor = () => {
+    setViewMode('list');
+    setEditingVehicle(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Si on est en mode Éditeur (Page Complète, PAS de popup !)
+  if (viewMode === 'editor') {
+    return (
+      <VehicleEditorView
+        vehicle={editingVehicle}
+        onSave={handleSaveVehicle}
+        onCancel={handleCancelEditor}
+      />
+    );
+  }
+
+  // Sinon Mode Liste
   return (
     <div className="space-y-6">
       {/* Action Bar */}
@@ -76,7 +108,7 @@ export const VehicleManager = () => {
           iconPosition="left"
           className="font-bold tracking-wider text-xs"
         >
-          Ajouter un véhicule (Auto-remplissage)
+          Ajouter un véhicule
         </LuxuryButton>
       </div>
 
@@ -193,6 +225,7 @@ export const VehicleManager = () => {
                         onClick={() => {
                           if (window.confirm(`Supprimer "${vehicle.title}" du catalogue ?`)) {
                             deleteVehicle(vehicle.id);
+                            addToast('Véhicule supprimé du catalogue', 'info');
                           }
                         }}
                         className="p-1 rounded text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
@@ -251,15 +284,8 @@ export const VehicleManager = () => {
           )}
         </>
       )}
-
-      {/* Modal Formulaire */}
-      <VehicleFormModal
-        vehicle={editingVehicle}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSaveVehicle}
-      />
     </div>
   );
 };
+
 
