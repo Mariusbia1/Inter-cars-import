@@ -247,7 +247,7 @@ export const VehicleDetailPage = () => {
                     {vehicle.client_name}
                   </h4>
                   <p className="text-xs text-slate-300">
-                    Acheteur vérifié • Livré à {vehicle.client_city || 'domicile'}
+                    Acheteur vérifié{vehicle.client_city ? ` • Livré à ${vehicle.client_city}` : ''}
                   </p>
                 </div>
               </div>

@@ -27,7 +27,7 @@ export const HeroSection = () => {
       badge: 'Accompagnement Humain & Personnalisé',
       title: 'Votre Projet Automobile',
       highlight: 'En Toute Sérénité.',
-      subtitle: "Un conseiller dédié vous accompagne à chaque étape : de la réservation jusqu'à la livraison à votre domicile avec prise en charge intégrale de la carte grise."
+      subtitle: "Un conseiller dédié vous accompagne à chaque étape : de la réservation jusqu'à la livraison finale avec prise en charge intégrale de la carte grise."
     }
   ];
 

@@ -775,7 +775,7 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
                 name="delivery_city"
                 value={formData.delivery_city}
                 onChange={handleChange}
-                placeholder="ex: France entière (Livrable à domicile)"
+                placeholder="ex: France entière (Livraison en 21 jours)"
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-surface text-xs sm:text-sm outline-none focus:border-rolex"
               />
             </div>
@@ -809,7 +809,7 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
               name="client_review"
               value={formData.client_review}
               onChange={handleChange}
-              placeholder="Commentaire de l'acquéreur (ex: Audit 150 points irréprochable et livraison soignée à domicile...)"
+              placeholder="Commentaire de l'acquéreur (ex: Audit 150 points irréprochable et livraison soignée en 21 jours...)"
               className="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-xs outline-none focus:border-rolex resize-none"
             />
           </div>

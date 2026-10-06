@@ -16,7 +16,7 @@ export const SettingsManager = () => {
     smtpUser: settings.smtpUser || 'contact@inter-cars-import.fr',
     smtpPass: settings.smtpPass || '',
     whatsapp: settings.whatsapp || '+33 6 00 00 00 00',
-    address: settings.address || "Showroom Commercial, Axe Cannes — Monaco",
+    address: settings.address || "Bureau Commercial, Axe Cannes — Monaco",
     businessHours: settings.businessHours || "Du Lundi au Samedi : 08h30 - 19h30",
   });
 
@@ -46,7 +46,7 @@ export const SettingsManager = () => {
           brand_sought: 'Porsche',
           model_sought: '911 GT3',
           vehicle_type: 'Sportive',
-          delivery_city: 'Showroom',
+          delivery_city: 'France',
           message: 'Test de réception du formulaire de devis officiel.'
         })
       });

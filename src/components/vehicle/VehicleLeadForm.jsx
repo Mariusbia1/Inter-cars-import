@@ -230,7 +230,7 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
                 rows="2"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                placeholder="ex: Je souhaite connaître les délais exacts pour une livraison à domicile..."
+                placeholder="ex: Je souhaite connaître les délais exacts pour la livraison en 21 jours..."
                 className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm focus:border-rolex focus:ring-1 focus:ring-rolex outline-none transition-all resize-none"
               />
             </div>

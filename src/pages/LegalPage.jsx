@@ -71,7 +71,7 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">3. Délais & Livraison</h3>
                 <p>
-                  La mise à disposition ou livraison du véhicule s'effectue sous 5 à 10 jours ouvrés suivant la validation de la commande et la finalisation des formalités de carte grise.
+                  La livraison sécurisée du véhicule s'effectue sous un délai de 21 jours suivant la validation de la commande et la finalisation des formalités de carte grise.
                 </p>
               </div>
             </>
@@ -81,7 +81,7 @@ export const LegalPage = () => {
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">1. Éditeur de la Plateforme</h3>
                 <p>
                   Le site web <strong>Inter Cars Import</strong> est édité par la société Inter Cars Import SAS, immatriculée au RCS de Cannes.<br />
-                  Siège social : Showroom Commercial, Axe Cannes — Monaco.<br />
+                  Siège social : Bureau Commercial, Axe Cannes — Monaco.<br />
                   Directeur de la publication : Direction Générale Inter Cars Import.
                 </p>
               </div>

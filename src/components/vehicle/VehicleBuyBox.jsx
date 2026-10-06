@@ -140,7 +140,7 @@ export const VehicleBuyBox = ({
         </div>
         <div className="flex items-center gap-2">
           <Truck className="w-4 h-4 text-rolex shrink-0" />
-          <span>Livraison clé en main à domicile sous 7 à 10 jours</span>
+          <span>Livraison clé en main en 21 jours</span>
         </div>
         <div className="flex items-center gap-2">
           <FileCheck className="w-4 h-4 text-emerald-600 shrink-0" />

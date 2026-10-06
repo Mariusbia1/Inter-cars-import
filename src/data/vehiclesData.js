@@ -288,7 +288,7 @@ export const vehiclesList = [
     ],
     client_name: 'Édouard de B.',
     client_city: 'Bordeaux',
-    client_review: "Parfait pour les trajets du quotidien et les voyages. Équipe professionnelle et livraison rapide à domicile.",
+    client_review: "Parfait pour les trajets du quotidien et les voyages. Équipe professionnelle et livraison rapide en 21 jours.",
     rating: 5,
     is_featured: true,
     created_at: '2026-02-10'

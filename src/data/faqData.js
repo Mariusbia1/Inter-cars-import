@@ -17,7 +17,7 @@ export const salesFaqs = [
   },
   {
     question: "Quels sont les délais et modalités de livraison en France ?",
-    answer: "Une fois la commande validée, le délai moyen de mise à disposition ou de livraison à votre domicile est de 5 à 10 jours ouvrés. Le véhicule est préparé avec un nettoyage professionnel approfondi."
+    answer: "Une fois la commande validée, le délai moyen de livraison sécurisée est de 21 jours partout en France. Le véhicule est préparé avec un nettoyage professionnel approfondi."
   },
   {
     question: "Proposez-vous la reprise de mon ancien véhicule ?",

@@ -129,7 +129,7 @@ VALUES
     'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80',
     'Alexandre D.',
     'Cannes',
-    'Inter Cars Import a déniché un exemplaire parfait chez un concessionnaire officiel. Audit 150 points irréprochable et livraison à domicile en plateau fermé.',
+    'Inter Cars Import a déniché un exemplaire parfait chez un concessionnaire officiel. Audit 150 points irréprochable et livraison sécurisée en 21 jours.',
     5,
     true
 ),
@@ -271,7 +271,7 @@ VALUES
     'Monaco (MC)',
     'Mercedes-AMG G 63 V8 Biturbo',
     5,
-    'Inter Cars Import a sécurisé l''ensemble de la transaction auprès d''une concession officielle. Contrôle minutieux du carnet, vérification de peinture au micromètre et livraison à mon domicile en camion fermé. Remarquable.',
+    'Inter Cars Import a sécurisé l''ensemble de la transaction auprès d''une concession officielle. Contrôle minutieux du carnet, vérification de peinture au micromètre et livraison sécurisée en 21 jours. Remarquable.',
     'Livraison VIP',
     'Janvier 2026',
     true,

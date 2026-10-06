@@ -197,7 +197,7 @@ export const GuaranteesPage = () => {
               <ShieldCheck className="w-8 h-8 text-rolex mb-3" />
               <h4 className="font-serif font-bold text-slate-900 mb-2">Carte Grise Définitive</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Prise en charge de la demande de changement de titulaire en préfecture (SIV) et envoi de votre carte grise à domicile.
+                Prise en charge de la demande de changement de titulaire en préfecture (SIV) et envoi de votre certificat d'immatriculation sécurisé.
               </p>
             </div>
           </div>

@@ -502,7 +502,7 @@ export const ContactPage = () => {
               </div>
             </div>
 
-            {/* Colonne Droite : Coordonnées & Showroom */}
+            {/* Colonne Droite : Coordonnées */}
             <div className="lg:col-span-5 space-y-8">
               {/* Carte Contact Direct */}
               <div className="p-8 rounded-3xl bg-rolex-dark text-white border border-gold/40 shadow-2xl space-y-6">
@@ -517,14 +517,16 @@ export const ContactPage = () => {
                 </div>
 
                 <div className="space-y-4 text-xs sm:text-sm text-slate-300">
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-gold shrink-0 mt-0.5" />
-                    <div>
-                      <strong className="text-white block mb-0.5">Showroom & Bureau Commercial</strong>
-                      {settings.address}<br />
-                      Sur rendez-vous
+                  {settings.address && (
+                    <div className="flex items-start gap-3">
+                      <MapPin className="w-5 h-5 text-gold shrink-0 mt-0.5" />
+                      <div>
+                        <strong className="text-white block mb-0.5">Bureau Commercial</strong>
+                        {settings.address}<br />
+                        Sur rendez-vous
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 text-gold shrink-0" />
@@ -566,7 +568,7 @@ export const ContactPage = () => {
                 </div>
                 <h4 className="font-serif font-bold text-slate-900 text-base">Livraison Sécurisée en France</h4>
                 <p className="text-xs text-slate-600 leading-relaxed font-light">
-                  Nos transporteurs partenaires acheminent votre véhicule directement à votre domicile ou lieu de livraison partout en France.
+                  Nos transporteurs partenaires acheminent votre véhicule avec un suivi rigoureux partout en France en 21 jours.
                 </p>
                 <div className="flex items-center justify-center gap-4 text-xs font-semibold text-rolex pt-2">
                   <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4 text-gold" /> Transport Assuré</span>

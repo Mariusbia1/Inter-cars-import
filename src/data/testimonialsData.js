@@ -6,7 +6,7 @@ export const testimonialsList = [
     vehicle_model: 'Porsche 911 (992) Carrera 4S',
     rating: 5,
     date: 'Février 2026',
-    comment: "Une prise en charge d'une efficacité rare. Véhicule trouvé auprès de leur concessionnaire partenaire officiel, révisé et livré à mon domicile avec l'ensemble des justificatifs en moins de 10 jours.",
+    comment: "Une prise en charge d'une efficacité rare. Véhicule trouvé auprès de leur concessionnaire partenaire officiel, révisé et livré avec l'ensemble des justificatifs en 21 jours.",
     avatar: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Partenaire Officiel France'
@@ -126,7 +126,7 @@ export const testimonialsList = [
     vehicle_model: 'BMW M8 Competition Gran Coupé',
     rating: 5,
     date: 'Octobre 2025',
-    comment: "Un achat réalisé en toute confiance. La traçabilité de l'historique et l'audit technique en 150 points m'ont totalement rassuré. Livraison à domicile impeccable.",
+    comment: "Un achat réalisé en toute confiance. La traçabilité de l'historique et l'audit technique en 150 points m'ont totalement rassuré. Livraison impeccable en 21 jours.",
     avatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=150&h=150&q=80',
     verified: true,
     tag: 'Audit 150 Points'

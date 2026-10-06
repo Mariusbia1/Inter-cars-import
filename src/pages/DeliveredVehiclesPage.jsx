@@ -83,7 +83,7 @@ export const DeliveredVehiclesPage = () => {
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Consultez nos véhicules d'occasion récents rigoureusement audités en 150 points de contrôle, disponibles à la vente avec garantie constructeur et livraison à domicile en 21 jours partout en France.
+            Consultez nos véhicules d'occasion récents rigoureusement audités en 150 points de contrôle, disponibles à la vente avec garantie constructeur et livraison en 21 jours partout en France.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-300">

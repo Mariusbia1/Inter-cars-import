@@ -51,7 +51,7 @@ export const MethodPage = () => {
     {
       step: '04',
       title: 'Carte Grise & Livraison Clé en Main',
-      desc: 'Nous gérons la totalité du volet administratif français (carte grise, certificat de non-gage). Votre véhicule vous est livré préparé avec soin, directement à votre adresse.',
+      desc: 'Nous gérons la totalité du volet administratif français (carte grise, certificat de non-gage). Votre véhicule vous est livré préparé avec soin en 21 jours.',
       points: [
         'Démarches administratives et carte grise française assurées',
         'Préparation esthétique et nettoyage professionnel complet',
@@ -99,7 +99,7 @@ export const MethodPage = () => {
       concession: true,
     },
     {
-      criteria: "Livraison soignée à domicile partout en France",
+      criteria: "Livraison soignée en 21 jours partout en France",
       intercars: true,
       seul: false,
       concession: "Option payante",

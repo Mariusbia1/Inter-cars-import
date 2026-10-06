@@ -41,7 +41,7 @@ export const Footer = () => {
               <CheckCircle2 className="w-6 h-6 text-gold shrink-0" />
               <div>
                 <p className="text-xs font-bold text-white uppercase tracking-wider">Livraison Clé en Main</p>
-                <p className="text-[11px] text-slate-400">À domicile ou au showroom</p>
+                <p className="text-[11px] text-slate-400">Livraison en 21 jours</p>
               </div>
             </div>
           </div>

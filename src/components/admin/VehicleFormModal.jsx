@@ -888,7 +888,7 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
                         name="delivery_city"
                         value={formData.delivery_city}
                         onChange={handleChange}
-                        placeholder="ex: France entière (Livrable à domicile)"
+                        placeholder="ex: France entière (Livraison en 21 jours)"
                         className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-surface text-xs sm:text-sm outline-none focus:border-rolex"
                       />
                     </div>
