@@ -113,16 +113,27 @@ export const VehicleManager = () => {
       {loading ? (
         <div className="text-center py-16">
           <div className="w-8 h-8 border-3 border-rolex border-t-gold rounded-full animate-spin mx-auto mb-2" />
-          <p className="text-xs text-slate-500">Chargement des véhicules...</p>
+          <p className="text-xs text-slate-500">Connexion à la base de données Supabase...</p>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-16 p-6 bg-white rounded-2xl border border-slate-200">
-          <AlertCircle className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-          <h4 className="text-sm font-bold text-slate-700">Aucun véhicule trouvé</h4>
-          <p className="text-xs text-slate-400 mb-4">Modifiez votre recherche ou ajoutez un nouveau véhicule.</p>
-          <LuxuryButton onClick={handleOpenAdd} variant="gold" size="sm" icon={Plus}>
-            Ajouter un premier véhicule
-          </LuxuryButton>
+        <div className="text-center py-16 p-6 bg-white rounded-2xl border border-slate-200 space-y-4">
+          <AlertCircle className="w-10 h-10 text-slate-300 mx-auto" />
+          <div>
+            <h4 className="text-base font-bold text-slate-800">
+              {search ? 'Aucun véhicule ne correspond à votre recherche' : 'Votre catalogue est actuellement vide'}
+            </h4>
+            <p className="text-xs text-slate-500 max-w-md mx-auto mt-1">
+              {search
+                ? 'Essayez de modifier vos termes de recherche.'
+                : 'Ajoutez votre premier véhicule avec sa fiche technique et ses photos, ou chargez les modèles d\'exemples.'}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <LuxuryButton onClick={handleOpenAdd} variant="gold" size="sm" icon={Plus}>
+              Ajouter un véhicule
+            </LuxuryButton>
+          </div>
         </div>
       ) : (
         <>
