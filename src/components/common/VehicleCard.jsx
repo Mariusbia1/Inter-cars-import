@@ -9,11 +9,12 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
 
   const vehicleUrl = `/vehicules/${vehicle.id}`;
 
-  const formattedPrice = vehicle.price
-    ? vehicle.price.toLocaleString('fr-FR') + ' €'
-    : '17 998 €';
+  const hasPrice = Boolean(vehicle.price && Number(vehicle.price) > 0);
+  const formattedPrice = hasPrice
+    ? Number(vehicle.price).toLocaleString('fr-FR') + ' €'
+    : null;
 
-  const discount = vehicle.discount_percent || 12;
+  const discount = vehicle.discount_percent;
 
   return (
     <motion.div
@@ -36,14 +37,24 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
         />
 
-        {/* Badge Prix & Remise superposé avec style discret */}
+        {/* Badge Prix & Remise superposé */}
         <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10 pointer-events-none">
-          <span className="bg-slate-950/80 backdrop-blur-md text-white font-extrabold text-xs px-2.5 py-1 rounded-md border border-white/20 shadow-md">
-            {formattedPrice}
-          </span>
-          <span className="bg-[#fcd34d] text-slate-950 font-extrabold text-[11px] px-2 py-1 rounded-md shadow-md">
-            -{discount}%
-          </span>
+          {hasPrice ? (
+            <>
+              <span className="bg-slate-950/80 backdrop-blur-md text-white font-extrabold text-xs px-2.5 py-1 rounded-md border border-white/20 shadow-md">
+                {formattedPrice}
+              </span>
+              {discount && (
+                <span className="bg-[#fcd34d] text-slate-950 font-extrabold text-[11px] px-2 py-1 rounded-md shadow-md">
+                  -{discount}%
+                </span>
+              )}
+            </>
+          ) : (
+            <span className="bg-slate-950/80 backdrop-blur-md text-white font-semibold text-xs px-2.5 py-1 rounded-md border border-white/20 shadow-md">
+              Sur devis
+            </span>
+          )}
         </div>
       </Link>
 

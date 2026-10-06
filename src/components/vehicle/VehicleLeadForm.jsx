@@ -128,13 +128,14 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
               <div>
                 <span className="font-bold text-slate-900 block text-sm">{vehicle?.title}</span>
                 <span className="text-slate-500">
-                  {vehicle?.year} • {vehicle?.mileage?.toLocaleString('fr-FR')} km • Couleur : {selectedColor?.name || 'Standard'}
+                  {vehicle?.year} • {vehicle?.mileage ? `${Number(vehicle.mileage).toLocaleString('fr-FR')} km` : 'Faible km'}
+                  {vehicle?.color_ext ? ` • ${vehicle.color_ext}` : ''}
                 </span>
               </div>
             </div>
             <div className="text-right shrink-0">
               <span className="text-base font-extrabold text-slate-900">
-                {vehicle?.price ? vehicle.price.toLocaleString('fr-FR') + ' €' : '17 998 €'}
+                {vehicle?.price ? `${Number(vehicle.price).toLocaleString('fr-FR')} €` : 'Prix sur demande'}
               </span>
               <span className="text-[10px] text-emerald-600 font-bold block">Audit 150 pts Validé</span>
             </div>

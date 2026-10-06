@@ -1,120 +1,116 @@
 import React from 'react';
-import { ChevronUp, Phone, ShieldCheck, CheckCircle2, Truck, FileCheck, Award, ArrowRight, Clock } from 'lucide-react';
+import { ShieldCheck, Truck, FileCheck, Award, Phone, Clock, CheckCircle2 } from 'lucide-react';
 import { useSettings } from '../../context/SettingsContext';
 
 export const VehicleBuyBox = ({
   vehicle,
-  selectedColor,
-  onSelectColor,
   onRequestQuoteClick
 }) => {
   const { settings } = useSettings();
 
-  const formattedPrice = vehicle?.price
-    ? vehicle.price.toLocaleString('fr-FR') + ' €'
-    : '17 998 €';
+  const hasPrice = Boolean(vehicle?.price && Number(vehicle.price) > 0);
+  const formattedPrice = hasPrice
+    ? Number(vehicle.price).toLocaleString('fr-FR') + ' €'
+    : null;
 
   const discountPercent = vehicle?.discount_percent || 12;
-  const monthlyEstimate = vehicle?.monthly_price || Math.round((vehicle?.price || 29990) / 110);
+  const monthlyEstimate = vehicle?.monthly_price || (hasPrice ? Math.round(Number(vehicle.price) / 110) : null);
 
-  const colors = vehicle?.colors && vehicle.colors.length > 0
-    ? vehicle.colors
-    : [
-        { name: 'Dover White', hex: '#FFFFFF', status: 'ARRIVAGE', isDefault: true },
-        { name: 'Noir Intense', hex: '#1A1A1A', status: 'EN STOCK' },
-        { name: 'Gris Minéral', hex: '#7D848C', status: 'DISPONIBLE' }
-      ];
-
-  const currentColor = selectedColor || colors[0];
+  const status = vehicle?.availability_status || 'ARRIVAGE';
+  const statusColor = status === 'EN STOCK' 
+    ? 'text-[#16a34a] bg-emerald-50 border-emerald-200' 
+    : status === 'DISPONIBLE EN CONCESSION' || status === 'DISPONIBLE'
+    ? 'text-blue-700 bg-blue-50 border-blue-200'
+    : status === 'RÉSERVÉ'
+    ? 'text-amber-700 bg-amber-50 border-amber-200'
+    : 'text-[#f59e0b] bg-amber-50 border-amber-200';
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 shadow-md p-5 sm:p-6 flex flex-col justify-between space-y-5">
       
-      {/* 1. Bloc Prix & Remise (Style exact de la capture) */}
+      {/* 1. Bloc Prix & Remise */}
       <div className="border-b border-slate-100 pb-4">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-sans">
-              {formattedPrice}
-            </span>
-          </div>
+        {hasPrice ? (
+          <div>
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-sans">
+                  {formattedPrice}
+                </span>
+              </div>
 
-          <div className="flex items-center gap-1.5">
-            {/* Badge Remise Jaune comme sur la capture */}
-            <span className="bg-[#fcd34d] text-slate-900 font-extrabold text-xs sm:text-sm px-2.5 py-1 rounded-md flex items-center gap-1 shadow-xs">
-              {discountPercent}%
-            </span>
-            <button
-              onClick={onRequestQuoteClick}
-              className="w-7 h-7 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors"
-              title="Détails du prix"
-              aria-label="Détails du prix"
-            >
-              <ChevronUp className="w-4 h-4 text-slate-700" />
-            </button>
-          </div>
-        </div>
+              {discountPercent > 0 && (
+                <div className="flex items-center gap-1.5">
+                  <span className="bg-[#fcd34d] text-slate-900 font-extrabold text-xs sm:text-sm px-2.5 py-1 rounded-md flex items-center gap-1 shadow-xs">
+                    -{discountPercent}%
+                  </span>
+                </div>
+              )}
+            </div>
 
-        {/* Mention clé en main & Financement */}
-        <div className="mt-2 flex flex-wrap items-center justify-between gap-1 text-xs text-slate-500">
-          <span className="font-medium text-slate-700">TTC • Prix clé en main certifié</span>
-          <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-            Dès {monthlyEstimate} € / mois
-          </span>
-        </div>
+            {/* Mention clé en main & Financement */}
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-1 text-xs text-slate-500">
+              <span className="font-medium text-slate-700">TTC • Prix clé en main certifié</span>
+              {monthlyEstimate && (
+                <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  Dès {monthlyEstimate} € / mois
+                </span>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-sans">
+                Prix sur demande
+              </span>
+              <span className="px-2.5 py-1 rounded text-[11px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
+                Sur devis
+              </span>
+            </div>
+            <p className="text-xs text-slate-500">
+              Tarif personnalisé selon options & conditions de livraison
+            </p>
+          </div>
+        )}
       </div>
 
-      {/* 2. Bloc Couleur Disponible & Variantes (Style exact de la capture) */}
-      <div className="border border-slate-200 rounded-lg p-3.5 bg-slate-50/50 space-y-3">
-        <span className="text-xs font-semibold text-slate-500 block uppercase tracking-wider">
-          Couleur disponible
-        </span>
-
-        {/* Pastilles de sélection couleur */}
-        <div className="flex flex-wrap items-center gap-3">
-          {colors.map((col, idx) => {
-            const isSelected = currentColor.name === col.name;
-            return (
-              <button
-                key={idx}
-                onClick={() => onSelectColor && onSelectColor(col)}
-                className={`relative w-8 h-8 rounded-full transition-all focus:outline-none flex items-center justify-center ${
-                  isSelected
-                    ? 'ring-2 ring-[#4ea81e] ring-offset-2 scale-110 shadow-xs'
-                    : 'ring-1 ring-slate-300 hover:scale-105 opacity-80 hover:opacity-100'
-                }`}
-                title={col.name}
-                aria-label={`Couleur ${col.name}`}
-              >
-                <span
-                  className="w-6 h-6 rounded-full border border-slate-200 shadow-inner"
-                  style={{ backgroundColor: col.hex }}
-                />
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Nom de la couleur sélectionnée & Statut (ARRIVAGE en orange comme sur la capture) */}
-        <div className="flex items-center justify-between pt-2 border-t border-slate-200/60 text-xs font-bold">
-          <span className="text-slate-800 font-medium">
-            {currentColor.name}
-          </span>
-          <span className={`px-2 py-0.5 rounded uppercase tracking-wider text-[11px] font-extrabold ${
-            (currentColor.status || 'ARRIVAGE').includes('ARRIVAGE')
-              ? 'text-[#f59e0b] bg-amber-50 border border-amber-200'
-              : 'text-[#16a34a] bg-emerald-50 border border-emerald-200'
-          }`}>
-            {currentColor.status || 'ARRIVAGE'}
+      {/* 2. Statut & Caractéristiques Clés */}
+      <div className="border border-slate-200 rounded-lg p-3.5 bg-slate-50/60 space-y-2.5">
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-slate-500 font-medium">Disponibilité :</span>
+          <span className={`px-2.5 py-0.5 rounded uppercase tracking-wider text-[11px] font-extrabold border ${statusColor}`}>
+            {status}
           </span>
         </div>
+
+        {vehicle?.color_ext && (
+          <div className="flex items-center justify-between text-xs pt-1.5 border-t border-slate-200/60">
+            <span className="text-slate-500 font-medium">Couleur extérieure :</span>
+            <span className="font-bold text-slate-800">{vehicle.color_ext}</span>
+          </div>
+        )}
+
+        {vehicle?.engine && (
+          <div className="flex items-center justify-between text-xs pt-1.5 border-t border-slate-200/60">
+            <span className="text-slate-500 font-medium">Motorisation :</span>
+            <span className="font-bold text-slate-800">{vehicle.engine} ({vehicle.power_hp || 0} ch)</span>
+          </div>
+        )}
+
+        {vehicle?.transmission && (
+          <div className="flex items-center justify-between text-xs pt-1.5 border-t border-slate-200/60">
+            <span className="text-slate-500 font-medium">Transmission :</span>
+            <span className="font-bold text-slate-800">{vehicle.transmission}</span>
+          </div>
+        )}
       </div>
 
-      {/* 3. Gros Bouton d'Action Principal Vert (Style exact de la capture : ">> RECEVEZ UN DEVIS DÉTAILLÉ") */}
+      {/* 3. Gros Bouton d'Action Principal Vert */}
       <div className="space-y-2.5">
         <button
           onClick={onRequestQuoteClick}
-          className="w-full py-4 px-6 rounded-lg bg-[#55a214] hover:bg-[#498e10] active:scale-[0.99] text-white font-extrabold text-sm sm:text-base tracking-wider uppercase shadow-lg shadow-emerald-900/15 flex items-center justify-center gap-2.5 transition-all duration-200 group"
+          className="w-full py-4 px-6 rounded-lg bg-[#55a214] hover:bg-[#498e10] active:scale-[0.99] text-white font-extrabold text-sm sm:text-base tracking-wider uppercase shadow-lg shadow-emerald-900/15 flex items-center justify-center gap-2.5 transition-all duration-200 group cursor-pointer"
         >
           <span className="text-lg font-black tracking-tighter group-hover:translate-x-0.5 transition-transform">
             &gt;&gt;

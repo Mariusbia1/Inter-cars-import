@@ -32,7 +32,6 @@ export const VehicleDetailPage = () => {
 
   const [vehicle, setVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedColor, setSelectedColor] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
 
   const quoteFormRef = useRef(null);
@@ -48,9 +47,6 @@ export const VehicleDetailPage = () => {
       if (foundInContext) {
         if (isMounted) {
           setVehicle(foundInContext);
-          if (foundInContext.colors && foundInContext.colors.length > 0) {
-            setSelectedColor(foundInContext.colors[0]);
-          }
           setLoading(false);
         }
         return;
@@ -62,9 +58,6 @@ export const VehicleDetailPage = () => {
         if (isMounted) {
           if (fetched) {
             setVehicle(fetched);
-            if (fetched.colors && fetched.colors.length > 0) {
-              setSelectedColor(fetched.colors[0]);
-            }
           }
           setLoading(false);
         }
@@ -216,20 +209,17 @@ export const VehicleDetailPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           
-          {/* Galerie Photo (7 colonnes sur grand écran) */}
+          {/* Galerie Photo (8 colonnes sur grand écran) */}
           <div className="lg:col-span-8">
             <VehicleGallery
               vehicle={vehicle}
-              activeColor={selectedColor}
             />
           </div>
 
-          {/* Bloc d'Achat & Variantes (4 colonnes sur grand écran) */}
+          {/* Bloc d'Achat & Tarification (4 colonnes sur grand écran) */}
           <div className="lg:col-span-4 sticky top-28">
             <VehicleBuyBox
               vehicle={vehicle}
-              selectedColor={selectedColor}
-              onSelectColor={(col) => setSelectedColor(col)}
               onRequestQuoteClick={handleScrollToQuoteForm}
             />
           </div>
@@ -279,7 +269,6 @@ export const VehicleDetailPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <VehicleLeadForm
           vehicle={vehicle}
-          selectedColor={selectedColor}
           formRef={quoteFormRef}
         />
       </div>
