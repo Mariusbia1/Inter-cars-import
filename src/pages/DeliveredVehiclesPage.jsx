@@ -16,7 +16,7 @@ export const DeliveredVehiclesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
 
-  const categories = ['Tous', 'Compacte & Citadine', 'Berline & Break', 'SUV & 4x4', 'Sportive'];
+  const categories = ['Tous', 'Citadine', 'Berline & Break', 'SUV & 4x4'];
 
   // Reset pagination on filter change
   useEffect(() => {
@@ -102,8 +102,8 @@ export const DeliveredVehiclesPage = () => {
         </div>
       </section>
 
-      {/* Barre de Recherche & Filtres Dynamiques (Non-sticky pour une navigation fluide et dégagée) */}
-      <section id="catalog-filters" className="py-6 bg-white border-b border-slate-200 shadow-xs relative z-10">
+      {/* Barre de Recherche & Filtres Dynamiques (Fluide sur mobile, Sticky propre sur PC) */}
+      <section id="catalog-filters" className="relative md:sticky md:top-20 lg:top-24 md:z-20 bg-white md:bg-white/95 md:backdrop-blur-md py-4 sm:py-5 border-b border-slate-200/90 shadow-xs transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Champ de recherche texte */}

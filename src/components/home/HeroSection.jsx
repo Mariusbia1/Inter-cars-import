@@ -19,7 +19,7 @@ export const HeroSection = () => {
       badge: 'Stock & Arrivages Réguliers en France',
       title: 'Une Sélection Exigeante',
       highlight: 'Pour Chaque Client.',
-      subtitle: "Sportives, berlines familiales et SUV de prestige contrôlés par nos techniciens, avec historique constructeur vérifié et garantie complète."
+      subtitle: "Citadines, berlines familiales et SUV de prestige contrôlés par nos techniciens, avec historique constructeur vérifié et garantie complète."
     },
     {
       id: 3,

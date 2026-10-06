@@ -9,7 +9,7 @@ const LeadClientSchema = z.object({
   full_name: z.string().trim().min(1).max(100).optional().default('Prospect'),
   email: z.string().trim().email().max(150).optional().or(z.literal('')),
   phone: z.string().trim().max(30).optional().default(''),
-  vehicle_type: z.string().trim().max(60).optional().default('Sportive'),
+  vehicle_type: z.string().trim().max(60).optional().default('Citadine'),
   brand_sought: z.string().trim().max(80).optional().default(''),
   model_sought: z.string().trim().max(80).optional().default(''),
   delivery_city: z.string().trim().max(80).optional().default('France'),

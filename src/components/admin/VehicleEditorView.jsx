@@ -450,10 +450,9 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
                 onChange={handleChange}
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-surface text-xs sm:text-sm font-semibold outline-none focus:border-rolex"
               >
-                <option value="SUV & 4x4">SUV & 4x4</option>
+                <option value="Citadine">Citadine</option>
                 <option value="Berline & Break">Berline & Break</option>
-                <option value="Sportive">Sportive</option>
-                <option value="Compacte & Citadine">Compacte & Citadine</option>
+                <option value="SUV & 4x4">SUV & 4x4</option>
               </select>
             </div>
           </div>

@@ -11,11 +11,11 @@ try {
   // Ignorer
 }
 
-// Mappage des catégories pour respecter la contrainte CHECK de PostgreSQL
+// Mappage des catégories pour respecter la contrainte CHECK de PostgreSQL (Supercar, Sportive, SUV Prestige, Berline GT)
 const mapCategoryToDb = (category) => {
   if (category === 'Berline & Break') return 'Berline GT';
   if (category === 'SUV & 4x4') return 'SUV Prestige';
-  if (category === 'Compacte & Citadine') return 'Sportive';
+  if (category === 'Citadine' || category === 'Compacte & Citadine' || category === 'Sportive') return 'Sportive';
   if (['Supercar', 'Sportive', 'SUV Prestige', 'Berline GT'].includes(category)) {
     return category;
   }
@@ -25,11 +25,13 @@ const mapCategoryToDb = (category) => {
 const mapCategoryFromDb = (dbCategory, model = '') => {
   if (dbCategory === 'Berline GT') return 'Berline & Break';
   if (dbCategory === 'SUV Prestige') return 'SUV & 4x4';
-  if (dbCategory === 'Supercar') return 'Sportive';
-  if (model && (model.includes('Golf') || model.includes('Mini') || model.includes('A3') || model.includes('Clio') || model.includes('208'))) {
-    return 'Compacte & Citadine';
+  if (dbCategory === 'Sportive' || dbCategory === 'Supercar' || dbCategory === 'Compacte & Citadine') {
+    return 'Citadine';
   }
-  return dbCategory || 'Sportive';
+  if (model && (model.includes('Golf') || model.includes('Mini') || model.includes('A3') || model.includes('Clio') || model.includes('208') || model.includes('Yaris'))) {
+    return 'Citadine';
+  }
+  return dbCategory === 'Berline GT' ? 'Berline & Break' : (dbCategory === 'SUV Prestige' ? 'SUV & 4x4' : 'Citadine');
 };
 
 // Encodage standardisé des métadonnées dans la colonne client_review

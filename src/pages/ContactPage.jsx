@@ -18,8 +18,8 @@ export const ContactPage = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
-    vehicle_type: 'Sportive',
-    brand_sought: 'Porsche',
+    vehicle_type: 'Citadine',
+    brand_sought: 'Volkswagen',
     model_sought: '',
     year_min: '2023',
     mileage_max: 'Moins de 25 000 km',
@@ -196,8 +196,8 @@ export const ContactPage = () => {
                           Sélectionnez la catégorie et la marque souhaitée.
                         </p>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                          {['Sportive', 'Berline & Break', 'SUV & 4x4', 'Coupé & Cabriolet'].map((cat) => (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          {['Citadine', 'Berline & Break', 'SUV & 4x4'].map((cat) => (
                             <button
                               type="button"
                               key={cat}

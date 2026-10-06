@@ -504,10 +504,9 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
                         onChange={handleChange}
                         className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-surface text-xs sm:text-sm outline-none focus:border-rolex font-medium"
                       >
-                        <option value="SUV & 4x4">SUV & 4x4</option>
+                        <option value="Citadine">Citadine</option>
                         <option value="Berline & Break">Berline & Break</option>
-                        <option value="Sportive">Sportive</option>
-                        <option value="Compacte & Citadine">Compacte & Citadine</option>
+                        <option value="SUV & 4x4">SUV & 4x4</option>
                       </select>
                     </div>
                   </div>

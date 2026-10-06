@@ -43,7 +43,7 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
         phone: formData.phone,
         brand_sought: vehicle?.brand || 'Non spécifié',
         model_sought: vehicle?.title || vehicle?.model || 'Véhicule en vitrine',
-        vehicle_type: vehicle?.category || 'Sportive & Prestige',
+        vehicle_type: vehicle?.category || 'Citadine',
         fuel_type: vehicle?.fuel_type || 'Essence / Hybride',
         delivery_city: formData.deliveryCity || vehicle?.delivery_city || 'France',
         budget_max: vehicle?.price || null,

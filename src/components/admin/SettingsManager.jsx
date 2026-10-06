@@ -43,9 +43,9 @@ export const SettingsManager = () => {
           full_name: 'Test Direction',
           email: formState.email,
           phone: formState.phone,
-          brand_sought: 'Porsche',
-          model_sought: '911 GT3',
-          vehicle_type: 'Sportive',
+          brand_sought: 'Volkswagen',
+          model_sought: 'Golf 8',
+          vehicle_type: 'Citadine',
           delivery_city: 'France',
           message: 'Test de réception du formulaire de devis officiel.'
         })

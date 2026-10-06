@@ -144,7 +144,7 @@ export const parseVehicleText = (rawText) => {
     fullTextLower.includes('alpine') ||
     fullTextLower.includes('sportive')
   ) {
-    result.category = 'Sportive';
+    result.category = 'Citadine';
   } else {
     result.category = 'Berline & Break';
   }
