@@ -315,26 +315,14 @@ export const parseVehicleText = (rawText) => {
     result.engine = `${result.fuel_type} ${result.power_hp} ch`;
   }
 
-  // Si des images ont été trouvées
+  // Si des images ont été explicitement trouvées dans le texte
   if (imageUrlsFound.length > 0) {
     result.image_url = imageUrlsFound[0];
     result.gallery_urls = imageUrlsFound.join('\n');
   } else {
-    // Proposer une galerie professionnelle de fallback par défaut
-    const defaultGallery = result.category === 'SUV & 4x4'
-      ? sampleGalleries.suv
-      : result.brand === 'Porsche'
-      ? sampleGalleries.porsche
-      : result.brand === 'Audi'
-      ? sampleGalleries.audi_a3
-      : result.brand === 'BMW'
-      ? sampleGalleries.bmw
-      : result.brand === 'Mercedes-Benz'
-      ? sampleGalleries.mercedes
-      : sampleGalleries.golf;
-
-    result.image_url = defaultGallery[0];
-    result.gallery_urls = defaultGallery.join('\n');
+    // Pas de photos automatiques : c'est l'utilisateur qui ajoute ses propres photos
+    result.image_url = '';
+    result.gallery_urls = '';
   }
 
   return result;

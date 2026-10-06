@@ -1,6 +1,6 @@
 // Utilitaire de compression et d'optimisation d'images côté client
 
-export const readFileAsOptimizedDataUrl = (file, maxWidth = 1600, quality = 0.85) => {
+export const readFileAsOptimizedDataUrl = (file, maxWidth = 1200, quality = 0.78) => {
   return new Promise((resolve, reject) => {
     if (!file || !file.type.startsWith('image/')) {
       return reject(new Error('Le fichier sélectionné n\'est pas une image valide.'));

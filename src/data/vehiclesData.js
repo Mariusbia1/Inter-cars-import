@@ -607,24 +607,27 @@ export const initialVehicles = vehiclesList;
 export const enrichVehicleData = (vehicle) => {
   if (!vehicle) return null;
 
-  // Si le véhicule correspond à l'un de nos modèles de base, enrichir avec les données complètes
-  const match = vehiclesList.find(v => 
-    v.id === vehicle.id || 
-    (vehicle.model && v.model.toLowerCase().includes(vehicle.model.toLowerCase())) ||
-    (vehicle.title && v.title.toLowerCase().includes(vehicle.title.toLowerCase()))
-  );
+  // Si c'est l'un des 8 véhicules de démonstration initiaux
+  const isSeedVehicle = vehiclesList.some(v => v.id === vehicle.id);
+  const match = isSeedVehicle ? vehiclesList.find(v => v.id === vehicle.id) : null;
 
-  const fallbackGallery = vehicle.category === 'SUV & 4x4'
-    ? sampleGalleries.suv
-    : (match?.gallery || sampleGalleries.golf);
+  // Galerie photo : respecter STRICTEMENT ce que l'utilisateur a uploadé
+  let baseGallery = [];
+  if (Array.isArray(vehicle.gallery) && vehicle.gallery.length > 0) {
+    baseGallery = vehicle.gallery;
+  } else if (vehicle.image_url) {
+    baseGallery = [vehicle.image_url];
+  } else if (match?.gallery) {
+    baseGallery = match.gallery;
+  } else {
+    baseGallery = [];
+  }
 
-  const baseGallery = (vehicle.gallery && vehicle.gallery.length > 0)
-    ? vehicle.gallery
-    : [vehicle.image_url || fallbackGallery[0], ...fallbackGallery.slice(1)];
+  const mainImageUrl = baseGallery.length > 0 ? baseGallery[0] : (vehicle.image_url || '');
 
-  const price = vehicle.price || match?.price || 29990;
-  const discount_percent = vehicle.discount_percent || match?.discount_percent || 12;
-  const monthly_price = vehicle.monthly_price || match?.monthly_price || Math.round(price / 110);
+  const price = vehicle.price || match?.price || null;
+  const discount_percent = vehicle.discount_percent ?? (match?.discount_percent || 12);
+  const monthly_price = vehicle.monthly_price || (price ? Math.round(price / 110) : null);
 
   // Couleurs configurées ou déduites
   let colors = [];

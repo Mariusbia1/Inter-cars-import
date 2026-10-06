@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Maximize2, X, Eye, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, X, Eye, ShieldCheck, Car } from 'lucide-react';
 
 export const VehicleGallery = ({ vehicle, activeColor }) => {
   const photos = (vehicle?.gallery && vehicle.gallery.length > 0)
@@ -39,8 +39,16 @@ export const VehicleGallery = ({ vehicle, activeColor }) => {
 
   if (!photos || photos.length === 0) {
     return (
-      <div className="w-full h-80 sm:h-96 bg-slate-900 rounded-xl flex items-center justify-center text-slate-400">
-        Aucune photo disponible
+      <div className="w-full h-80 sm:h-96 md:h-[480px] bg-slate-900 rounded-2xl flex flex-col items-center justify-center text-slate-400 p-8 text-center border border-slate-800 shadow-sm space-y-3">
+        <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-gold shadow-inner">
+          <Car className="w-8 h-8 text-gold" />
+        </div>
+        <div>
+          <h4 className="font-serif font-bold text-lg text-white">Photos en cours de prise de vue</h4>
+          <p className="text-xs text-slate-400 max-w-sm mt-1">
+            Les clichés détaillés de ce véhicule sont en cours de traitement par notre équipe en concession.
+          </p>
+        </div>
       </div>
     );
   }

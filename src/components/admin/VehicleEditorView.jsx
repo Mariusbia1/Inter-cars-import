@@ -112,6 +112,8 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
         client_city: vehicle.client_city || '',
         client_review: vehicle.client_review || ''
       });
+    } else {
+      setImagesList([]);
     }
   }, [vehicle]);
 
@@ -159,10 +161,15 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
       raw_equipments_text: parsed.raw_equipments_text || prev.raw_equipments_text,
     }));
 
-    // Si aucune photo n'a encore été importée et que le parser suggère une galerie par défaut
-    if (imagesList.length === 0 && parsed.gallery_urls) {
-      const defaultImgs = parsed.gallery_urls.split('\n').filter(Boolean);
-      setImagesList(defaultImgs);
+    // Si le texte contenait des liens d'images explicites
+    if (parsed.image_url || parsed.gallery_urls) {
+      const explicitUrls = (parsed.gallery_urls || parsed.image_url)
+        .split('\n')
+        .map((u) => u.trim())
+        .filter((u) => u.startsWith('http'));
+      if (explicitUrls.length > 0) {
+        setImagesList((prev) => [...prev, ...explicitUrls]);
+      }
     }
 
     const optionsCount = parsed.equipments ? parsed.equipments.length : 0;
@@ -177,56 +184,69 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
     setParseFeedback(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.title || !formData.title.trim()) {
+      setParseFeedback({
+        type: 'error',
+        message: 'Veuillez renseigner au moins le titre du véhicule.'
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Extraire les options sous forme de tableau
-    const equipmentsList = formData.raw_equipments_text
-      .split('\n')
-      .map((l) => l.replace(/^[-•*✓\s]+/, '').trim())
-      .filter((l) => l.length > 2);
+    try {
+      // Extraire les options sous forme de tableau
+      const equipmentsList = (formData.raw_equipments_text || '')
+        .split('\n')
+        .map((l) => l.replace(/^[-•*✓\s]+/, '').trim())
+        .filter((l) => l.length > 2);
 
-    const mainImageUrl = imagesList.length > 0 
-      ? imagesList[0] 
-      : 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=1200&q=80';
+      const mainImageUrl = imagesList.length > 0 ? imagesList[0] : '';
 
-    const priceNum = formData.price ? parseInt(formData.price, 10) : null;
-    const discountNum = formData.discount_percent ? parseInt(formData.discount_percent, 10) : 12;
+      const priceNum = formData.price ? parseInt(formData.price, 10) : null;
+      const discountNum = formData.discount_percent ? parseInt(formData.discount_percent, 10) : 12;
 
-    const payload = {
-      ...formData,
-      price: priceNum,
-      discount_percent: discountNum,
-      year: parseInt(formData.year, 10) || new Date().getFullYear(),
-      mileage: parseInt(formData.mileage, 10) || 0,
-      power_hp: parseInt(formData.power_hp, 10) || 0,
-      fiscal_power: parseInt(formData.fiscal_power, 10) || 0,
-      image_url: mainImageUrl,
-      gallery: imagesList.length > 0 ? imagesList : [mainImageUrl],
-      equipments: equipmentsList,
-      colors: [
-        { name: formData.color_ext || 'Teinte Spécifique', hex: '#7D848C', status: formData.availability_status || 'ARRIVAGE', isDefault: true },
-        { name: 'Noir Intense Nacré', hex: '#1C1D21', status: 'EN STOCK' },
-        { name: 'Blanc Pur / Nacré', hex: '#F4F5F7', status: 'DISPONIBLE' }
-      ],
-      specs: {
-        co2: 'Crit’Air 1 / 2',
-        doors: formData.doors || '5 portes',
-        seats: `${formData.seats || 5} places`,
-        boot_volume: '450 L à 1 450 L',
-        consumption: '5.6 L / 100km',
-        drivetrain: formData.drivetrain || 'Traction avant',
-        first_reg_date: formData.first_reg_date || `${formData.year}`,
-        chassis_number: 'VF3******' + Math.floor(1000 + Math.random() * 9000),
-        owners_count: '1ère Main Certifiée',
-        color_int: formData.color_int || 'Noir',
+      const payload = {
+        ...formData,
+        price: priceNum,
+        discount_percent: discountNum,
+        year: parseInt(formData.year, 10) || new Date().getFullYear(),
+        mileage: parseInt(formData.mileage, 10) || 0,
+        power_hp: parseInt(formData.power_hp, 10) || 0,
         fiscal_power: parseInt(formData.fiscal_power, 10) || 8,
-        engine_cylinders: formData.engine || '2.0L Turbo'
-      }
-    };
+        image_url: mainImageUrl,
+        gallery: imagesList,
+        equipments: equipmentsList,
+        colors: [
+          { name: formData.color_ext || 'Gris', hex: '#7D848C', status: formData.availability_status || 'ARRIVAGE', isDefault: true },
+          { name: 'Noir Intense Nacré', hex: '#1C1D21', status: 'EN STOCK' },
+          { name: 'Blanc Pur', hex: '#F4F5F7', status: 'DISPONIBLE' }
+        ],
+        specs: {
+          co2: 'Crit’Air 1 / 2',
+          doors: formData.doors || '5 portes',
+          seats: `${formData.seats || 5} places`,
+          boot_volume: '450 L à 1 450 L',
+          consumption: '5.6 L / 100km',
+          drivetrain: formData.drivetrain || 'Traction avant',
+          first_reg_date: formData.first_reg_date || `${formData.year}`,
+          chassis_number: 'VF3******' + Math.floor(1000 + Math.random() * 9000),
+          owners_count: '1ère Main Certifiée',
+          color_int: formData.color_int || 'Noir',
+          fiscal_power: parseInt(formData.fiscal_power, 10) || 8,
+          engine_cylinders: formData.engine || '2.0L Turbo'
+        }
+      };
 
-    onSave(payload);
+      await onSave(payload);
+    } catch (err) {
+      console.error('Error saving vehicle in editor:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -270,7 +290,7 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
             disabled={isSubmitting}
             className="px-5 py-2.5 rounded-xl bg-rolex hover:bg-rolex-dark text-gold font-bold text-xs uppercase tracking-wider transition-colors shadow-md flex items-center gap-2"
           >
-            <Save className="w-4 h-4" /> {isSubmitting ? 'Enregistrement...' : 'Enregistrer le véhicule'}
+            <Save className="w-4 h-4" /> {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer le véhicule'}
           </button>
         </div>
       </div>
@@ -287,7 +307,7 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
                 Collage Rapide & Auto-Remplissage Intelligent
               </h4>
               <p className="text-xs text-slate-300">
-                Collez n'importe quel texte de fiche technique brut : le système détecte et répartit automatiquement toutes les caractéristiques !
+                Collez votre fiche brute ci-dessous : toutes les caractéristiques et les options seront automatiquement détectées et pré-remplies.
               </p>
             </div>
           </div>
@@ -343,19 +363,24 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
       {/* 3. Formulaire Complet Structuré */}
       <form id="vehicle-editor-form" onSubmit={handleSubmit} className="space-y-6">
         
-        {/* SECTION 1: UPLOAD PHOTOS MULTIPLES */}
+        {/* SECTION 1: UPLOAD PHOTOS DU VÉHICULE */}
         <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-rolex/10 text-rolex flex items-center justify-center">
                 <ImageIcon className="w-4 h-4" />
               </div>
-              <h3 className="text-base font-serif font-bold text-slate-900">
-                1. Photos du Véhicule (Upload Multiple & Galerie HD)
-              </h3>
+              <div>
+                <h3 className="text-base font-serif font-bold text-slate-900">
+                  1. Photos du Véhicule (Vos propres images)
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Uploadez les vraies photos du véhicule depuis votre appareil.
+                </p>
+              </div>
             </div>
-            <span className="text-xs font-bold text-slate-500">
-              {imagesList.length} photo{imagesList.length > 1 ? 's' : ''} au total
+            <span className="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-full">
+              {imagesList.length} photo{imagesList.length > 1 ? 's' : ''} ajoutée{imagesList.length > 1 ? 's' : ''}
             </span>
           </div>
 
@@ -378,7 +403,7 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
 
           <div>
             <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-              Titre Complet du Véhicule *
+              Titre Complet de l'Annonce *
             </label>
             <input
               type="text"
@@ -435,7 +460,7 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Prix de Vente Client (€)</label>
+              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Prix de Vente (€)</label>
               <input
                 type="number"
                 name="price"
@@ -505,10 +530,9 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Année *</label>
+              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Année</label>
               <input
                 type="number"
-                required
                 name="year"
                 value={formData.year}
                 onChange={handleChange}
@@ -529,10 +553,9 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Kilométrage (km) *</label>
+              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Kilométrage (km)</label>
               <input
                 type="number"
-                required
                 name="mileage"
                 value={formData.mileage}
                 onChange={handleChange}
@@ -555,10 +578,9 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Puissance DIN (ch) *</label>
+              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Puissance DIN (ch)</label>
               <input
                 type="number"
-                required
                 name="power_hp"
                 value={formData.power_hp}
                 onChange={handleChange}
@@ -678,7 +700,7 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
               </h3>
             </div>
             <span className="text-xs font-bold text-rolex bg-rolex/10 px-3 py-1 rounded-full">
-              {formData.raw_equipments_text.split('\n').filter(Boolean).length} options détectées
+              {(formData.raw_equipments_text || '').split('\n').filter(Boolean).length} options saisies
             </span>
           </div>
 
@@ -709,10 +731,9 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Certification & Contrôle *</label>
+              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Certification & Contrôle</label>
               <input
                 type="text"
-                required
                 name="certification"
                 value={formData.certification}
                 onChange={handleChange}
@@ -722,10 +743,9 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Garantie Incluse *</label>
+              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Garantie Incluse</label>
               <input
                 type="text"
-                required
                 name="warranty"
                 value={formData.warranty}
                 onChange={handleChange}
@@ -737,10 +757,9 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Provenance Réseau *</label>
+              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Provenance Réseau</label>
               <input
                 type="text"
-                required
                 name="origin_country"
                 value={formData.origin_country}
                 onChange={handleChange}
@@ -750,10 +769,9 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Ville de Livraison / Dépôt *</label>
+              <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">Ville de Livraison / Dépôt</label>
               <input
                 type="text"
-                required
                 name="delivery_city"
                 value={formData.delivery_city}
                 onChange={handleChange}
@@ -812,7 +830,7 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
             disabled={isSubmitting}
             className="px-6 py-2.5 rounded-xl bg-rolex hover:bg-rolex-dark text-gold font-bold text-xs uppercase tracking-wider transition-colors shadow-md flex items-center gap-2"
           >
-            <Save className="w-4 h-4" /> {isSubmitting ? 'Enregistrement...' : 'Enregistrer le véhicule'}
+            <Save className="w-4 h-4" /> {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer le véhicule'}
           </button>
         </div>
       </form>
