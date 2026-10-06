@@ -1,23 +1,26 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { initialVehicles } from '../data/vehiclesData';
 import { vehiclesService } from '../services/vehiclesService';
 import { useToast } from './ToastContext';
 
 const VehicleContext = createContext(null);
 
 export const VehicleProvider = ({ children }) => {
-  const [vehicles, setVehicles] = useState(initialVehicles);
-  const [loading, setLoading] = useState(false);
+  const [vehicles, setVehicles] = useState(() => {
+    return vehiclesService.getInitialSyncVehicles();
+  });
+  const [loading, setLoading] = useState(true);
   const { addToast } = useToast();
 
   const fetchVehicles = async () => {
     try {
       const data = await vehiclesService.getAllVehicles();
-      if (data && data.length > 0) {
+      if (Array.isArray(data)) {
         setVehicles(data);
       }
     } catch (err) {
       console.error('Failed to load vehicles:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -28,7 +31,7 @@ export const VehicleProvider = ({ children }) => {
   const addVehicle = async (vehicleData) => {
     try {
       const created = await vehiclesService.addVehicle(vehicleData);
-      setVehicles(prev => [created, ...prev]);
+      setVehicles(prev => [created, ...prev.filter(v => String(v.id) !== String(created.id))]);
       addToast(`Véhicule "${created.title}" ajouté au catalogue avec succès !`, 'success');
       return { success: true, vehicle: created };
     } catch (err) {
@@ -41,7 +44,7 @@ export const VehicleProvider = ({ children }) => {
   const updateVehicle = async (id, updates) => {
     try {
       const updated = await vehiclesService.updateVehicle(id, updates);
-      setVehicles(prev => prev.map(v => (v.id === id ? updated : v)));
+      setVehicles(prev => prev.map(v => (String(v.id) === String(id) ? updated : v)));
       addToast(`Véhicule mis à jour avec succès !`, 'success');
       return { success: true, vehicle: updated };
     } catch (err) {
@@ -53,9 +56,13 @@ export const VehicleProvider = ({ children }) => {
 
   const deleteVehicle = async (id) => {
     try {
+      // 1. Mise à jour immédiate de l'interface
+      setVehicles(prev => prev.filter(v => String(v.id) !== String(id)));
+      
+      // 2. Suppression définitive dans Supabase, IndexedDB et enregistrement anti-résurrection
       await vehiclesService.deleteVehicle(id);
-      setVehicles(prev => prev.filter(v => v.id !== id));
-      addToast('Véhicule retiré du catalogue', 'info');
+      
+      addToast('Véhicule définitivement retiré du catalogue', 'info');
       return { success: true };
     } catch (err) {
       console.error('Delete vehicle error:', err);

@@ -2,9 +2,9 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { initialVehicles, enrichVehicleData } from '../data/vehiclesData';
 import { idbSaveVehicle, idbGetAllVehicles, idbGetVehicleById, idbDeleteVehicle } from '../utils/indexedDbStorage';
 import { uploadMultipleImages } from './imageUploadService';
-import { createThumbnailDataUrl } from '../utils/imageOptimizer';
 
 const LOCAL_STORAGE_VEHICLES_KEY = 'intercars_vehicles_live_v1';
+const LOCAL_STORAGE_DELETED_KEY = 'intercars_deleted_vehicles_v1';
 
 // Mappage des catégories pour compatibilité avec la base de données Supabase
 const mapCategoryToDb = (category) => {
@@ -22,6 +22,57 @@ const mapCategoryFromDb = (dbCategory, model = '') => {
     return 'Compacte & Citadine';
   }
   return dbCategory || 'Sportive';
+};
+
+// Gestion de la liste noire des véhicules définitivement supprimés
+export const getDeletedVehicleIds = () => {
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_DELETED_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw);
+    return new Set(Array.isArray(parsed) ? parsed : []);
+  } catch {
+    return new Set();
+  }
+};
+
+export const markVehicleAsDeleted = (id, vehicle = null) => {
+  try {
+    const deletedSet = getDeletedVehicleIds();
+    if (id) deletedSet.add(String(id));
+    if (vehicle?.id) deletedSet.add(String(vehicle.id));
+    if (vehicle?.title) {
+      deletedSet.add(`title:${vehicle.title.trim().toLowerCase()}`);
+    }
+    localStorage.setItem(LOCAL_STORAGE_DELETED_KEY, JSON.stringify(Array.from(deletedSet)));
+  } catch (e) {
+    console.warn('Failed to save deleted vehicle tombstone', e);
+  }
+};
+
+export const unmarkVehicleAsDeleted = (id, title = null) => {
+  try {
+    const deletedSet = getDeletedVehicleIds();
+    if (id) deletedSet.delete(String(id));
+    if (title) deletedSet.delete(`title:${title.trim().toLowerCase()}`);
+    localStorage.setItem(LOCAL_STORAGE_DELETED_KEY, JSON.stringify(Array.from(deletedSet)));
+  } catch (e) {
+    console.warn('Failed to unmark deleted vehicle', e);
+  }
+};
+
+export const isVehicleDeleted = (vehicleOrId) => {
+  if (!vehicleOrId) return false;
+  const deletedSet = getDeletedVehicleIds();
+  if (typeof vehicleOrId === 'string' || typeof vehicleOrId === 'number') {
+    return deletedSet.has(String(vehicleOrId));
+  }
+  const idStr = String(vehicleOrId.id);
+  if (deletedSet.has(idStr)) return true;
+  if (vehicleOrId.title && deletedSet.has(`title:${vehicleOrId.title.trim().toLowerCase()}`)) {
+    return true;
+  }
+  return false;
 };
 
 // Encodage sécurisé des métadonnées étendues (prix, équipements, specs, couleurs)
@@ -64,14 +115,16 @@ const decodeExtendedData = (record) => {
   return decoded;
 };
 
-// Sauvegarde localStorage légère (sans données base64 lourdes pour éviter quota 5MB)
+// Sauvegarde localStorage légère
 const safeSetLocalStorageMetadata = (key, data) => {
   try {
-    const lightweight = data.map((item) => ({
-      ...item,
-      gallery: (item.gallery || []).filter((img) => typeof img === 'string' && img.startsWith('http')),
-      image_url: typeof item.image_url === 'string' && item.image_url.startsWith('data:') ? '' : item.image_url
-    }));
+    const lightweight = data
+      .filter((item) => !isVehicleDeleted(item))
+      .map((item) => ({
+        ...item,
+        gallery: (item.gallery || []).filter((img) => typeof img === 'string' && img.startsWith('http')),
+        image_url: typeof item.image_url === 'string' && item.image_url.startsWith('data:') ? '' : item.image_url
+      }));
     localStorage.setItem(key, JSON.stringify(lightweight));
   } catch (err) {
     console.warn('LocalStorage save skipped (using IndexedDB instead)', err);
@@ -79,28 +132,28 @@ const safeSetLocalStorageMetadata = (key, data) => {
 };
 
 export const vehiclesService = {
-  // Récupérer tous les véhicules
+  // Récupération initiale synchrone pour l'état React immédiat
+  getInitialSyncVehicles() {
+    try {
+      const raw = localStorage.getItem(LOCAL_STORAGE_VEHICLES_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.filter((v) => !isVehicleDeleted(v)).map(enrichVehicleData);
+        }
+      }
+    } catch (e) {
+      // Ignore
+    }
+    return initialVehicles.filter((v) => !isVehicleDeleted(v)).map(enrichVehicleData);
+  },
+
+  // Récupérer tous les véhicules (Supabase prioritaire, exclusion stricte des supprimés)
   async getAllVehicles() {
     let vehiclesMap = new Map();
+    let supabaseSuccess = false;
 
-    // 1. Initialiser avec les 8 modèles de démonstration
-    initialVehicles.forEach((v) => {
-      vehiclesMap.set(String(v.id), enrichVehicleData(v));
-    });
-
-    // 2. Récupérer depuis IndexedDB (contient toutes les photos HD et véhicules créés localement)
-    try {
-      const idbList = await idbGetAllVehicles();
-      if (idbList && idbList.length > 0) {
-        idbList.forEach((v) => {
-          vehiclesMap.set(String(v.id), enrichVehicleData(v));
-        });
-      }
-    } catch (err) {
-      console.warn('IndexedDB fetch error:', err);
-    }
-
-    // 3. Récupérer depuis Supabase si connecté
+    // 1. Récupérer depuis Supabase (source de vérité officielle)
     if (isSupabaseConfigured()) {
       try {
         const { data, error } = await supabase
@@ -108,22 +161,23 @@ export const vehiclesService = {
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (!error && data && data.length > 0) {
+        if (!error && Array.isArray(data)) {
+          supabaseSuccess = true;
           data.forEach((v) => {
+            if (isVehicleDeleted(v)) return; // Strictement ignoré si supprimé
+
             const decoded = decodeExtendedData(v);
             const idKey = String(v.id);
             const supabaseGallery = Array.isArray(decoded.gallery) ? decoded.gallery : [];
-            const localGallery = Array.isArray(existingLocal?.gallery) ? existingLocal.gallery : [];
-            const mergedGallery = supabaseGallery.length > 0 ? supabaseGallery : localGallery;
 
-            const merged = enrichVehicleData({
+            const vehicleObj = enrichVehicleData({
               ...decoded,
-              gallery: mergedGallery,
-              image_url: mergedGallery[0] || decoded.image_url || existingLocal?.image_url || '',
+              gallery: supabaseGallery,
+              image_url: supabaseGallery[0] || decoded.image_url || '',
               category: mapCategoryFromDb(decoded.category, decoded.model)
             });
 
-            vehiclesMap.set(idKey, merged);
+            vehiclesMap.set(idKey, vehicleObj);
           });
         }
       } catch (err) {
@@ -131,26 +185,51 @@ export const vehiclesService = {
       }
     }
 
-    const result = Array.from(vehiclesMap.values());
+    // 2. Récupérer depuis IndexedDB (sauvegarde locale des créations récentes)
+    try {
+      const idbList = await idbGetAllVehicles();
+      if (idbList && idbList.length > 0) {
+        idbList.forEach((v) => {
+          if (isVehicleDeleted(v)) {
+            idbDeleteVehicle(v.id); // Nettoyage de l'entrée orpheline
+            return;
+          }
+          const idKey = String(v.id);
+          if (!vehiclesMap.has(idKey)) {
+            vehiclesMap.set(idKey, enrichVehicleData(v));
+          } else {
+            // Si la version locale contient des photos HD que Supabase n'avait pas encore
+            const existing = vehiclesMap.get(idKey);
+            if ((!existing.gallery || existing.gallery.length === 0) && v.gallery && v.gallery.length > 0) {
+              vehiclesMap.set(idKey, enrichVehicleData({ ...existing, gallery: v.gallery, image_url: v.gallery[0] }));
+            }
+          }
+        });
+      }
+    } catch (err) {
+      console.warn('IndexedDB fetch error:', err);
+    }
+
+    // 3. Modèles de démonstration UNIQUEMENT si Supabase est hors-ligne ET le catalogue est vide
+    if (!supabaseSuccess && vehiclesMap.size === 0) {
+      initialVehicles.forEach((v) => {
+        if (!isVehicleDeleted(v)) {
+          vehiclesMap.set(String(v.id), enrichVehicleData(v));
+        }
+      });
+    }
+
+    // Filtrage final absolu anti-résurrection
+    const result = Array.from(vehiclesMap.values()).filter((v) => !isVehicleDeleted(v));
     safeSetLocalStorageMetadata(LOCAL_STORAGE_VEHICLES_KEY, result);
     return result;
   },
 
   // Récupérer un véhicule par ID
   async getVehicleById(id) {
-    if (!id) return null;
+    if (!id || isVehicleDeleted(id)) return null;
 
-    // 1. Chercher dans IndexedDB
-    try {
-      const fromIdb = await idbGetVehicleById(id);
-      if (fromIdb) {
-        return enrichVehicleData(fromIdb);
-      }
-    } catch (err) {
-      console.warn('IndexedDB getById error:', err);
-    }
-
-    // 2. Chercher dans Supabase
+    // 1. Chercher dans Supabase
     if (isSupabaseConfigured()) {
       try {
         const { data, error } = await supabase
@@ -159,7 +238,7 @@ export const vehiclesService = {
           .eq('id', id)
           .maybeSingle();
 
-        if (!error && data) {
+        if (!error && data && !isVehicleDeleted(data)) {
           const decoded = decodeExtendedData(data);
           return enrichVehicleData({
             ...decoded,
@@ -171,20 +250,31 @@ export const vehiclesService = {
       }
     }
 
-    // 3. Chercher dans la liste globale
+    // 2. Chercher dans IndexedDB
+    try {
+      const fromIdb = await idbGetVehicleById(id);
+      if (fromIdb && !isVehicleDeleted(fromIdb)) {
+        return enrichVehicleData(fromIdb);
+      }
+    } catch (err) {
+      console.warn('IndexedDB getById error:', err);
+    }
+
+    // 3. Chercher dans la liste globale active
     const all = await this.getAllVehicles();
-    const found = all.find((v) => String(v.id) === String(id));
+    const found = all.find((v) => String(v.id) === String(id) && !isVehicleDeleted(v));
     return found ? enrichVehicleData(found) : null;
   },
 
-  // Ajouter un véhicule (supporte 26+ images sans crash)
+  // Ajouter un véhicule
   async addVehicle(vehicleData) {
     const generatedId = vehicleData.id || ('veh-' + Date.now() + '-' + Math.floor(Math.random() * 1000));
     
-    // Traitement des images
+    // Débloquer l'ID s'il était précédemment dans la liste noire
+    unmarkVehicleAsDeleted(generatedId, vehicleData.title);
+
     const rawGallery = Array.isArray(vehicleData.gallery) ? vehicleData.gallery : [];
     
-    // Tenter de téléverser vers Supabase Storage si possible
     let finalGallery = rawGallery;
     try {
       if (isSupabaseConfigured() && rawGallery.length > 0) {
@@ -204,14 +294,14 @@ export const vehiclesService = {
       created_at: new Date().toISOString()
     });
 
-    // 1. Sauvegarder dans IndexedDB (capacité illimitée pour les 26+ images)
+    // 1. Sauvegarder dans IndexedDB
     try {
       await idbSaveVehicle(completeVehicle);
     } catch (err) {
       console.warn('IndexedDB save error:', err);
     }
 
-    // 2. Sauvegarder dans la base de données Supabase
+    // 2. Sauvegarder dans Supabase
     if (isSupabaseConfigured()) {
       try {
         const cleanDbPayload = {
@@ -245,7 +335,6 @@ export const vehiclesService = {
         if (!error && data && data.length > 0) {
           const supabaseId = data[0].id;
           completeVehicle.id = supabaseId;
-          // Synchroniser IndexedDB avec le vrai UUID Supabase
           await idbSaveVehicle(completeVehicle);
         } else if (error) {
           console.error('Supabase insert error:', error);
@@ -262,10 +351,13 @@ export const vehiclesService = {
 
   // Modifier un véhicule
   async updateVehicle(id, updates) {
+    if (!id || isVehicleDeleted(id)) {
+      throw new Error('Impossible de mettre à jour un véhicule supprimé');
+    }
+
     let existing = await this.getVehicleById(id);
     let finalGallery = updates.gallery || existing?.gallery || [];
 
-    // Tenter l'upload si de nouvelles photos ont été ajoutées
     if (isSupabaseConfigured() && Array.isArray(updates.gallery)) {
       try {
         finalGallery = await uploadMultipleImages(updates.gallery, id);
@@ -335,20 +427,56 @@ export const vehiclesService = {
     return updatedVehicle;
   },
 
-  // Supprimer un véhicule
+  // Supprimer définitivement un véhicule (garantit qu'il ne réapparaît jamais)
   async deleteVehicle(id) {
+    if (!id) return true;
+
+    // 1. Trouver les détails pour marquer son empreinte
+    let vehicleToDelete = null;
+    try {
+      vehicleToDelete = await idbGetVehicleById(id);
+      if (!vehicleToDelete && isSupabaseConfigured()) {
+        const { data } = await supabase.from('delivered_vehicles').select('*').eq('id', id).maybeSingle();
+        if (data) vehicleToDelete = decodeExtendedData(data);
+      }
+    } catch {
+      // Continuer la suppression
+    }
+
+    // 2. Marquer définitivement comme supprimé dans le registre de blocage
+    markVehicleAsDeleted(id, vehicleToDelete);
+
+    // 3. Supprimer de IndexedDB
     try {
       await idbDeleteVehicle(id);
     } catch (err) {
       console.warn('IndexedDB delete error:', err);
     }
 
+    // 4. Supprimer de Supabase
     if (isSupabaseConfigured()) {
       try {
         await supabase.from('delivered_vehicles').delete().eq('id', id);
+
+        // Si c'était un véhicule de démo initial, supprimer également par titre si présent
+        if (vehicleToDelete?.title) {
+          await supabase.from('delivered_vehicles').delete().eq('title', vehicleToDelete.title);
+        }
       } catch (err) {
         console.warn('Supabase delete exception:', err);
       }
+    }
+
+    // 5. Nettoyer le cache local
+    try {
+      const raw = localStorage.getItem(LOCAL_STORAGE_VEHICLES_KEY);
+      if (raw) {
+        const list = JSON.parse(raw);
+        const filtered = list.filter((v) => String(v.id) !== String(id) && !isVehicleDeleted(v));
+        localStorage.setItem(LOCAL_STORAGE_VEHICLES_KEY, JSON.stringify(filtered));
+      }
+    } catch (e) {
+      console.warn('LocalStorage cache update failed', e);
     }
 
     return true;
