@@ -53,7 +53,12 @@ export const DeliveredVehiclesPage = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 400, behavior: 'smooth' });
+    const element = document.getElementById('catalog-filters');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 380, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -97,8 +102,8 @@ export const DeliveredVehiclesPage = () => {
         </div>
       </section>
 
-      {/* Barre de Recherche & Filtres Dynamiques */}
-      <section className="py-8 bg-white border-b border-slate-200 sticky top-28 sm:top-32 z-20 shadow-xs">
+      {/* Barre de Recherche & Filtres Dynamiques (Non-sticky pour une navigation fluide et dégagée) */}
+      <section id="catalog-filters" className="py-6 bg-white border-b border-slate-200 shadow-xs relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Champ de recherche texte */}
@@ -109,19 +114,19 @@ export const DeliveredVehiclesPage = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Rechercher par marque, modèle, ville..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 focus:border-rolex focus:ring-1 focus:ring-rolex text-sm bg-surface outline-none transition-all"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-rolex focus:ring-2 focus:ring-rolex/10 text-sm bg-surface outline-none transition-all placeholder:text-slate-400"
               />
             </div>
 
             {/* Tri sélectif */}
             <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-              <span className="text-xs text-slate-500 font-medium flex items-center gap-1">
+              <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
                 <SlidersHorizontal className="w-3.5 h-3.5 text-gold" /> Trier par :
               </span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 bg-surface outline-none focus:border-rolex cursor-pointer"
+                className="px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-surface outline-none focus:border-rolex cursor-pointer transition-colors shadow-xs"
               >
                 <option value="recent">Nouveaux arrivages en premier</option>
                 <option value="price_asc">Prix croissant</option>
@@ -134,21 +139,22 @@ export const DeliveredVehiclesPage = () => {
           </div>
 
           {/* Filtres par Catégorie */}
-          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
+          <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all ${
+                className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 ${
                   selectedCategory === cat
-                    ? 'bg-rolex text-gold border border-gold/50 shadow-md font-bold'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-transparent'
+                    ? 'bg-rolex text-gold border border-gold/50 shadow-md font-bold scale-105'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 border border-transparent'
                 }`}
               >
                 {cat}
               </button>
             ))}
-            <span className="text-xs text-slate-400 ml-auto hidden sm:block">
+            <span className="text-xs font-medium text-slate-500 ml-auto hidden sm:flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               {filteredVehicles.length} véhicule(s) disponible(s)
             </span>
           </div>
@@ -156,7 +162,7 @@ export const DeliveredVehiclesPage = () => {
       </section>
 
       {/* Grille des Véhicules avec Pagination */}
-      <section className="py-16 bg-surface">
+      <section id="catalog-grid" className="py-12 sm:py-16 bg-surface scroll-mt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-20">
