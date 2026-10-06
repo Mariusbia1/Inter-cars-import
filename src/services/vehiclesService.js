@@ -108,7 +108,7 @@ export const vehiclesService = {
       try {
         const { data, error } = await supabase
           .from('delivered_vehicles')
-          .select('*')
+          .select('id, created_at, title, brand, model, category, year, mileage, power_hp, engine, transmission, origin_country, delivery_city, certification, warranty, image_url, client_name, client_city, client_review, rating, is_featured')
           .order('created_at', { ascending: false });
 
         if (error) {

@@ -115,7 +115,7 @@ export const VehicleDetailPage = () => {
           Ce véhicule n'est plus disponible ou l'identifiant est incorrect. Découvrez nos autres opportunités certifiées en stock.
         </p>
         <Link
-          to="/vehicules-livres"
+          to="/vehicules-disponibles"
           className="px-6 py-3 rounded-lg bg-rolex text-gold font-bold text-xs uppercase tracking-wider shadow-md hover:bg-rolex-dark transition-colors"
         >
           Voir tous les véhicules disponibles
@@ -135,7 +135,7 @@ export const VehicleDetailPage = () => {
           <nav className="flex items-center gap-1.5 text-xs text-slate-500 overflow-x-auto whitespace-nowrap">
             <Link to="/" className="hover:text-rolex transition-colors">Accueil</Link>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <Link to="/vehicules-livres" className="hover:text-rolex transition-colors">Véhicules Disponibles</Link>
+            <Link to="/vehicules-disponibles" className="hover:text-rolex transition-colors">Véhicules Disponibles</Link>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
             <span className="text-slate-400">{vehicle.brand}</span>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />

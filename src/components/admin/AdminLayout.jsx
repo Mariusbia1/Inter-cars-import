@@ -5,7 +5,7 @@ export const AdminLayout = ({ activeTab, onSelectTab, children }) => {
   const tabTitles = {
     dashboard: "Tableau de Bord & Vue d'Ensemble",
     leads: "Gestion des Demandes & Devis Entrants",
-    vehicles: "Gestionnaire du Catalogue des Véhicules Livrés",
+    vehicles: "Gestionnaire du Catalogue des Véhicules Disponibles",
     analytics: "Statistiques de Fréquentation & Visiteurs",
     settings: "Réglages du Site & Coordonnées",
   };

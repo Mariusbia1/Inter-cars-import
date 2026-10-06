@@ -54,7 +54,7 @@ export const RecentDeliveries = () => {
         {/* CTA vers le catalogue complet */}
         <div className="text-center">
           <LuxuryButton
-            to="/vehicules-livres"
+            to="/vehicules-disponibles"
             variant="rolex"
             size="lg"
             icon={ArrowRight}

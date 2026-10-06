@@ -6,7 +6,8 @@ export const getPageDisplayName = (path) => {
   const cleanPath = (path || '/').split('?')[0];
   const map = {
     '/': "Page d'Accueil",
-    '/vehicules-livres': "Catalogue des Véhicules Livrés",
+    '/vehicules-disponibles': "Catalogue des Véhicules Disponibles",
+    '/vehicules-livres': "Catalogue des Véhicules Disponibles",
     '/notre-methode': "Notre Processus de Vente & Contrôle",
     '/garanties': "Garanties & Audit 150 Points",
     '/contact': "Formulaire de Contact & Devis",

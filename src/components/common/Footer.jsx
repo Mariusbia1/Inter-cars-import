@@ -89,7 +89,7 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/vehicules-livres" className="text-slate-300 hover:text-gold transition-colors flex items-center gap-1.5">
+                <Link to="/vehicules-disponibles" className="text-slate-300 hover:text-gold transition-colors flex items-center gap-1.5">
                   Véhicules Disponibles
                 </Link>
               </li>

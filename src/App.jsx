@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ToastProvider } from './context/ToastContext';
 import { AdminAuthProvider } from './context/AdminAuthContext';
 import { SettingsProvider } from './context/SettingsContext';
@@ -42,7 +42,8 @@ const MainContent = () => {
           <Route path="/notre-histoire" element={<HistoryPage />} />
           <Route path="/notre-methode" element={<MethodPage />} />
           <Route path="/garanties" element={<GuaranteesPage />} />
-          <Route path="/vehicules-livres" element={<DeliveredVehiclesPage />} />
+          <Route path="/vehicules-disponibles" element={<DeliveredVehiclesPage />} />
+          <Route path="/vehicules-livres" element={<Navigate to="/vehicules-disponibles" replace />} />
           <Route path="/vehicules/:id" element={<VehicleDetailPage />} />
           <Route path="/vehicule/:id" element={<VehicleDetailPage />} />
           <Route path="/contact" element={<ContactPage />} />

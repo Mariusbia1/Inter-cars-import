@@ -31,10 +31,10 @@ export const SimilarVehicles = ({ currentVehicle, allVehicles }) => {
           </h3>
         </div>
         <Link
-          to="/vehicules-livres"
+          to="/vehicules-disponibles"
           className="text-xs font-bold text-rolex hover:text-gold flex items-center gap-1 transition-colors uppercase tracking-wider"
         >
-          Voir tout le stock <ArrowRight className="w-3.5 h-3.5" />
+          Voir tout le stock disponible <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
 

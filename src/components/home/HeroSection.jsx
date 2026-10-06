@@ -134,7 +134,7 @@ export const HeroSection = () => {
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2"
           >
             <LuxuryButton
-              to="/vehicules-livres"
+              to="/vehicules-disponibles"
               variant="gold"
               size="md"
               icon={Car}
