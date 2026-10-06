@@ -11,7 +11,7 @@ export const MethodSteps = () => {
       title: 'Sélection de Votre Véhicule Disponible',
       description: 'Découvrez notre catalogue de véhicules certifiés : finitions, motorisations, options et caractéristiques détaillées.',
       icon: MessageSquare,
-      detail: 'Conseil personnalisé et étude de votre projet par votre conseiller dédié.'
+      detail: 'Entretien téléphonique avec votre conseiller dédié.'
     },
     {
       number: '02',
