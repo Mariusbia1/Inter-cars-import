@@ -67,10 +67,10 @@ export const authService = {
       }
     }
 
-    // 2. Vérification par identifiants autorisés et empreinte SHA-256
+    // 2. Vérification par identifiants autorisés et empreinte SHA-256 cryptographique
     const passwordHash = await computeHash(cleanPassword);
-    const isEmailValid = AUTHORIZED_ADMIN_EMAILS.includes(cleanEmail) || cleanEmail.includes('inter-cars') || cleanEmail.includes('intercars');
-    const isPasswordValid = VALID_PASSWORD_HASHES.includes(passwordHash) || cleanPassword.toLowerCase() === 'intercars2026!' || cleanPassword.toLowerCase() === 'admin2026!';
+    const isEmailValid = AUTHORIZED_ADMIN_EMAILS.includes(cleanEmail) || cleanEmail.endsWith('@inter-cars-import.fr') || cleanEmail.endsWith('@intercars.fr');
+    const isPasswordValid = VALID_PASSWORD_HASHES.includes(passwordHash);
 
     if (isEmailValid && isPasswordValid) {
       const user = {

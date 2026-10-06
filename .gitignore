@@ -24,6 +24,7 @@ dist
 *.njsproj
 *.sw?
 
-# Raw asset dump folders
+# Raw asset dump & migration scripts
 véhicules/
 vehicules/
+scripts/

@@ -14,5 +14,3 @@ export const isSupabaseConfigured = () => {
 
 // Client Supabase connecté en permanence
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-console.log('✨ Connexion Supabase active :', supabaseUrl);

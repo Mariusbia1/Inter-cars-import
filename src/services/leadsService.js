@@ -3,6 +3,55 @@ import { emailNotificationService } from './emailNotificationService';
 
 const LOCAL_STORAGE_LEADS_KEY = 'intercars_leads_live_v1';
 
+// Schéma de validation et d'assainissement strict des leads
+function validateAndSanitizeLead(leadData) {
+  if (!leadData || typeof leadData !== 'object') {
+    return {
+      isValid: false,
+      error: 'Données de formulaire invalides.'
+    };
+  }
+
+  const fullName = String(leadData.full_name || 'Prospect').trim().slice(0, 100);
+  const email = String(leadData.email || '').trim().slice(0, 150);
+  const phone = String(leadData.phone || '').trim().slice(0, 30);
+  const vehicleType = String(leadData.vehicle_type || 'Sportive').trim().slice(0, 60);
+  const brandSought = String(leadData.brand_sought || '').trim().slice(0, 80);
+  const modelSought = String(leadData.model_sought || '').trim().slice(0, 80);
+  const deliveryCity = String(leadData.delivery_city || 'France').trim().slice(0, 80);
+  const preferredTimeline = String(leadData.preferred_timeline || 'En 21 jours').trim().slice(0, 60);
+  const fuelType = String(leadData.fuel_type || 'Essence').trim().slice(0, 40);
+  const transmission = String(leadData.transmission || 'Automatique').trim().slice(0, 40);
+  const message = String(leadData.message || '').trim().slice(0, 3000);
+
+  // Validation format email si renseigné
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { isValid: false, error: 'Format d\'adresse email invalide.' };
+  }
+
+  return {
+    isValid: true,
+    data: {
+      created_at: new Date().toISOString(),
+      status: 'Nouveau',
+      source: 'Formulaire Web',
+      full_name: fullName,
+      email,
+      phone,
+      vehicle_type: vehicleType,
+      brand_sought: brandSought,
+      model_sought: modelSought,
+      budget_range: leadData.budget_range ? String(leadData.budget_range).slice(0, 40) : null,
+      preferred_timeline: preferredTimeline,
+      fuel_type: fuelType,
+      transmission: transmission,
+      delivery_city: deliveryCity,
+      message,
+      admin_notes: null
+    }
+  };
+}
+
 export const leadsService = {
   // Récupérer tous les leads réels depuis Supabase (avec fallback local si hors-ligne)
   async getAllLeads() {
@@ -38,24 +87,12 @@ export const leadsService = {
 
   // Créer une nouvelle demande de devis (reçue du formulaire Contact)
   async createLead(leadData) {
-    const newLeadPayload = {
-      created_at: new Date().toISOString(),
-      status: 'Nouveau',
-      source: 'Formulaire Web',
-      full_name: leadData.full_name || 'Prospect',
-      email: leadData.email || '',
-      phone: leadData.phone || '',
-      vehicle_type: leadData.vehicle_type || 'Sportive',
-      brand_sought: leadData.brand_sought || '',
-      model_sought: leadData.model_sought || '',
-      budget_range: leadData.budget_range || null,
-      preferred_timeline: leadData.preferred_timeline || 'Moins de 30 jours',
-      fuel_type: leadData.fuel_type || 'Essence',
-      transmission: leadData.transmission || 'Automatique',
-      delivery_city: leadData.delivery_city || 'France',
-      message: leadData.message || '',
-      admin_notes: null
-    };
+    const validation = validateAndSanitizeLead(leadData);
+    if (!validation.isValid) {
+      return { success: false, error: validation.error };
+    }
+
+    const newLeadPayload = validation.data;
 
     let createdLead = null;
 
