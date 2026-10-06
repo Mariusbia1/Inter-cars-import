@@ -43,8 +43,9 @@ export default async function handler(req, res) {
   // En-têtes de sécurité stricts (Fix Security Configurations)
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   res.setHeader('Content-Security-Policy', "default-src 'self'");
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || 'https://inter-cars-import.fr');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -107,8 +108,7 @@ export default async function handler(req, res) {
           `
         });
         return res.status(200).json({ success: true, message: 'Connexion SMTP validée avec succès.' });
-      } catch (err) {
-        console.error('Erreur test SMTP:', err.message);
+      } catch {
         return res.status(400).json({ success: false, error: 'Échec d\'authentification SMTP.' });
       }
     }
@@ -360,8 +360,7 @@ export default async function handler(req, res) {
     const fallbackJson = await fallbackResponse.json();
     return res.status(200).json({ success: true, method: 'server-dispatch', data: fallbackJson });
 
-  } catch (error) {
-    console.error('Erreur API /api/send-email:', error);
-    return res.status(500).json({ success: false, error: 'Une erreur interne est survenue lors de l\'envoi.' });
+  } catch {
+    return res.status(500).json({ success: false, error: 'Une erreur interne est survenue lors du traitement.' });
   }
 }

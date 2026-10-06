@@ -79,8 +79,8 @@ export const ContactPage = () => {
           colors: ['#006039', '#C6A15B', '#D4AF37', '#ffffff']
         });
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
+      addToast('Une erreur est survenue lors de l\'envoi de votre demande.', 'error');
     } finally {
       setIsSubmitting(false);
     }

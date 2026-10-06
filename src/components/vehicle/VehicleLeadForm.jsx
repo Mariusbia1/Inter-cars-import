@@ -60,8 +60,7 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
       } else {
         addToast(result.error || 'Erreur lors de la transmission.', 'error');
       }
-    } catch (err) {
-      console.error('Lead submission error:', err);
+    } catch {
       addToast("Une erreur est survenue lors de l'envoi de votre demande.", 'error');
     } finally {
       setLoading(false);
