@@ -53,16 +53,14 @@ export const VehicleManager = () => {
     try {
       if (editingVehicle) {
         await updateVehicle(editingVehicle.id, vehicleData);
-        addToast('Véhicule mis à jour avec succès !', 'success');
       } else {
         await addVehicle(vehicleData);
-        addToast('Nouveau véhicule ajouté au catalogue !', 'success');
       }
       setViewMode('list');
       setEditingVehicle(null);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
-      console.error('Error saving vehicle:', err);
+      console.error('Error saving vehicle in manager:', err);
       addToast("Erreur lors de l'enregistrement du véhicule", 'error');
     }
   };

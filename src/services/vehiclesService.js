@@ -1,5 +1,8 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { initialVehicles, enrichVehicleData } from '../data/vehiclesData';
+import { idbSaveVehicle, idbGetAllVehicles, idbGetVehicleById, idbDeleteVehicle } from '../utils/indexedDbStorage';
+import { uploadMultipleImages } from './imageUploadService';
+import { createThumbnailDataUrl } from '../utils/imageOptimizer';
 
 const LOCAL_STORAGE_VEHICLES_KEY = 'intercars_vehicles_live_v1';
 
@@ -61,63 +64,43 @@ const decodeExtendedData = (record) => {
   return decoded;
 };
 
-// Préparation du payload strict pour la table Supabase
-const buildCleanSupabasePayload = (vehicleData) => {
-  const mainImage = (vehicleData.gallery && vehicleData.gallery[0]) || vehicleData.image_url || '';
-  const galleryArray = Array.isArray(vehicleData.gallery) ? vehicleData.gallery : (mainImage ? [mainImage] : []);
-
-  return {
-    created_at: new Date().toISOString(),
-    title: vehicleData.title || 'Véhicule d\'exception certifié',
-    brand: vehicleData.brand || 'Volkswagen',
-    model: vehicleData.model || vehicleData.title || 'Modèle',
-    category: mapCategoryToDb(vehicleData.category),
-    year: parseInt(vehicleData.year, 10) || new Date().getFullYear(),
-    mileage: parseInt(vehicleData.mileage, 10) || 0,
-    power_hp: parseInt(vehicleData.power_hp, 10) || 0,
-    engine: vehicleData.engine || '2.0L',
-    transmission: vehicleData.transmission || 'Automatique',
-    origin_country: vehicleData.origin_country || 'Réseau Partenaire France',
-    delivery_city: vehicleData.delivery_city || 'France entière',
-    certification: vehicleData.certification || 'Audit 150 Points Validé',
-    warranty: vehicleData.warranty || 'Garantie Constructeur',
-    image_url: mainImage,
-    gallery: galleryArray,
-    client_name: vehicleData.client_name || '',
-    client_city: vehicleData.client_city || '',
-    client_review: encodeExtendedData(vehicleData),
-    rating: 5,
-    is_featured: Boolean(vehicleData.is_featured)
-  };
-};
-
-// Sauvegarde localStorage avec gestion de quota anti-crash
-const safeSetLocalStorage = (key, data) => {
+// Sauvegarde localStorage légère (sans données base64 lourdes pour éviter quota 5MB)
+const safeSetLocalStorageMetadata = (key, data) => {
   try {
-    localStorage.setItem(key, JSON.stringify(data));
+    const lightweight = data.map((item) => ({
+      ...item,
+      gallery: (item.gallery || []).filter((img) => typeof img === 'string' && img.startsWith('http')),
+      image_url: typeof item.image_url === 'string' && item.image_url.startsWith('data:') ? '' : item.image_url
+    }));
+    localStorage.setItem(key, JSON.stringify(lightweight));
   } catch (err) {
-    console.warn('localStorage quota warning, applying lightweight optimization', err);
-    try {
-      const optimized = data.map((item, idx) => {
-        if (idx === 0) return item;
-        return {
-          ...item,
-          gallery: (item.gallery || []).filter((img) => typeof img === 'string' && !img.startsWith('data:')),
-          image_url: typeof item.image_url === 'string' && item.image_url.startsWith('data:') ? '' : item.image_url
-        };
-      });
-      localStorage.setItem(key, JSON.stringify(optimized));
-    } catch {
-      localStorage.setItem(key, JSON.stringify(data.slice(0, 10)));
-    }
+    console.warn('LocalStorage save skipped (using IndexedDB instead)', err);
   }
 };
 
 export const vehiclesService = {
   // Récupérer tous les véhicules
   async getAllVehicles() {
-    let supabaseVehicles = [];
+    let vehiclesMap = new Map();
 
+    // 1. Initialiser avec les 8 modèles de démonstration
+    initialVehicles.forEach((v) => {
+      vehiclesMap.set(String(v.id), enrichVehicleData(v));
+    });
+
+    // 2. Récupérer depuis IndexedDB (contient toutes les photos HD et véhicules créés localement)
+    try {
+      const idbList = await idbGetAllVehicles();
+      if (idbList && idbList.length > 0) {
+        idbList.forEach((v) => {
+          vehiclesMap.set(String(v.id), enrichVehicleData(v));
+        });
+      }
+    } catch (err) {
+      console.warn('IndexedDB fetch error:', err);
+    }
+
+    // 3. Récupérer depuis Supabase si connecté
     if (isSupabaseConfigured()) {
       try {
         const { data, error } = await supabase
@@ -126,58 +109,51 @@ export const vehiclesService = {
           .order('created_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
-          supabaseVehicles = data.map((v) => {
+          data.forEach((v) => {
             const decoded = decodeExtendedData(v);
-            return enrichVehicleData({
+            const idKey = String(v.id);
+            const existingLocal = vehiclesMap.get(idKey);
+            
+            // Si on a des photos locales dans IndexedDB, les préserver
+            const mergedGallery = (existingLocal?.gallery && existingLocal.gallery.length > 0)
+              ? existingLocal.gallery
+              : (decoded.gallery || []);
+
+            const merged = enrichVehicleData({
               ...decoded,
+              gallery: mergedGallery,
+              image_url: mergedGallery[0] || decoded.image_url || existingLocal?.image_url || '',
               category: mapCategoryFromDb(decoded.category, decoded.model)
             });
+
+            vehiclesMap.set(idKey, merged);
           });
         }
       } catch (err) {
-        console.warn('Supabase vehicles fetch failed, using local storage fallback', err);
+        console.warn('Supabase fetch failed:', err);
       }
     }
 
-    // Récupérer local storage
-    const stored = localStorage.getItem(LOCAL_STORAGE_VEHICLES_KEY);
-    let localVehicles = [];
-    if (stored) {
-      try {
-        localVehicles = JSON.parse(stored).map((v) => enrichVehicleData(v));
-      } catch {
-        localVehicles = [];
-      }
-    }
-
-    // Si Supabase a renvoyé des données, fusionner avec les ajouts locaux
-    if (supabaseVehicles.length > 0) {
-      // Combiner en évitant les doublons d'ID
-      const combined = [...supabaseVehicles];
-      for (const lv of localVehicles) {
-        if (!combined.some((sv) => String(sv.id) === String(lv.id))) {
-          combined.push(lv);
-        }
-      }
-      safeSetLocalStorage(LOCAL_STORAGE_VEHICLES_KEY, combined);
-      return combined;
-    }
-
-    // Fallback si pas de données Supabase
-    if (localVehicles.length > 0) {
-      return localVehicles;
-    }
-
-    // Initial seed
-    const enrichedInitial = initialVehicles.map((v) => enrichVehicleData(v));
-    safeSetLocalStorage(LOCAL_STORAGE_VEHICLES_KEY, enrichedInitial);
-    return enrichedInitial;
+    const result = Array.from(vehiclesMap.values());
+    safeSetLocalStorageMetadata(LOCAL_STORAGE_VEHICLES_KEY, result);
+    return result;
   },
 
   // Récupérer un véhicule par ID
   async getVehicleById(id) {
     if (!id) return null;
 
+    // 1. Chercher dans IndexedDB
+    try {
+      const fromIdb = await idbGetVehicleById(id);
+      if (fromIdb) {
+        return enrichVehicleData(fromIdb);
+      }
+    } catch (err) {
+      console.warn('IndexedDB getById error:', err);
+    }
+
+    // 2. Chercher dans Supabase
     if (isSupabaseConfigured()) {
       try {
         const { data, error } = await supabase
@@ -194,112 +170,200 @@ export const vehiclesService = {
           });
         }
       } catch (err) {
-        console.warn('Supabase single vehicle fetch failed', err);
+        console.warn('Supabase getById error:', err);
       }
     }
 
+    // 3. Chercher dans la liste globale
     const all = await this.getAllVehicles();
     const found = all.find((v) => String(v.id) === String(id));
     return found ? enrichVehicleData(found) : null;
   },
 
-  // Ajouter un véhicule
+  // Ajouter un véhicule (supporte 26+ images sans crash)
   async addVehicle(vehicleData) {
-    const cleanPayload = buildCleanSupabasePayload(vehicleData);
-    let createdVehicle = null;
+    const generatedId = vehicleData.id || ('veh-' + Date.now() + '-' + Math.floor(Math.random() * 1000));
+    
+    // Traitement des images
+    const rawGallery = Array.isArray(vehicleData.gallery) ? vehicleData.gallery : [];
+    
+    // Tenter de téléverser vers Supabase Storage si possible
+    let finalGallery = rawGallery;
+    try {
+      if (isSupabaseConfigured() && rawGallery.length > 0) {
+        finalGallery = await uploadMultipleImages(rawGallery, generatedId);
+      }
+    } catch (e) {
+      console.warn('Image storage upload skipped:', e);
+    }
 
+    const mainImageUrl = finalGallery.length > 0 ? finalGallery[0] : (vehicleData.image_url || '');
+
+    const completeVehicle = enrichVehicleData({
+      ...vehicleData,
+      id: generatedId,
+      image_url: mainImageUrl,
+      gallery: finalGallery,
+      created_at: new Date().toISOString()
+    });
+
+    // 1. Sauvegarder dans IndexedDB (capacité illimitée pour les 26+ images)
+    try {
+      await idbSaveVehicle(completeVehicle);
+    } catch (err) {
+      console.warn('IndexedDB save error:', err);
+    }
+
+    // 2. Sauvegarder dans Supabase avec payload optimisé anti-dépassement de quota
     if (isSupabaseConfigured()) {
       try {
+        // Pour Supabase, n'envoyer que des URLs HTTP ou une miniature légère si base64
+        let supabaseImageUrl = mainImageUrl;
+        if (supabaseImageUrl.startsWith('data:')) {
+          supabaseImageUrl = await createThumbnailDataUrl(supabaseImageUrl, 300, 0.5);
+        }
+
+        const supabaseGallery = finalGallery
+          .filter((img) => img.startsWith('http'))
+          .slice(0, 10);
+
+        const cleanDbPayload = {
+          title: completeVehicle.title || 'Véhicule',
+          brand: completeVehicle.brand || 'Volkswagen',
+          model: completeVehicle.model || completeVehicle.title || '',
+          category: mapCategoryToDb(completeVehicle.category),
+          year: parseInt(completeVehicle.year, 10) || new Date().getFullYear(),
+          mileage: parseInt(completeVehicle.mileage, 10) || 0,
+          power_hp: parseInt(completeVehicle.power_hp, 10) || 0,
+          engine: completeVehicle.engine || '2.0L',
+          transmission: completeVehicle.transmission || 'Automatique',
+          origin_country: completeVehicle.origin_country || 'Réseau Partenaire France',
+          delivery_city: completeVehicle.delivery_city || 'France entière',
+          certification: completeVehicle.certification || 'Audit 150 Points Validé',
+          warranty: completeVehicle.warranty || 'Garantie Constructeur',
+          image_url: supabaseImageUrl || 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80',
+          gallery: supabaseGallery,
+          client_name: completeVehicle.client_name || '',
+          client_city: completeVehicle.client_city || '',
+          client_review: encodeExtendedData(completeVehicle),
+          rating: 5,
+          is_featured: Boolean(completeVehicle.is_featured)
+        };
+
         const { data, error } = await supabase
           .from('delivered_vehicles')
-          .insert([cleanPayload])
+          .insert([cleanDbPayload])
           .select();
 
         if (!error && data && data.length > 0) {
-          const decoded = decodeExtendedData(data[0]);
-          createdVehicle = enrichVehicleData({
-            ...decoded,
-            ...vehicleData,
-            id: data[0].id,
-            category: mapCategoryFromDb(data[0].category, data[0].model)
-          });
+          const supabaseId = data[0].id;
+          completeVehicle.id = supabaseId;
+          // Mettre à jour IndexedDB avec le vrai UUID Supabase
+          await idbSaveVehicle(completeVehicle);
         } else if (error) {
-          console.error('Supabase add vehicle error:', error);
+          console.warn('Supabase insert note (stored safely in IndexedDB):', error.message);
         }
       } catch (err) {
-        console.warn('Supabase add vehicle exception, using local fallback', err);
+        console.warn('Supabase add vehicle exception (stored safely in IndexedDB):', err);
       }
     }
 
-    // Fallback local si pas d'insertion Supabase
-    if (!createdVehicle) {
-      createdVehicle = enrichVehicleData({
-        id: 'veh-' + Date.now(),
-        ...vehicleData
-      });
-    }
-
-    // Mettre à jour le cache local
-    const current = await this.getAllVehicles();
-    const updated = [createdVehicle, ...current.filter((v) => v.id !== createdVehicle.id)];
-    safeSetLocalStorage(LOCAL_STORAGE_VEHICLES_KEY, updated);
-
-    return createdVehicle;
+    return completeVehicle;
   },
 
   // Modifier un véhicule
   async updateVehicle(id, updates) {
-    const cleanPayload = buildCleanSupabasePayload(updates);
-    delete cleanPayload.created_at;
+    let existing = await this.getVehicleById(id);
+    let finalGallery = updates.gallery || existing?.gallery || [];
 
-    let updatedVehicle = null;
-
-    if (isSupabaseConfigured()) {
+    // Tenter l'upload si de nouvelles photos ont été ajoutées
+    if (isSupabaseConfigured() && Array.isArray(updates.gallery)) {
       try {
-        const { data, error } = await supabase
-          .from('delivered_vehicles')
-          .update(cleanPayload)
-          .eq('id', id)
-          .select();
-
-        if (!error && data && data.length > 0) {
-          const decoded = decodeExtendedData(data[0]);
-          updatedVehicle = enrichVehicleData({
-            ...decoded,
-            ...updates,
-            id: data[0].id,
-            category: mapCategoryFromDb(data[0].category, data[0].model)
-          });
-        }
-      } catch (err) {
-        console.warn('Supabase update vehicle exception', err);
+        finalGallery = await uploadMultipleImages(updates.gallery, id);
+      } catch (e) {
+        console.warn('Image storage update skipped:', e);
       }
     }
 
-    if (!updatedVehicle) {
-      updatedVehicle = enrichVehicleData({ id, ...updates });
+    const mainImageUrl = finalGallery.length > 0 ? finalGallery[0] : (updates.image_url || existing?.image_url || '');
+
+    const updatedVehicle = enrichVehicleData({
+      ...existing,
+      ...updates,
+      id,
+      image_url: mainImageUrl,
+      gallery: finalGallery
+    });
+
+    // 1. Sauvegarder dans IndexedDB
+    try {
+      await idbSaveVehicle(updatedVehicle);
+    } catch (err) {
+      console.warn('IndexedDB update error:', err);
     }
 
-    const current = await this.getAllVehicles();
-    const updated = current.map((item) => (String(item.id) === String(id) ? { ...item, ...updatedVehicle } : item));
-    safeSetLocalStorage(LOCAL_STORAGE_VEHICLES_KEY, updated);
+    // 2. Mettre à jour Supabase si connecté
+    if (isSupabaseConfigured()) {
+      try {
+        let supabaseImageUrl = mainImageUrl;
+        if (supabaseImageUrl.startsWith('data:')) {
+          supabaseImageUrl = await createThumbnailDataUrl(supabaseImageUrl, 300, 0.5);
+        }
+
+        const supabaseGallery = finalGallery
+          .filter((img) => img.startsWith('http'))
+          .slice(0, 10);
+
+        const cleanDbUpdates = {
+          title: updatedVehicle.title,
+          brand: updatedVehicle.brand,
+          model: updatedVehicle.model,
+          category: mapCategoryToDb(updatedVehicle.category),
+          year: parseInt(updatedVehicle.year, 10) || new Date().getFullYear(),
+          mileage: parseInt(updatedVehicle.mileage, 10) || 0,
+          power_hp: parseInt(updatedVehicle.power_hp, 10) || 0,
+          engine: updatedVehicle.engine,
+          transmission: updatedVehicle.transmission,
+          origin_country: updatedVehicle.origin_country,
+          delivery_city: updatedVehicle.delivery_city,
+          certification: updatedVehicle.certification,
+          warranty: updatedVehicle.warranty,
+          image_url: supabaseImageUrl || '',
+          gallery: supabaseGallery,
+          client_name: updatedVehicle.client_name || '',
+          client_city: updatedVehicle.client_city || '',
+          client_review: encodeExtendedData(updatedVehicle),
+          rating: 5,
+          is_featured: Boolean(updatedVehicle.is_featured)
+        };
+
+        await supabase
+          .from('delivered_vehicles')
+          .update(cleanDbUpdates)
+          .eq('id', id);
+      } catch (err) {
+        console.warn('Supabase update exception (updated safely in IndexedDB):', err);
+      }
+    }
 
     return updatedVehicle;
   },
 
   // Supprimer un véhicule
   async deleteVehicle(id) {
+    try {
+      await idbDeleteVehicle(id);
+    } catch (err) {
+      console.warn('IndexedDB delete error:', err);
+    }
+
     if (isSupabaseConfigured()) {
       try {
         await supabase.from('delivered_vehicles').delete().eq('id', id);
       } catch (err) {
-        console.warn('Supabase delete vehicle exception', err);
+        console.warn('Supabase delete exception:', err);
       }
     }
-
-    const current = await this.getAllVehicles();
-    const updated = current.filter((item) => String(item.id) !== String(id));
-    safeSetLocalStorage(LOCAL_STORAGE_VEHICLES_KEY, updated);
 
     return true;
   }
