@@ -167,8 +167,27 @@ export const vehiclesService = {
 
         if (!error && data) {
           const decoded = decodeExtendedData(data);
+          let finalGallery = Array.isArray(decoded.gallery) ? decoded.gallery : [];
+
+          // Charger les images depuis la table dédiée vehicle_images si elle existe
+          try {
+            const { data: imgRows, error: imgErr } = await supabase
+              .from('vehicle_images')
+              .select('image_url, position')
+              .eq('vehicle_id', id)
+              .order('position', { ascending: true });
+
+            if (!imgErr && imgRows && imgRows.length > 0) {
+              finalGallery = imgRows.map((r) => r.image_url);
+            }
+          } catch {
+            // Ignorer si la table n'est pas encore créée
+          }
+
           return enrichVehicleData({
             ...decoded,
+            gallery: finalGallery,
+            image_url: finalGallery[0] || decoded.image_url || '',
             category: mapCategoryFromDb(decoded.category, decoded.model)
           });
         }
@@ -182,7 +201,7 @@ export const vehiclesService = {
     return all.find((v) => String(v.id) === String(id)) || null;
   },
 
-  // 3. AJOUTER UN VÉHICULE (INSERT DIRECT DANS SUPABASE)
+  // 3. AJOUTER UN VÉHICULE (INSERT DIRECT DANS SUPABASE + TABLE VEHICLE_IMAGES)
   async addVehicle(vehicleData) {
     if (!isSupabaseConfigured()) {
       throw new Error('Base de données Supabase non configurée.');
@@ -201,9 +220,27 @@ export const vehiclesService = {
       throw new Error(error.message || "Erreur lors de l'enregistrement dans la base de données.");
     }
 
+    const createdId = data.id;
+    const gallery = Array.isArray(vehicleData.gallery) ? vehicleData.gallery : [];
+
+    // Insérer les photos dans la table dédiée vehicle_images si elle existe
+    if (gallery.length > 0) {
+      try {
+        const imageRows = gallery.map((url, idx) => ({
+          vehicle_id: createdId,
+          image_url: url,
+          position: idx
+        }));
+        await supabase.from('vehicle_images').insert(imageRows);
+      } catch (imgErr) {
+        console.warn('Note: vehicle_images insert skipped:', imgErr);
+      }
+    }
+
     const decoded = decodeExtendedData(data);
     const createdVehicle = enrichVehicleData({
       ...decoded,
+      gallery: gallery.length > 0 ? gallery : (decoded.gallery || []),
       category: mapCategoryFromDb(decoded.category, decoded.model)
     });
 
@@ -237,9 +274,29 @@ export const vehiclesService = {
       throw new Error(error.message || "Erreur lors de la mise à jour dans la base de données.");
     }
 
+    const gallery = Array.isArray(updates.gallery) ? updates.gallery : (existing?.gallery || []);
+
+    // Mettre à jour la table vehicle_images si des photos sont fournies
+    if (Array.isArray(updates.gallery)) {
+      try {
+        await supabase.from('vehicle_images').delete().eq('vehicle_id', id);
+        if (gallery.length > 0) {
+          const imageRows = gallery.map((url, idx) => ({
+            vehicle_id: id,
+            image_url: url,
+            position: idx
+          }));
+          await supabase.from('vehicle_images').insert(imageRows);
+        }
+      } catch (imgErr) {
+        console.warn('Note: vehicle_images update skipped:', imgErr);
+      }
+    }
+
     const decoded = decodeExtendedData(data);
     return enrichVehicleData({
       ...decoded,
+      gallery,
       category: mapCategoryFromDb(decoded.category, decoded.model)
     });
   },
