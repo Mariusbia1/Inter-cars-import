@@ -42,17 +42,19 @@ export const VehicleDetailPage = () => {
     setLoading(true);
 
     const loadVehicle = async () => {
-      // Chercher d'abord dans le context
+      // Chercher d'abord dans le context pour affichage instantané
       const foundInContext = vehicles.find((v) => String(v.id) === String(id));
       if (foundInContext) {
         if (isMounted) {
           setVehicle(foundInContext);
-          setLoading(false);
         }
-        return;
+        if (foundInContext.gallery && foundInContext.gallery.length > 1) {
+          if (isMounted) setLoading(false);
+          return;
+        }
       }
 
-      // Sinon charger via le service
+      // Charger via le service pour récupérer la galerie complète depuis vehicle_images
       try {
         const fetched = await vehiclesService.getVehicleById(id);
         if (isMounted) {

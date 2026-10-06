@@ -106,21 +106,45 @@ export const vehiclesService = {
   async getAllVehicles() {
     if (isSupabaseConfigured()) {
       try {
-        const { data, error } = await supabase
-          .from('delivered_vehicles')
-          .select('id, created_at, title, brand, model, category, year, mileage, power_hp, engine, transmission, origin_country, delivery_city, certification, warranty, image_url, client_name, client_city, client_review, rating, is_featured')
-          .order('created_at', { ascending: false });
+        const [vehiclesRes, imagesRes] = await Promise.all([
+          supabase
+            .from('delivered_vehicles')
+            .select('id, created_at, title, brand, model, category, year, mileage, power_hp, engine, transmission, origin_country, delivery_city, certification, warranty, image_url, client_name, client_city, client_review, rating, is_featured')
+            .order('created_at', { ascending: false }),
+          supabase
+            .from('vehicle_images')
+            .select('vehicle_id, image_url, position')
+            .order('position', { ascending: true })
+        ]);
 
-        if (error) {
-          console.error('Supabase fetch error:', error);
-          throw error;
+        if (vehiclesRes.error) {
+          console.error('Supabase fetch error:', vehiclesRes.error);
+          throw vehiclesRes.error;
         }
 
-        if (Array.isArray(data)) {
-          const list = data.map((item) => {
+        const imagesByVehicle = {};
+        if (imagesRes?.data && Array.isArray(imagesRes.data)) {
+          imagesRes.data.forEach((img) => {
+            if (!imagesByVehicle[img.vehicle_id]) {
+              imagesByVehicle[img.vehicle_id] = [];
+            }
+            imagesByVehicle[img.vehicle_id].push(img.image_url);
+          });
+        }
+
+        if (Array.isArray(vehiclesRes.data)) {
+          const list = vehiclesRes.data.map((item) => {
             const decoded = decodeExtendedData(item);
+            const vehicleGallery = imagesByVehicle[item.id] || [];
+            const finalGallery = vehicleGallery.length > 0 
+              ? vehicleGallery 
+              : (Array.isArray(decoded.gallery) && decoded.gallery.length > 0 ? decoded.gallery : (decoded.image_url ? [decoded.image_url] : []));
+            const mainImg = finalGallery[0] || decoded.image_url || '';
+
             return enrichVehicleData({
               ...decoded,
+              gallery: finalGallery,
+              image_url: mainImg,
               category: mapCategoryFromDb(decoded.category, decoded.model)
             });
           });
