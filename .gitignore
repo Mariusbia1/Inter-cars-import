@@ -22,5 +22,8 @@ dist
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
 *.sw?
+
+# Raw asset dump folders
+véhicules/
+vehicules/

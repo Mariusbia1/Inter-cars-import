@@ -9,7 +9,7 @@ export const salesFaqs = [
   },
   {
     question: "Comment se déroule la transaction et le paiement ?",
-    answer: "Votre sécurité financière est totale. Les transactions sont formalisées par contrat de vente en toute transparence. Aucun règlement final n'est exigé sans la validation complète de la conformité du véhicule."
+    answer: "Votre sécurité financière est totale. Les transactions sont formalisées par contrat de vente en toute transparence."
   },
   {
     question: "Prenez-vous en charge la carte grise et les formalités administratives ?",
