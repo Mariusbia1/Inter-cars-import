@@ -1,8 +1,8 @@
 import nodemailer from 'nodemailer';
+import { z } from 'zod';
 
-// --- Utilitaires de Sécurité et de Validation ---
+// --- Utilitaires de Sécurité et d'Échappement ---
 
-// Échappement HTML strict pour prévenir toute injection XSS / HTML dans les emails
 function escapeHtml(str) {
   if (typeof str !== 'string') return '';
   return str
@@ -13,139 +13,43 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-// Nettoyage des retours à la ligne pour contrer l'injection d'en-têtes SMTP (CRLF Injection)
 function sanitizeHeader(str, maxLength = 150) {
   if (typeof str !== 'string') return '';
   return str.replace(/[\r\n\t]/g, ' ').trim().slice(0, maxLength);
 }
 
-// Validation d'adresse email standard
-function isValidEmail(email) {
-  if (typeof email !== 'string') return false;
-  const trimmed = email.trim();
-  if (trimmed.length < 5 || trimmed.length > 254) return false;
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
-  return emailRegex.test(trimmed);
-}
-
-// Validation de numéro de téléphone
-function isValidPhone(phone) {
-  if (!phone) return true; // Optionnel
-  if (typeof phone !== 'string') return false;
-  const trimmed = phone.trim();
-  if (trimmed.length > 30) return false;
-  return /^[+0-9\s()./-]{4,30}$/.test(trimmed);
-}
-
-// Validation du nom d'hôte SMTP (prévention SSRF / Injection IP locale)
-function isValidSmtpHost(host) {
-  if (typeof host !== 'string') return false;
-  const trimmed = host.trim().toLowerCase();
-  if (trimmed.length < 3 || trimmed.length > 253) return false;
-  // Bloquer les adresses locales/privées (SSRF)
-  const forbiddenHosts = ['localhost', '127.0.0.1', '0.0.0.0', '::1', '169.254.169.254'];
-  if (forbiddenHosts.includes(trimmed)) return false;
-  if (/^(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/.test(trimmed)) return false;
-  // Format domaine ou IP publique
-  return /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$|^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/.test(trimmed);
-}
-
-// Schéma de validation des entrées (Enforce Input Validation Schema)
-function validateLeadInput(data) {
-  if (!data || typeof data !== 'object' || Array.isArray(data)) {
-    return { isValid: false, error: 'Format de requête invalide.' };
-  }
-
-  // Vérification de la taille globale du payload (Protection DoS)
-  const payloadSize = JSON.stringify(data).length;
-  if (payloadSize > 50000) {
-    return { isValid: false, error: 'Taille de payload excessive.' };
-  }
-
-  // Validation Nom / Prénom
-  const fullName = typeof data.full_name === 'string' ? sanitizeHeader(data.full_name, 100) : '';
-  if (fullName.length > 100) {
-    return { isValid: false, error: 'Le champ nom est trop long (maximum 100 caractères).' };
-  }
-
-  // Validation Email
-  const email = typeof data.email === 'string' ? sanitizeHeader(data.email, 150) : '';
-  if (email && !isValidEmail(email)) {
-    return { isValid: false, error: 'Format d\'adresse email invalide.' };
-  }
-
-  // Validation Téléphone
-  const phone = typeof data.phone === 'string' ? sanitizeHeader(data.phone, 30) : '';
-  if (phone && !isValidPhone(phone)) {
-    return { isValid: false, error: 'Format de numéro de téléphone invalide.' };
-  }
-
-  // Validation Recipient Email
-  const recipientEmail = typeof data.recipientEmail === 'string' ? sanitizeHeader(data.recipientEmail, 150) : '';
-  if (recipientEmail && !isValidEmail(recipientEmail)) {
-    return { isValid: false, error: 'Adresse de destination invalide.' };
-  }
-
-  // Validation des champs textuels (limites de longueur & assainissement)
-  const brandSought = typeof data.brand_sought === 'string' ? sanitizeHeader(data.brand_sought, 80) : '';
-  const modelSought = typeof data.model_sought === 'string' ? sanitizeHeader(data.model_sought, 80) : '';
-  const vehicleType = typeof data.vehicle_type === 'string' ? sanitizeHeader(data.vehicle_type, 60) : '';
-  const fuelType = typeof data.fuel_type === 'string' ? sanitizeHeader(data.fuel_type, 40) : '';
-  const mileageMax = typeof data.mileage_max === 'string' ? sanitizeHeader(data.mileage_max, 40) : '';
-  const preferredTimeline = typeof data.preferred_timeline === 'string' ? sanitizeHeader(data.preferred_timeline, 60) : '';
-  const deliveryCity = typeof data.delivery_city === 'string' ? sanitizeHeader(data.delivery_city, 80) : '';
-  
-  // Validation Message (maximum 3000 caractères)
-  const rawMessage = typeof data.message === 'string' ? data.message.slice(0, 3000) : '';
-
-  // Paramètres SMTP optionnels
-  const smtpHost = typeof data.smtpHost === 'string' ? sanitizeHeader(data.smtpHost, 120) : '';
-  if (smtpHost && !isValidSmtpHost(smtpHost)) {
-    return { isValid: false, error: 'Hôte SMTP invalide ou non autorisé.' };
-  }
-
-  const smtpPort = Number(data.smtpPort);
-  if (data.smtpPort && (isNaN(smtpPort) || smtpPort < 1 || smtpPort > 65535)) {
-    return { isValid: false, error: 'Port SMTP invalide.' };
-  }
-
-  const smtpUser = typeof data.smtpUser === 'string' ? sanitizeHeader(data.smtpUser, 150) : '';
-  const smtpPass = typeof data.smtpPass === 'string' ? data.smtpPass.slice(0, 200) : '';
-
-  return {
-    isValid: true,
-    sanitized: {
-      full_name: fullName,
-      email,
-      phone,
-      recipientEmail,
-      brand_sought: brandSought,
-      model_sought: modelSought,
-      vehicle_type: vehicleType,
-      fuel_type: fuelType,
-      mileage_max: mileageMax,
-      preferred_timeline: preferredTimeline,
-      delivery_city: deliveryCity,
-      message: rawMessage,
-      smtpHost,
-      smtpPort: smtpPort || undefined,
-      smtpUser,
-      smtpPass,
-      testOnly: Boolean(data.testOnly)
-    }
-  };
-}
+// Schéma Zod strict pour la validation des entrées (Enforce Input Validation Schema)
+const LeadSchema = z.object({
+  full_name: z.string().trim().min(1, 'Le nom est requis').max(100, 'Nom trop long').optional().default('Prospect'),
+  email: z.string().trim().email('Format email invalide').max(150, 'Email trop long').optional().or(z.literal('')),
+  phone: z.string().trim().max(30, 'Numéro trop long').regex(/^[+0-9\s()./-]{0,30}$/, 'Format téléphone invalide').optional().default(''),
+  recipientEmail: z.string().trim().email('Email de destination invalide').max(150).optional(),
+  brand_sought: z.string().trim().max(80).optional().default(''),
+  model_sought: z.string().trim().max(80).optional().default(''),
+  vehicle_type: z.string().trim().max(60).optional().default(''),
+  fuel_type: z.string().trim().max(40).optional().default(''),
+  mileage_max: z.string().trim().max(40).optional().default(''),
+  preferred_timeline: z.string().trim().max(60).optional().default('En 21 jours'),
+  delivery_city: z.string().trim().max(80).optional().default('France'),
+  message: z.string().trim().max(3000, 'Message trop long (max 3000 caractères)').optional().default(''),
+  smtpHost: z.string().trim().max(120).regex(/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$|^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/, 'Hôte SMTP invalide').optional(),
+  smtpPort: z.number().int().min(1).max(65535).optional(),
+  smtpUser: z.string().trim().max(150).optional(),
+  smtpPass: z.string().max(200).optional(),
+  testOnly: z.boolean().optional().default(false)
+});
 
 export default async function handler(req, res) {
-  // En-têtes de sécurité renforcés (Protection contre l'exposition de données & XSS/Clickjacking)
+  // En-têtes de sécurité stricts (Fix Security Configurations)
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Content-Security-Policy', "default-src 'none'");
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Content-Security-Policy', "default-src 'self'");
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || 'https://inter-cars-import.fr');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Vary', 'Origin');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -156,13 +60,16 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Validation stricte du schéma d'entrée
-    const validation = validateLeadInput(req.body);
-    if (!validation.isValid) {
-      return res.status(400).json({ success: false, error: validation.error });
+    // 1. Validation du schéma d'entrée via Zod
+    const parseResult = LeadSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({
+        success: false,
+        error: 'Données de formulaire non conformes au schéma de sécurité requis.'
+      });
     }
 
-    const clean = validation.sanitized;
+    const clean = parseResult.data;
     const defaultHost = process.env.SMTP_HOST || '149-202-177-181.cprapid.com';
     const smtpHost = clean.smtpHost || defaultHost;
     const smtpPort = clean.smtpPort || Number(process.env.SMTP_PORT) || 465;
@@ -172,7 +79,7 @@ export default async function handler(req, res) {
     // Mode Test de connexion SMTP
     if (clean.testOnly) {
       if (!smtpPass) {
-        return res.status(400).json({ success: false, error: 'Veuillez renseigner le mot de passe de la boîte mail.' });
+        return res.status(400).json({ success: false, error: 'Identifiants SMTP incomplets.' });
       }
 
       const testTransporter = nodemailer.createTransport({
@@ -195,25 +102,20 @@ export default async function handler(req, res) {
           html: `
             <div style="font-family: Arial, sans-serif; padding: 20px; color: #004d2e;">
               <h2 style="color: #004d2e; border-bottom: 2px solid #c6a15b; padding-bottom: 8px;">Inter Cars Import</h2>
-              <p>Votre serveur de messagerie SMTP est <strong>correctement configuré</strong> et opérationnel !</p>
-              <p>Désormais, chaque demande de devis enverra :</p>
-              <ul>
-                <li>Une notification dans votre boîte <strong>${escapeHtml(smtpUser)}</strong></li>
-                <li>Un accusé de réception automatique directement au prospect.</li>
-              </ul>
+              <p>Votre serveur de messagerie SMTP est <strong>correctement configuré</strong> et opérationnel.</p>
             </div>
           `
         });
-        return res.status(200).json({ success: true, message: 'Connexion SMTP validée avec succès ! Email de test transmis.' });
+        return res.status(200).json({ success: true, message: 'Connexion SMTP validée avec succès.' });
       } catch (err) {
         console.error('Erreur test SMTP:', err.message);
-        return res.status(400).json({ success: false, error: 'Échec d\'authentification SMTP. Veuillez vérifier les identifiants.' });
+        return res.status(400).json({ success: false, error: 'Échec d\'authentification SMTP.' });
       }
     }
 
     const recipientEmail = clean.recipientEmail || process.env.NOTIFICATION_EMAIL || smtpUser;
-    const vehicleName = `${clean.brand_sought || 'Véhicule'} ${clean.model_sought || ''}`.trim();
-    const clientName = clean.full_name || 'Client';
+    const vehicleName = sanitizeHeader(`${clean.brand_sought || 'Véhicule'} ${clean.model_sought || ''}`.trim(), 100);
+    const clientName = sanitizeHeader(clean.full_name || 'Client', 100);
     const clientEmail = clean.email || '';
     const subject = `Demande de Devis : ${vehicleName} — ${clientName}`;
 
@@ -227,7 +129,7 @@ export default async function handler(req, res) {
       second: '2-digit'
     });
 
-    // Modèle HTML Administrateur (Entièrement échappé et sécurisé contre XSS)
+    // Modèle HTML Administrateur
     const adminHtmlContent = `
     <!DOCTYPE html>
     <html>
@@ -411,7 +313,7 @@ export default async function handler(req, res) {
       });
 
       // B. Email au prospect (Client)
-      if (clientEmail && isValidEmail(clientEmail)) {
+      if (clientEmail && clientEmail.includes('@')) {
         try {
           await transporter.sendMail({
             from: `"Inter Cars Import" <${smtpUser}>`,
@@ -421,7 +323,7 @@ export default async function handler(req, res) {
             html: clientHtmlContent
           });
         } catch (clientMailErr) {
-          console.warn('Erreur envoi email client:', clientMailErr.message);
+          console.warn('Notification client:', clientMailErr.message);
         }
       }
 
@@ -459,7 +361,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true, method: 'server-dispatch', data: fallbackJson });
 
   } catch (error) {
-    // Ne jamais divulguer la stack trace ou les détails internes de configuration
     console.error('Erreur API /api/send-email:', error);
     return res.status(500).json({ success: false, error: 'Une erreur interne est survenue lors de l\'envoi.' });
   }
