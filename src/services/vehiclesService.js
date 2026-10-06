@@ -112,12 +112,9 @@ export const vehiclesService = {
           data.forEach((v) => {
             const decoded = decodeExtendedData(v);
             const idKey = String(v.id);
-            const existingLocal = vehiclesMap.get(idKey);
-            
-            // Si on a des photos locales dans IndexedDB, les préserver
-            const mergedGallery = (existingLocal?.gallery && existingLocal.gallery.length > 0)
-              ? existingLocal.gallery
-              : (decoded.gallery || []);
+            const supabaseGallery = Array.isArray(decoded.gallery) ? decoded.gallery : [];
+            const localGallery = Array.isArray(existingLocal?.gallery) ? existingLocal.gallery : [];
+            const mergedGallery = supabaseGallery.length > 0 ? supabaseGallery : localGallery;
 
             const merged = enrichVehicleData({
               ...decoded,
@@ -214,19 +211,9 @@ export const vehiclesService = {
       console.warn('IndexedDB save error:', err);
     }
 
-    // 2. Sauvegarder dans Supabase avec payload optimisé anti-dépassement de quota
+    // 2. Sauvegarder dans la base de données Supabase
     if (isSupabaseConfigured()) {
       try {
-        // Pour Supabase, n'envoyer que des URLs HTTP ou une miniature légère si base64
-        let supabaseImageUrl = mainImageUrl;
-        if (supabaseImageUrl.startsWith('data:')) {
-          supabaseImageUrl = await createThumbnailDataUrl(supabaseImageUrl, 300, 0.5);
-        }
-
-        const supabaseGallery = finalGallery
-          .filter((img) => img.startsWith('http'))
-          .slice(0, 10);
-
         const cleanDbPayload = {
           title: completeVehicle.title || 'Véhicule',
           brand: completeVehicle.brand || 'Volkswagen',
@@ -241,8 +228,8 @@ export const vehiclesService = {
           delivery_city: completeVehicle.delivery_city || 'France entière',
           certification: completeVehicle.certification || 'Audit 150 Points Validé',
           warranty: completeVehicle.warranty || 'Garantie Constructeur',
-          image_url: supabaseImageUrl || 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80',
-          gallery: supabaseGallery,
+          image_url: mainImageUrl || 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80',
+          gallery: finalGallery,
           client_name: completeVehicle.client_name || '',
           client_city: completeVehicle.client_city || '',
           client_review: encodeExtendedData(completeVehicle),
@@ -258,13 +245,15 @@ export const vehiclesService = {
         if (!error && data && data.length > 0) {
           const supabaseId = data[0].id;
           completeVehicle.id = supabaseId;
-          // Mettre à jour IndexedDB avec le vrai UUID Supabase
+          // Synchroniser IndexedDB avec le vrai UUID Supabase
           await idbSaveVehicle(completeVehicle);
         } else if (error) {
-          console.warn('Supabase insert note (stored safely in IndexedDB):', error.message);
+          console.error('Supabase insert error:', error);
+          throw error;
         }
       } catch (err) {
-        console.warn('Supabase add vehicle exception (stored safely in IndexedDB):', err);
+        console.error('Supabase add vehicle exception:', err);
+        throw err;
       }
     }
 
@@ -305,15 +294,6 @@ export const vehiclesService = {
     // 2. Mettre à jour Supabase si connecté
     if (isSupabaseConfigured()) {
       try {
-        let supabaseImageUrl = mainImageUrl;
-        if (supabaseImageUrl.startsWith('data:')) {
-          supabaseImageUrl = await createThumbnailDataUrl(supabaseImageUrl, 300, 0.5);
-        }
-
-        const supabaseGallery = finalGallery
-          .filter((img) => img.startsWith('http'))
-          .slice(0, 10);
-
         const cleanDbUpdates = {
           title: updatedVehicle.title,
           brand: updatedVehicle.brand,
@@ -328,8 +308,8 @@ export const vehiclesService = {
           delivery_city: updatedVehicle.delivery_city,
           certification: updatedVehicle.certification,
           warranty: updatedVehicle.warranty,
-          image_url: supabaseImageUrl || '',
-          gallery: supabaseGallery,
+          image_url: mainImageUrl || '',
+          gallery: finalGallery,
           client_name: updatedVehicle.client_name || '',
           client_city: updatedVehicle.client_city || '',
           client_review: encodeExtendedData(updatedVehicle),
@@ -337,12 +317,18 @@ export const vehiclesService = {
           is_featured: Boolean(updatedVehicle.is_featured)
         };
 
-        await supabase
+        const { error } = await supabase
           .from('delivered_vehicles')
           .update(cleanDbUpdates)
           .eq('id', id);
+
+        if (error) {
+          console.error('Supabase update error:', error);
+          throw error;
+        }
       } catch (err) {
-        console.warn('Supabase update exception (updated safely in IndexedDB):', err);
+        console.error('Supabase update exception:', err);
+        throw err;
       }
     }
 
