@@ -103,7 +103,7 @@ export const ContactPage = () => {
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Remplissez notre formulaire en 3 étapes. Notre équipe étudie votre demande et vérifie la disponibilité auprès de nos concessions partenaires en France sous 48h.
+            Remplissez notre formulaire en 3 étapes. Notre équipe étudie votre demande et vous répond sous 24h.
           </p>
         </div>
       </section>

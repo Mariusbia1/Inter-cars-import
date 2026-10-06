@@ -8,10 +8,10 @@ export const MethodSteps = () => {
   const steps = [
     {
       number: '01',
-      title: 'Échange & Sélection du Véhicule',
-      description: 'Définition précise de vos critères : modèle, motorisation, finitions indispensables, budget et attentes kilométriques.',
+      title: 'Sélection de Votre Véhicule Disponible',
+      description: 'Découvrez notre catalogue de véhicules certifiés : finitions, motorisations, options et caractéristiques détaillées.',
       icon: MessageSquare,
-      detail: 'Entretien téléphonique ou physique avec votre conseiller dédié.'
+      detail: 'Conseil personnalisé et étude de votre projet par votre conseiller dédié.'
     },
     {
       number: '02',

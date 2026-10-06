@@ -19,20 +19,7 @@ import {
 } from 'lucide-react';
 
 export const VehicleSpecsAndEquipments = ({ vehicle }) => {
-  const [activeTab, setActiveTab] = useState('equipments'); // 'equipments' | 'audit' | 'history' | 'finance'
-  
-  // Paramètres pour le simulateur de financement
-  const vehiclePrice = vehicle?.price || 29990;
-  const [downPayment, setDownPayment] = useState(Math.round(vehiclePrice * 0.15));
-  const [durationMonths, setDurationMonths] = useState(48);
-  const [interestRate] = useState(4.9); // Taux TAEG fixe indicatif
-
-  // Calcul mensualité
-  const loanAmount = Math.max(0, vehiclePrice - downPayment);
-  const monthlyRate = interestRate / 100 / 12;
-  const calculatedMonthly = monthlyRate > 0
-    ? Math.round((loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -durationMonths)))
-    : Math.round(loanAmount / durationMonths);
+  const [activeTab, setActiveTab] = useState('equipments'); // 'equipments' | 'audit' | 'history'
 
   const mainSpecsGrid = [
     { icon: Calendar, label: 'Mise en circulation', value: vehicle?.specs?.first_reg_date || `${vehicle?.year || '2023'}` },
@@ -43,7 +30,7 @@ export const VehicleSpecsAndEquipments = ({ vehicle }) => {
     { icon: ShieldCheck, label: 'Vignette Crit’Air / CO2', value: vehicle?.specs?.co2 || 'Crit’Air 1' },
     { icon: Car, label: 'Carrosserie / Portes', value: `${vehicle?.category || 'Berline'} • ${vehicle?.specs?.doors || '5 portes'}` },
     { icon: Layers, label: 'Nombre de places', value: vehicle?.specs?.seats || '5 places' },
-    { icon: Award, label: 'Historique', value: vehicle?.specs?.owners_count || '1ère Main' },
+    { icon: Award, label: 'Historique', value: 'Entretien Constructeur à Jour' },
     { icon: ShieldCheck, label: 'Garantie incluse', value: vehicle?.warranty || 'Garantie Constructeur' },
   ];
 
@@ -174,18 +161,6 @@ export const VehicleSpecsAndEquipments = ({ vehicle }) => {
             <FileText className="w-4 h-4 text-rolex" />
             Historique & Traçabilité
           </button>
-
-          <button
-            onClick={() => setActiveTab('finance')}
-            className={`px-5 sm:px-8 py-4 text-xs sm:text-sm font-bold tracking-wider uppercase transition-colors whitespace-nowrap border-b-2 flex items-center gap-2 ${
-              activeTab === 'finance'
-                ? 'border-rolex text-rolex bg-white'
-                : 'border-transparent text-slate-500 hover:text-slate-900'
-            }`}
-          >
-            <Calculator className="w-4 h-4 text-gold" />
-            Simulateur Financement
-          </button>
         </div>
 
         {/* Contenu des Onglets */}
@@ -303,76 +278,6 @@ export const VehicleSpecsAndEquipments = ({ vehicle }) => {
                     <span>Certificat d'immatriculation (Carte Grise Française)</span>
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 4: Simulateur Financement */}
-          {activeTab === 'finance' && (
-            <div className="space-y-6 max-w-2xl mx-auto">
-              <div className="text-center space-y-1">
-                <h4 className="text-lg font-serif font-bold text-slate-900">
-                  Simulateur de Financement Sur-Mesure
-                </h4>
-                <p className="text-xs text-slate-500">
-                  Ajustez votre apport et la durée de remboursement pour estimer votre mensualité.
-                </p>
-              </div>
-
-              {/* Slider Apport */}
-              <div className="space-y-2 p-4 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="flex justify-between text-xs sm:text-sm font-semibold">
-                  <span className="text-slate-700">Votre Apport Personnel :</span>
-                  <span className="text-rolex font-bold">{downPayment.toLocaleString('fr-FR')} € ({Math.round((downPayment / vehiclePrice) * 100)}%)</span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max={Math.round(vehiclePrice * 0.5)}
-                  step="500"
-                  value={downPayment}
-                  onChange={(e) => setDownPayment(Number(e.target.value))}
-                  className="w-full accent-rolex cursor-pointer"
-                />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>0 € (Sans apport)</span>
-                  <span>{Math.round(vehiclePrice * 0.5).toLocaleString('fr-FR')} € (50% max)</span>
-                </div>
-              </div>
-
-              {/* Sélecteur Durée */}
-              <div className="space-y-2 p-4 rounded-xl bg-slate-50 border border-slate-200">
-                <span className="text-xs sm:text-sm font-semibold text-slate-700 block">
-                  Durée du financement :
-                </span>
-                <div className="grid grid-cols-4 gap-2">
-                  {[24, 36, 48, 60].map((m) => (
-                    <button
-                      key={m}
-                      onClick={() => setDurationMonths(m)}
-                      className={`py-2 px-3 rounded-lg text-xs font-bold transition-all ${
-                        durationMonths === m
-                          ? 'bg-rolex text-gold border border-gold/40 shadow-sm'
-                          : 'bg-white text-slate-700 hover:bg-slate-200 border border-slate-200'
-                      }`}
-                    >
-                      {m} mois ({m / 12} ans)
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Résultat Mensualité Estimée */}
-              <div className="p-6 rounded-2xl bg-gradient-to-br from-rolex-dark to-rolex text-white text-center space-y-2 border border-gold/40 shadow-lg">
-                <span className="text-xs text-gold uppercase tracking-wider font-semibold">
-                  Votre mensualité estimée
-                </span>
-                <div className="text-3xl sm:text-4xl font-extrabold text-white font-sans">
-                  {calculatedMonthly} € <span className="text-sm font-light text-slate-300">/ mois</span>
-                </div>
-                <p className="text-[11px] text-slate-300 max-w-md mx-auto">
-                  Montant financé : {loanAmount.toLocaleString('fr-FR')} € sur {durationMonths} mois. Offre indicative sous réserve d’acceptation de dossier.
-                </p>
               </div>
             </div>
           )}

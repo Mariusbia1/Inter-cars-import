@@ -22,7 +22,7 @@ export const companyMilestones = [
   {
     year: 'Aujourd’hui',
     title: 'La Référence de la Vente Automobile Certifiée',
-    description: "Plus de 180 véhicules vendus et livrés avec 100% de satisfaction client, garantis et prêts à prendre la route."
+    description: "Plus de 280 véhicules vendus et livrés avec 100% de satisfaction client, garantis et prêts à prendre la route."
   }
 ];
 

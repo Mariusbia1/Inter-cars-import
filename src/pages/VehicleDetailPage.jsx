@@ -137,7 +137,7 @@ export const VehicleDetailPage = () => {
           <nav className="flex items-center gap-1.5 text-xs text-slate-500 overflow-x-auto whitespace-nowrap">
             <Link to="/" className="hover:text-rolex transition-colors">Accueil</Link>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <Link to="/vehicules-disponibles" className="hover:text-rolex transition-colors">Véhicules Disponibles</Link>
+            <Link to="/vehicules-disponibles" className="hover:text-rolex transition-colors">Nos Véhicules</Link>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
             <span className="text-slate-400">{vehicle.brand}</span>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -198,7 +198,7 @@ export const VehicleDetailPage = () => {
 
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
             <span className="flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-              <CheckCircle2 className="w-3.5 h-3.5" /> 1ère Main Certifiée
+              <CheckCircle2 className="w-3.5 h-3.5" /> Garanti Constructeur
             </span>
             <span className="flex items-center gap-1 text-rolex bg-rolex/5 px-2.5 py-1 rounded-md border border-rolex/20">
               <ShieldCheck className="w-3.5 h-3.5 text-gold" /> 150 Pts Contrôlés

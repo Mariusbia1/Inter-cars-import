@@ -17,11 +17,11 @@ export const MethodPage = () => {
   const detailedSteps = [
     {
       step: '01',
-      title: 'Définition de Votre Projet Automobile',
-      desc: 'Nous débutons par une séance de cadrage approfondie : modèle souhaité, motorisation, options prioritaires, budget tout compris et calendrier.',
+      title: 'Sélection de Votre Véhicule Disponible',
+      desc: 'Découvrez notre catalogue de véhicules d’occasion certifiés : modèle, motorisation, options détaillées, budget tout compris et caractéristiques techniques complètes.',
       points: [
-        'Écoute active et conseils personnalisés sur les modèles',
-        'Étude des configurations disponibles et de leur cote',
+        'Accompagnement personnalisé et conseils sur les modèles disponibles',
+        'Étude des configurations et équipements détaillés',
         'Cadrage clair et transparent sans aucun coût caché'
       ],
       icon: Search

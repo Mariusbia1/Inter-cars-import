@@ -209,21 +209,15 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
               <label className="text-xs font-semibold text-slate-700 block">
                 Mode d'acquisition envisagé :
               </label>
-              <div className="grid grid-cols-3 gap-2 text-xs">
-                {['Comptant', 'Financement / LOA', 'Avec Reprise'].map((mode) => (
-                  <button
-                    type="button"
-                    key={mode}
-                    onClick={() => setFormData({ ...formData, fundingType: mode })}
-                    className={`py-2 px-3 rounded-lg font-medium transition-all text-center ${
-                      formData.fundingType === mode
-                        ? 'bg-rolex text-gold border border-gold/40 font-bold shadow-xs'
-                        : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
-                    }`}
-                  >
-                    {mode}
-                  </button>
-                ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, fundingType: 'Comptant' })}
+                  className="py-2.5 px-4 rounded-lg bg-rolex text-gold border border-gold/40 font-bold shadow-xs text-center flex items-center justify-center gap-2"
+                >
+                  <CheckCircle2 className="w-4 h-4 text-gold" />
+                  Comptant (Virement sécurisé)
+                </button>
               </div>
             </div>
 

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Shield, Award, HeartHandshake, Eye, ChevronRight, ArrowRight } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
-import { companyMilestones, teamMembers } from '../data/timelineData';
+import { companyMilestones } from '../data/timelineData';
 import { FinalCta } from '../components/home/FinalCta';
 
 export const HistoryPage = () => {
@@ -174,43 +174,6 @@ export const HistoryPage = () => {
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-light">
                     {m.description}
                   </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Équipe */}
-      <section className="py-20 bg-surface border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            badge="L'Équipe"
-            title="Des Spécialistes Dévoués à Votre Projet"
-            subtitle="Chaque membre d'Inter Cars Import apporte une expertise pointue en mécanique automobile, gestion de dossiers et accompagnement client."
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {teamMembers.map((member, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.15 }}
-                className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-luxury-card hover:shadow-luxury-hover transition-all text-center group"
-              >
-                <div className="h-64 overflow-hidden bg-slate-900">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-6">
-                  <h4 className="text-lg font-serif font-bold text-slate-900 mb-1">{member.name}</h4>
-                  <p className="text-xs font-semibold text-gold uppercase tracking-wider mb-3">{member.role}</p>
-                  <p className="text-xs text-slate-500 leading-relaxed">{member.bio}</p>
                 </div>
               </motion.div>
             ))}

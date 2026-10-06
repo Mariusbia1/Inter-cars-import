@@ -90,7 +90,7 @@ export const Footer = () => {
               </li>
               <li>
                 <Link to="/vehicules-disponibles" className="text-slate-300 hover:text-gold transition-colors flex items-center gap-1.5">
-                  Véhicules Disponibles
+                  Nos Véhicules
                 </Link>
               </li>
               <li>
@@ -117,10 +117,7 @@ export const Footer = () => {
                 <span className="text-gold">›</span> Audit Technique 150 Points
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-gold">›</span> Reprise & Estimation
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-gold">›</span> Livraison Sécurisée en France
+                <span className="text-gold">›</span> Livraison Sécurisée en France (21 jours)
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-gold">›</span> Carte Grise & Démarches Complètes
@@ -128,16 +125,18 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Colonne 5 : Coordonnées & Showroom */}
+          {/* Colonne 5 : Coordonnées & Contact */}
           <div>
             <h4 className="font-serif font-bold text-white text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-gold" /> Contact & Showroom
+              <span className="w-1.5 h-1.5 rounded-full bg-gold" /> Contact
             </h4>
             <ul className="space-y-3.5 text-xs sm:text-sm text-slate-300">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-gold shrink-0 mt-0.5" />
-                <span>{settings.address}</span>
-              </li>
+              {settings.address && (
+                <li className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+                  <span>{settings.address}</span>
+                </li>
+              )}
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-gold shrink-0" />
                 <a href={`tel:${settings.phoneRaw || '+33493000000'}`} className="hover:text-gold transition-colors font-semibold">

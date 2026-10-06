@@ -1,6 +1,6 @@
 export const keyStats = [
   {
-    value: 185,
+    value: 280,
     suffix: '+',
     label: 'Clients Accompagnés',
     description: "Véhicules sélectionnés et livrés clés en main partout en France avec suivi certifié"
@@ -18,10 +18,10 @@ export const keyStats = [
     description: 'Audit mécanique, châssis, historique et diagnostic électronique complet'
   },
   {
-    value: 48,
+    value: 24,
     suffix: 'h',
     label: 'Délai de Réactivité',
-    description: 'Présentation de véhicules disponibles en stock ou arrivages immédiats'
+    description: 'Présentation de véhicules certifiés et étude personnalisée de votre dossier'
   },
   {
     value: 'Plusieurs',

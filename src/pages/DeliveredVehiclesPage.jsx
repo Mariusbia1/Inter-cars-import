@@ -74,27 +74,24 @@ export const DeliveredVehiclesPage = () => {
           <div className="flex items-center justify-center gap-2 text-xs text-slate-400 mb-4 uppercase tracking-widest">
             <Link to="/" className="hover:text-gold transition-colors">Accueil</Link>
             <ChevronRight className="w-3.5 h-3.5 text-gold" />
-            <span className="text-gold font-semibold">Véhicules Disponibles</span>
+            <span className="text-gold font-semibold">Nos Véhicules</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">
             Notre Sélection de <br />
-            <span className="text-gold-gradient">Véhicules Disponibles & En Stock</span>
+            <span className="text-gold-gradient">Véhicules Certifiés</span>
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Consultez nos véhicules d'occasion récents rigoureusement audités en 150 points de contrôle, disponibles immédiatement pour achat avec garantie constructeur et livraison à domicile partout en France.
+            Consultez nos véhicules d'occasion récents rigoureusement audités en 150 points de contrôle, disponibles à la vente avec garantie constructeur et livraison à domicile en 21 jours partout en France.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-300">
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Disponibles immédiatement
-            </span>
-            <span className="flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-gold" /> Audit 150 points certifié
             </span>
             <span className="flex items-center gap-1.5">
-              <Car className="w-4 h-4 text-emerald-400" /> Livraison clé en main sous 7 jours
+              <Car className="w-4 h-4 text-emerald-400" /> Livraison sécurisée en 21 jours
             </span>
           </div>
         </div>

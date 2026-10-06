@@ -34,7 +34,7 @@ export const Navbar = () => {
     { name: 'Notre Histoire', path: '/notre-histoire' },
     { name: 'Notre Méthode', path: '/notre-methode' },
     { name: 'Garanties & Confiance', path: '/garanties' },
-    { name: 'Véhicules Disponibles', path: '/vehicules-disponibles' },
+    { name: 'Nos Véhicules', path: '/vehicules-disponibles' },
     { name: 'Contact', path: '/contact' },
   ];
 

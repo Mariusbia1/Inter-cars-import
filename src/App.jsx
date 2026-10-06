@@ -11,6 +11,7 @@ import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
 import { AdminFloatingBar } from './components/common/AdminFloatingBar';
 import { CookieConsent } from './components/common/CookieConsent';
+import { ConciergeBubble } from './components/common/ConciergeBubble';
 
 // Pages Publiques
 import { HomePage } from './pages/HomePage';
@@ -42,6 +43,7 @@ const MainContent = () => {
           <Route path="/notre-histoire" element={<HistoryPage />} />
           <Route path="/notre-methode" element={<MethodPage />} />
           <Route path="/garanties" element={<GuaranteesPage />} />
+          <Route path="/nos-vehicules" element={<DeliveredVehiclesPage />} />
           <Route path="/vehicules-disponibles" element={<DeliveredVehiclesPage />} />
           <Route path="/vehicules-livres" element={<Navigate to="/vehicules-disponibles" replace />} />
           <Route path="/vehicules/:id" element={<VehicleDetailPage />} />
@@ -64,6 +66,7 @@ const MainContent = () => {
       </main>
       {!isAdminRoute && <Footer />}
       <AdminFloatingBar />
+      {!isAdminRoute && <ConciergeBubble />}
       {!isAdminRoute && <CookieConsent />}
     </div>
   );

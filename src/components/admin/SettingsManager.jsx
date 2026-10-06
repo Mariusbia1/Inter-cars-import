@@ -218,35 +218,33 @@ export const SettingsManager = () => {
             </div>
           </div>
 
-          {/* Bloc 4 : Adresse Showroom & Horaires */}
+          {/* Bloc 4 : Adresse & Horaires (Optionnel) */}
           <div className="lg:col-span-2 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
             <h4 className="font-serif font-bold text-slate-900 text-sm flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-rolex" /> Showroom & Disponibilités
+              <MapPin className="w-4 h-4 text-rolex" /> Adresse & Disponibilités (Optionnel)
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                  Adresse & Localisation Showroom
+                  Adresse & Localisation (Optionnel)
                 </label>
                 <input
                   type="text"
-                  required
                   name="address"
                   value={formState.address}
                   onChange={handleChange}
-                  placeholder="Showroom Commercial, Axe Cannes — Monaco"
+                  placeholder="Ex: Paris / Lyon (Laisser vide si vente 100% en ligne)"
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                  Horaires d'Ouverture Commerciale
+                  Horaires d'Ouverture / Disponibilités (Optionnel)
                 </label>
                 <input
                   type="text"
-                  required
                   name="businessHours"
                   value={formState.businessHours}
                   onChange={handleChange}

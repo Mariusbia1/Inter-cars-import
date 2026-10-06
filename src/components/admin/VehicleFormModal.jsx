@@ -265,7 +265,7 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
         drivetrain: formData.drivetrain || 'Traction avant',
         first_reg_date: formData.first_reg_date || `${formData.year}`,
         chassis_number: 'VF3******' + Math.floor(1000 + Math.random() * 9000),
-        owners_count: '1ère Main Certifiée',
+        owners_count: 'Entretien Constructeur à Jour',
         color_int: formData.color_int || 'Noir',
         fiscal_power: parseInt(formData.fiscal_power, 10) || 8,
         engine_cylinders: formData.engine || '2.0L Turbo'

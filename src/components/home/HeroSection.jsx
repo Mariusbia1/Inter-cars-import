@@ -140,7 +140,7 @@ export const HeroSection = () => {
               icon={Car}
               className="shadow-gold-glow font-bold tracking-wider text-xs sm:text-sm"
             >
-              Découvrir nos véhicules disponibles
+              Découvrir nos véhicules
             </LuxuryButton>
 
             <LuxuryButton

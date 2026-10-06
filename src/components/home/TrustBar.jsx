@@ -7,7 +7,7 @@ export const TrustBar = () => {
   const highlights = [
     {
       icon: Award,
-      count: 185,
+      count: 280,
       suffix: '+',
       title: 'Clients Accompagnés',
       subtitle: 'Partout en France & Monaco'
@@ -28,10 +28,10 @@ export const TrustBar = () => {
     },
     {
       icon: Clock,
-      count: 48,
+      count: 24,
       suffix: 'h',
       title: 'Réactivité Équipe',
-      subtitle: 'Prise en charge & opportunités'
+      subtitle: 'Prise en charge personnalisée'
     }
   ];
 

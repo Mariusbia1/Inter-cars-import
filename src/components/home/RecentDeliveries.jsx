@@ -20,8 +20,8 @@ export const RecentDeliveries = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeader
           badge="Stock & Nouveaux Arrivages"
-          title="Nos Véhicules Disponibles Immédiatement"
-          subtitle="Découvrez notre sélection de véhicules d'occasion récents rigoureusement inspectés, révisés et prêts pour une livraison rapide à votre domicile."
+          title="Nos Véhicules Disponibles à la Vente"
+          subtitle="Découvrez notre sélection de véhicules d'occasion récents rigoureusement inspectés, révisés et livrés en 21 jours à votre domicile."
         />
 
         {/* Filtres par catégorie */}

@@ -660,7 +660,7 @@ export const enrichVehicleData = (vehicle) => {
     drivetrain: vehicle.specs?.drivetrain || vehicle.drivetrain || match?.specs?.drivetrain || 'Traction avant',
     first_reg_date: vehicle.specs?.first_reg_date || vehicle.first_reg_date || match?.specs?.first_reg_date || `${vehicle.year || '2024'}`,
     chassis_number: vehicle.specs?.chassis_number || 'VF3******' + (vehicle.id || '001'),
-    owners_count: vehicle.specs?.owners_count || match?.specs?.owners_count || '1ère Main Certifiée',
+    owners_count: vehicle.specs?.owners_count || match?.specs?.owners_count || 'Entretien Constructeur à Jour',
     color_int: vehicle.specs?.color_int || vehicle.color_int || 'Noir',
     fiscal_power: vehicle.fiscal_power || match?.fiscal_power || 8,
     engine_cylinders: vehicle.engine || match?.engine || '2.0L Turbo'
