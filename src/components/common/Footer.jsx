@@ -186,6 +186,14 @@ export const Footer = () => {
             <Link to="/cgv" className="hover:text-gold transition-colors">
               Conditions Générales de Vente
             </Link>
+            <span className="text-white/20">•</span>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('open-cookie-settings'))}
+              className="hover:text-gold transition-colors cursor-pointer text-xs"
+            >
+              Gestion des cookies
+            </button>
           </div>
         </div>
       </div>
