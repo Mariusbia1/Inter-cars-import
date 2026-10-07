@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, MessageSquare, X, Send, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
+import { Phone, MessageSquare, X, Send, Sparkles, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSettings } from '../../context/SettingsContext';
 
@@ -20,7 +20,6 @@ export const ConciergeBubble = () => {
   }, []);
 
   const phoneRaw = settings.phoneRaw || '+33493000000';
-  const whatsappClean = (settings.whatsapp || settings.phone || '+33600000000').replace(/[^0-9+]/g, '');
 
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end select-none">
@@ -104,22 +103,6 @@ export const ConciergeBubble = () => {
                   </span>
                   <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
                 </a>
-
-                {/* 3. WhatsApp Direct si disponible */}
-                {settings.whatsapp && (
-                  <a
-                    href={`https://wa.me/${whatsappClean}?text=Bonjour,%20je%20souhaite%20des%20informations%20sur%20vos%20v%C3%A9hicules.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2 px-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 text-xs font-semibold transition-all flex items-center justify-between"
-                  >
-                    <span className="flex items-center gap-2">
-                      <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                      Échanger par WhatsApp
-                    </span>
-                    <ChevronRight className="w-3.5 h-3.5 text-emerald-600" />
-                  </a>
-                )}
               </div>
             </div>
           </motion.div>
