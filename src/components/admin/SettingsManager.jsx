@@ -250,7 +250,7 @@ export const SettingsManager = () => {
 
               <div>
                 <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                  Adresse du Siège Social (Juridique)
+                  Adresse du Siège
                 </label>
                 <input
                   type="text"
