@@ -3,24 +3,7 @@ import { emailNotificationService } from './emailNotificationService';
 
 const LOCAL_STORAGE_LEADS_KEY = 'intercars_leads_live_v1';
 
-import { z } from 'zod';
-
-const LeadClientSchema = z.object({
-  full_name: z.string().trim().min(1).max(100).optional().default('Prospect'),
-  email: z.string().trim().email().max(150).optional().or(z.literal('')),
-  phone: z.string().trim().max(30).optional().default(''),
-  vehicle_type: z.string().trim().max(60).optional().default('Citadine'),
-  brand_sought: z.string().trim().max(80).optional().default(''),
-  model_sought: z.string().trim().max(80).optional().default(''),
-  delivery_city: z.string().trim().max(80).optional().default('France'),
-  preferred_timeline: z.string().trim().max(60).optional().default('En 21 jours'),
-  fuel_type: z.string().trim().max(40).optional().default('Essence'),
-  transmission: z.string().trim().max(40).optional().default('Automatique'),
-  message: z.string().trim().max(3000).optional().default(''),
-  budget_range: z.string().max(40).nullable().optional()
-});
-
-// Schéma de validation et d'assainissement strict des leads
+// Validation et assainissement strict des leads côté client
 function validateAndSanitizeLead(leadData) {
   if (!leadData || typeof leadData !== 'object') {
     return {
@@ -29,15 +12,25 @@ function validateAndSanitizeLead(leadData) {
     };
   }
 
-  const parseResult = LeadClientSchema.safeParse(leadData);
-  if (!parseResult.success) {
-    return {
-      isValid: false,
-      error: 'Format des informations renseignées invalide.'
-    };
-  }
+  const sanitizeStr = (val, max = 100, def = '') => {
+    if (typeof val !== 'string') return def;
+    return val.trim().slice(0, max);
+  };
 
-  const clean = parseResult.data;
+  const clean = {
+    full_name: sanitizeStr(leadData.full_name, 100, 'Prospect'),
+    email: sanitizeStr(leadData.email, 150, ''),
+    phone: sanitizeStr(leadData.phone, 30, ''),
+    vehicle_type: sanitizeStr(leadData.vehicle_type, 60, 'Citadine'),
+    brand_sought: sanitizeStr(leadData.brand_sought, 80, ''),
+    model_sought: sanitizeStr(leadData.model_sought, 80, ''),
+    delivery_city: sanitizeStr(leadData.delivery_city, 80, 'France'),
+    preferred_timeline: sanitizeStr(leadData.preferred_timeline, 60, ''),
+    fuel_type: sanitizeStr(leadData.fuel_type, 40, 'Essence'),
+    transmission: sanitizeStr(leadData.transmission, 40, 'Automatique'),
+    message: sanitizeStr(leadData.message, 3000, ''),
+    budget_range: leadData.budget_range ? sanitizeStr(leadData.budget_range, 40) : null
+  };
 
   return {
     isValid: true,

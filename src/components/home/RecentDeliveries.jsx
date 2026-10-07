@@ -21,7 +21,7 @@ export const RecentDeliveries = () => {
         <SectionHeader
           badge="Stock & Nouveaux Arrivages"
           title="Nos Véhicules Disponibles à la Vente"
-          subtitle="Découvrez notre sélection de véhicules d'occasion récents rigoureusement inspectés, révisés et livrés en 21 jours partout en France."
+          subtitle="Découvrez notre sélection de véhicules d'occasion récents rigoureusement inspectés, révisés et livrés clés en main partout en France."
         />
 
         {/* Filtres par catégorie */}

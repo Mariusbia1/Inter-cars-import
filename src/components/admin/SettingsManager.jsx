@@ -16,7 +16,9 @@ export const SettingsManager = () => {
     smtpUser: settings.smtpUser || 'contact@inter-cars-import.fr',
     smtpPass: settings.smtpPass || '',
     whatsapp: settings.whatsapp || '+33 6 00 00 00 00',
-    address: settings.address || "Bureau Commercial, Axe Cannes — Monaco",
+    commercialAddress: settings.commercialAddress || settings.address || "Bureau Commercial, Axe Cannes — Monaco",
+    headquartersAddress: settings.headquartersAddress || "Siège Social, France",
+    address: settings.commercialAddress || settings.address || "Bureau Commercial, Axe Cannes — Monaco",
     businessHours: settings.businessHours || "Du Lundi au Samedi : 08h30 - 19h30",
   });
 
@@ -24,7 +26,11 @@ export const SettingsManager = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormState((prev) => ({ ...prev, [name]: value }));
+    setFormState((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === 'commercialAddress' ? { address: value } : {})
+    }));
   };
 
   const handleSave = (e) => {
@@ -77,7 +83,7 @@ export const SettingsManager = () => {
             Coordonnées & Messagerie Officielle
           </h3>
           <p className="text-xs text-slate-200 mt-1 max-w-xl font-light">
-            Gérez ici vos coordonnées publiques, votre email de réception et vos réglages de messagerie pour l'expédition directe des devis.
+            Gérez ici vos coordonnées publiques, vos adresses (commerciale et siège), votre email de réception et vos réglages de messagerie.
           </p>
         </div>
       </div>
@@ -218,30 +224,50 @@ export const SettingsManager = () => {
             </div>
           </div>
 
-          {/* Bloc 4 : Adresse & Horaires (Optionnel) */}
+          {/* Bloc 4 : Adresses & Horaires */}
           <div className="lg:col-span-2 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
             <h4 className="font-serif font-bold text-slate-900 text-sm flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-rolex" /> Adresse & Disponibilités (Optionnel)
+              <MapPin className="w-4 h-4 text-rolex" /> Adresses & Disponibilités
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                  Adresse & Localisation (Optionnel)
+                  Adresse Commerciale (Bureau / Accueil Client)
                 </label>
                 <input
                   type="text"
-                  name="address"
-                  value={formState.address}
+                  name="commercialAddress"
+                  value={formState.commercialAddress}
                   onChange={handleChange}
-                  placeholder="Ex: Paris / Lyon (Laisser vide si vente 100% en ligne)"
+                  placeholder="Ex: Bureau Commercial, Axe Cannes — Monaco"
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
                 />
+                <span className="text-[11px] text-slate-400 mt-1 block">
+                  Affichée sur le site dans la rubrique contact commercial et en pied de page.
+                </span>
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                  Horaires d'Ouverture / Disponibilités (Optionnel)
+                  Adresse du Siège Social (Juridique)
+                </label>
+                <input
+                  type="text"
+                  name="headquartersAddress"
+                  value={formState.headquartersAddress}
+                  onChange={handleChange}
+                  placeholder="Ex: Siège Social, 123 Boulevard..., 75008 Paris"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
+                />
+                <span className="text-[11px] text-slate-400 mt-1 block">
+                  Mentionnée sur les mentions légales, la page de contact et les documents officiels.
+                </span>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
+                  Horaires d'Ouverture / Disponibilités
                 </label>
                 <input
                   type="text"

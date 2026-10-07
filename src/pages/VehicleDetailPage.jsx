@@ -21,7 +21,7 @@ import { VehicleBuyBox } from '../components/vehicle/VehicleBuyBox';
 import { VehicleSpecsAndEquipments } from '../components/vehicle/VehicleSpecsAndEquipments';
 import { VehicleLeadForm } from '../components/vehicle/VehicleLeadForm';
 import { SimilarVehicles } from '../components/vehicle/SimilarVehicles';
-import { FinalCta } from '../components/home/FinalCta';
+
 import { useToast } from '../context/ToastContext';
 
 export const VehicleDetailPage = () => {
@@ -283,8 +283,6 @@ export const VehicleDetailPage = () => {
         />
       </div>
 
-      {/* 8. CTA Final */}
-      <FinalCta />
     </div>
   );
 };

@@ -89,8 +89,11 @@ CREATE TABLE public.site_settings (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     phone TEXT DEFAULT '+33 (0)4 93 00 00 00',
     email TEXT DEFAULT 'contact@inter-cars-import.fr',
-    notification_email TEXT DEFAULT 'direction@intercarsimport.fr',
-    address TEXT DEFAULT 'Showroom Privé & Bureau Sourcing, Axe Cannes — Monaco'
+    notification_email TEXT DEFAULT 'contact@inter-cars-import.fr',
+    commercial_address TEXT DEFAULT 'Bureau Commercial, Axe Cannes — Monaco',
+    headquarters_address TEXT DEFAULT 'Siège Social, France',
+    address TEXT DEFAULT 'Bureau Commercial, Axe Cannes — Monaco',
+    business_hours TEXT DEFAULT 'Du Lundi au Samedi : 08h30 - 19h30'
 );
 
 -- Activer Row Level Security (RLS)
@@ -129,7 +132,7 @@ VALUES
     'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80',
     'Alexandre D.',
     'Cannes',
-    'Inter Cars Import a déniché un exemplaire parfait chez un concessionnaire officiel. Audit 150 points irréprochable et livraison sécurisée en 21 jours.',
+    'Inter Cars Import a déniché un exemplaire parfait chez un concessionnaire officiel. Audit 150 points irréprochable et livraison soignée.',
     5,
     true
 ),
@@ -271,7 +274,7 @@ VALUES
     'Monaco (MC)',
     'Mercedes-AMG G 63 V8 Biturbo',
     5,
-    'Inter Cars Import a sécurisé l''ensemble de la transaction auprès d''une concession officielle. Contrôle minutieux du carnet, vérification de peinture au micromètre et livraison sécurisée en 21 jours. Remarquable.',
+    'Inter Cars Import a sécurisé l''ensemble de la transaction auprès d''une concession officielle. Contrôle minutieux du carnet, vérification de peinture au micromètre et livraison soignée. Remarquable.',
     'Livraison VIP',
     'Janvier 2026',
     true,
@@ -281,5 +284,13 @@ VALUES
 -- ==============================================================================
 -- INITIALISATION DES PARAMÈTRES DU SITE
 -- ==============================================================================
-INSERT INTO public.site_settings (id, phone, email, notification_email, address)
-VALUES ('main_settings', '+33 (0)4 93 00 00 00', 'contact@inter-cars-import.fr', 'direction@intercarsimport.fr', 'Showroom Privé & Bureau Sourcing, Axe Cannes — Monaco');
+INSERT INTO public.site_settings (id, phone, email, notification_email, commercial_address, headquarters_address, address, business_hours)
+VALUES ('main_settings', '+33 (0)4 93 00 00 00', 'contact@inter-cars-import.fr', 'contact@inter-cars-import.fr', 'Bureau Commercial, Axe Cannes — Monaco', 'Siège Social, France', 'Bureau Commercial, Axe Cannes — Monaco', 'Du Lundi au Samedi : 08h30 - 19h30');
+
+-- ==============================================================================
+-- REQUÊTE DE MIGRATION RAPIDE (À exécuter dans l'éditeur SQL Supabase si vos tables existent déjà) :
+-- ==============================================================================
+-- ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS commercial_address TEXT DEFAULT 'Bureau Commercial, Axe Cannes — Monaco';
+-- ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS headquarters_address TEXT DEFAULT 'Siège Social, France';
+-- ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS business_hours TEXT DEFAULT 'Du Lundi au Samedi : 08h30 - 19h30';
+

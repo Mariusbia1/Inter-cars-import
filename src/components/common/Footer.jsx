@@ -41,7 +41,7 @@ export const Footer = () => {
               <CheckCircle2 className="w-6 h-6 text-gold shrink-0" />
               <div>
                 <p className="text-xs font-bold text-white uppercase tracking-wider">Livraison Clé en Main</p>
-                <p className="text-[11px] text-slate-400">Livraison en 21 jours</p>
+                <p className="text-[11px] text-slate-400">Partout en France</p>
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@ export const Footer = () => {
               </li>
               <li>
                 <Link to="/contact" className="text-slate-300 hover:text-gold transition-colors flex items-center gap-1.5">
-                  Devis & Contact
+                  Coordonnées & Contact
                 </Link>
               </li>
             </ul>
@@ -117,7 +117,7 @@ export const Footer = () => {
                 <span className="text-gold">›</span> Audit Technique 150 Points
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-gold">›</span> Livraison Sécurisée en France (21 jours)
+                <span className="text-gold">›</span> Livraison Sécurisée Partout en France
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-gold">›</span> Carte Grise & Démarches Complètes
@@ -131,10 +131,22 @@ export const Footer = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-gold" /> Contact
             </h4>
             <ul className="space-y-3.5 text-xs sm:text-sm text-slate-300">
-              {settings.address && (
+              {(settings.commercialAddress || settings.address) && (
                 <li className="flex items-start gap-3">
                   <MapPin className="w-4 h-4 text-gold shrink-0 mt-0.5" />
-                  <span>{settings.address}</span>
+                  <div>
+                    <span className="block text-[11px] text-gold font-semibold uppercase tracking-wider">Bureau Commercial</span>
+                    <span>{settings.commercialAddress || settings.address}</span>
+                  </div>
+                </li>
+              )}
+              {settings.headquartersAddress && (
+                <li className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="block text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Siège Social</span>
+                    <span>{settings.headquartersAddress}</span>
+                  </div>
                 </li>
               )}
               <li className="flex items-center gap-3">

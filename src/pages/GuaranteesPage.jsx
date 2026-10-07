@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight, ShieldCheck, CheckCircle2, Landmark, FileText, Scale, Wrench, FileCheck2 } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
-import { FinalCta } from '../components/home/FinalCta';
+
 
 export const GuaranteesPage = () => {
   const inspectionModules = [
@@ -204,8 +204,6 @@ export const GuaranteesPage = () => {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <FinalCta />
     </div>
   );
 };

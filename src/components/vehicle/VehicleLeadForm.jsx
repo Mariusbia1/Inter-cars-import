@@ -134,7 +134,7 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
             </div>
             <div className="text-right shrink-0">
               <span className="text-base font-extrabold text-slate-900">
-                {vehicle?.price ? `${Number(vehicle.price).toLocaleString('fr-FR')} €` : 'Prix sur demande'}
+                {vehicle?.price ? `${Number(vehicle.price).toLocaleString('fr-FR')} €` : 'En Arrivage'}
               </span>
               <span className="text-[10px] text-emerald-600 font-bold block">Audit 150 pts Validé</span>
             </div>
@@ -229,7 +229,7 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
                 rows="2"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                placeholder="ex: Je souhaite connaître les délais exacts pour la livraison en 21 jours..."
+                placeholder="ex: Je souhaite obtenir des informations complémentaires sur ce véhicule..."
                 className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm focus:border-rolex focus:ring-1 focus:ring-rolex outline-none transition-all resize-none"
               />
             </div>

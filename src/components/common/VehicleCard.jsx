@@ -51,8 +51,8 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
               )}
             </>
           ) : (
-            <span className="bg-slate-950/80 backdrop-blur-md text-white font-semibold text-xs px-2.5 py-1 rounded-md border border-white/20 shadow-md">
-              Sur devis
+            <span className="bg-slate-950/85 backdrop-blur-md text-amber-300 font-extrabold text-xs px-2.5 py-1 rounded-md border border-amber-300/30 shadow-md">
+              En Arrivage
             </span>
           )}
         </div>

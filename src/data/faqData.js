@@ -16,8 +16,8 @@ export const salesFaqs = [
     answer: "Oui, nous prenons en charge 100% des démarches d'immatriculation française : certificat de non-gage, contrôle technique à jour, changement de titulaire de carte grise et pose des plaques d'immatriculation."
   },
   {
-    question: "Quels sont les délais et modalités de livraison en France ?",
-    answer: "Une fois la commande validée, le délai moyen de livraison sécurisée est de 21 jours partout en France. Le véhicule est préparé avec un nettoyage professionnel approfondi."
+    question: "Quelles sont les modalités de livraison en France ?",
+    answer: "Une fois la commande validée, la livraison sécurisée est organisée avec nos transporteurs partenaires partout en France. Le véhicule est préparé avec un nettoyage professionnel approfondi."
   },
   {
     question: "Proposez-vous la reprise de mon ancien véhicule ?",

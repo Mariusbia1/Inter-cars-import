@@ -185,7 +185,9 @@ export const VehicleManager = () => {
                             {Number(vehicle.price).toLocaleString('fr-FR')} €
                           </span>
                         ) : (
-                          <span className="text-xs font-bold text-slate-600">Sur devis</span>
+                          <span className="text-[11px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-300">
+                            En arrivage
+                          </span>
                         )}
                       </div>
 

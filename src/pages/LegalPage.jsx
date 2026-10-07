@@ -1,10 +1,11 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { ChevronRight, ShieldCheck } from 'lucide-react';
-import { SectionHeader } from '../components/common/SectionHeader';
+import { ChevronRight } from 'lucide-react';
+import { useSettings } from '../context/SettingsContext';
 
 export const LegalPage = () => {
   const { pathname } = useLocation();
+  const { settings } = useSettings();
 
   const isPrivacy = pathname.includes('confidentialite');
   const isCgv = pathname.includes('cgv');
@@ -38,7 +39,7 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">1. Collecte des Données Personnelles</h3>
                 <p>
-                  Dans le cadre de son activité de vente automobile et de relation client, <strong>Inter Cars</strong> collecte exclusivement les données strictement nécessaires au traitement des demandes de devis et à l'établissement des formalités administratives de carte grise (Nom, prénom, email, téléphone, adresse postale).
+                  Dans le cadre de son activité de vente automobile et de relation client, <strong>Inter Cars Import</strong> collecte exclusivement les données nécessaires au traitement des demandes d'information et à l'établissement des formalités administratives de carte grise (Nom, prénom, email, téléphone, ville).
                 </p>
               </div>
               <div>
@@ -50,7 +51,7 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">3. Vos Droits (RGPD)</h3>
                 <p>
-                  Conformément au Règlement Général sur la Protection des Données, vous disposez d'un droit d'accès, de rectification et de suppression de vos données sur simple demande par email à : <strong className="text-slate-900">contact@intercarsimport.fr</strong>.
+                  Conformément au Règlement Général sur la Protection des Données, vous disposez d'un droit d'accès, de rectification et de suppression de vos données sur simple demande par email à : <strong className="text-slate-900">{settings.email}</strong>.
                 </p>
               </div>
             </>
@@ -69,9 +70,9 @@ export const LegalPage = () => {
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">3. Délais & Livraison</h3>
+                <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">3. Modalités de Livraison</h3>
                 <p>
-                  La livraison sécurisée du véhicule s'effectue sous un délai de 21 jours suivant la validation de la commande et la finalisation des formalités de carte grise.
+                  La livraison sécurisée du véhicule s'effectue suivant la validation de la commande et la finalisation des formalités administratives et de carte grise, directement auprès de nos transporteurs agréés.
                 </p>
               </div>
             </>
@@ -80,9 +81,20 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">1. Éditeur de la Plateforme</h3>
                 <p>
-                  Le site web <strong>Inter Cars Import</strong> est édité par la société Inter Cars Import SAS, immatriculée au RCS de Cannes.<br />
-                  Siège social : Bureau Commercial, Axe Cannes — Monaco.<br />
-                  Directeur de la publication : Direction Générale Inter Cars Import.
+                  Le site web <strong>Inter Cars Import</strong> est édité par la société Inter Cars Import SAS.<br />
+                  {settings.headquartersAddress && (
+                    <>
+                      <strong>Siège social :</strong> {settings.headquartersAddress}<br />
+                    </>
+                  )}
+                  {(settings.commercialAddress || settings.address) && (
+                    <>
+                      <strong>Bureau commercial :</strong> {settings.commercialAddress || settings.address}<br />
+                    </>
+                  )}
+                  <strong>Email :</strong> {settings.email}<br />
+                  <strong>Téléphone :</strong> {settings.phone}<br />
+                  <strong>Directeur de la publication :</strong> Direction Générale Inter Cars Import.
                 </p>
               </div>
               <div>

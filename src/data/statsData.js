@@ -41,6 +41,6 @@ export const trustBadges = [
   { label: 'Véhicules Disponibles en Stock' },
   { label: 'Concessions Officielles en France' },
   { label: 'Audit 150 Points Certifié' },
-  { label: 'Livraison Clé en Main en 21 Jours' },
+  { label: 'Livraison Clé en Main Partout en France' },
   { label: 'Gestion Carte Grise Complète' },
 ];

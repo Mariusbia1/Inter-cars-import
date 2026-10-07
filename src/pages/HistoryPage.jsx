@@ -5,7 +5,7 @@ import { Shield, Award, HeartHandshake, Eye, ChevronRight, ArrowRight } from 'lu
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
 import { companyMilestones } from '../data/timelineData';
-import { FinalCta } from '../components/home/FinalCta';
+
 
 export const HistoryPage = () => {
   const values = [
@@ -181,8 +181,6 @@ export const HistoryPage = () => {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <FinalCta />
     </div>
   );
 };

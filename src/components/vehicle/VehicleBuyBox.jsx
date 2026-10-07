@@ -62,14 +62,14 @@ export const VehicleBuyBox = ({
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-sans">
-                Prix sur demande
+                En Arrivage
               </span>
-              <span className="px-2.5 py-1 rounded text-[11px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
-                Sur devis
+              <span className="px-2.5 py-1 rounded text-[11px] font-extrabold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-300">
+                Arrivage
               </span>
             </div>
             <p className="text-xs text-slate-500">
-              Tarif personnalisé selon options & conditions de livraison
+              Véhicule en cours d'acheminement • Tarif et détails sur demande
             </p>
           </div>
         )}
@@ -140,7 +140,7 @@ export const VehicleBuyBox = ({
         </div>
         <div className="flex items-center gap-2">
           <Truck className="w-4 h-4 text-rolex shrink-0" />
-          <span>Livraison clé en main en 21 jours</span>
+          <span>Livraison clé en main partout en France</span>
         </div>
         <div className="flex items-center gap-2">
           <FileCheck className="w-4 h-4 text-emerald-600 shrink-0" />

@@ -8,9 +8,9 @@ export const HeroSection = () => {
     {
       id: 1,
       image: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1400&q=75',
-      badge: "Véhicules Disponibles & Prêts à Partir",
+
       title: "Des Véhicules d'Occasion",
-      highlight: 'Disponibles Immédiatement.',
+      highlight: 'Disponibles.',
       subtitle: "Consultez notre sélection de véhicules récents rigoureusement audités en 150 points de contrôle, issus directement de nos concessions partenaires en France."
     },
     {
@@ -187,11 +187,10 @@ export const HeroSection = () => {
             <button
               key={s.id}
               onClick={() => setCurrent(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                current === index
+              className={`h-2 rounded-full transition-all duration-300 ${current === index
                   ? 'w-7 bg-gold shadow-gold-glow'
                   : 'w-2 bg-white/40 hover:bg-white/70'
-              }`}
+                }`}
               aria-label={`Aller au slide ${index + 1}`}
             />
           ))}

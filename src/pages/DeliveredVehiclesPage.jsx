@@ -4,7 +4,7 @@ import { ChevronRight, ChevronLeft, Search, SlidersHorizontal, Car, CheckCircle2
 import { VehicleCard } from '../components/common/VehicleCard';
 import { LuxuryButton } from '../components/common/LuxuryButton';
 import { useVehicles } from '../context/VehicleContext';
-import { FinalCta } from '../components/home/FinalCta';
+
 
 export const DeliveredVehiclesPage = () => {
   const { vehicles, loading } = useVehicles();
@@ -88,7 +88,7 @@ export const DeliveredVehiclesPage = () => {
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
-            Consultez nos véhicules d'occasion récents rigoureusement audités en 150 points de contrôle, disponibles à la vente avec garantie constructeur et livraison en 21 jours partout en France.
+            Consultez nos véhicules d'occasion récents rigoureusement audités en 150 points de contrôle, disponibles à la vente avec garantie constructeur et livraison soignée partout en France.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-300">
@@ -96,7 +96,7 @@ export const DeliveredVehiclesPage = () => {
               <ShieldCheck className="w-4 h-4 text-gold" /> Audit 150 points certifié
             </span>
             <span className="flex items-center gap-1.5">
-              <Car className="w-4 h-4 text-emerald-400" /> Livraison sécurisée en 21 jours
+              <Car className="w-4 h-4 text-emerald-400" /> Livraison sécurisée partout en France
             </span>
           </div>
         </div>
@@ -238,8 +238,6 @@ export const DeliveredVehiclesPage = () => {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <FinalCta />
     </div>
   );
 };

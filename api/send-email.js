@@ -29,7 +29,7 @@ const LeadSchema = z.object({
   vehicle_type: z.string().trim().max(60).optional().default(''),
   fuel_type: z.string().trim().max(40).optional().default(''),
   mileage_max: z.string().trim().max(40).optional().default(''),
-  preferred_timeline: z.string().trim().max(60).optional().default('En 21 jours'),
+  preferred_timeline: z.string().trim().max(60).optional().default('Standard'),
   delivery_city: z.string().trim().max(80).optional().default('France'),
   message: z.string().trim().max(3000, 'Message trop long (max 3000 caractères)').optional().default(''),
   smtpHost: z.string().trim().max(120).regex(/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$|^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/, 'Hôte SMTP invalide').optional(),
@@ -203,7 +203,7 @@ export default async function handler(req, res) {
             </tr>
             <tr>
               <th>Délai Souhaité</th>
-              <td>${escapeHtml(clean.preferred_timeline || 'En 21 jours')}</td>
+              <td>${escapeHtml(clean.preferred_timeline || 'Non spécifié')}</td>
             </tr>
           </table>
 
@@ -350,7 +350,7 @@ export default async function handler(req, res) {
         'Categorie': clean.vehicle_type || 'Non specifiee',
         'Motorisation': clean.fuel_type || 'Indifferent',
         'Kilometrage Max': clean.mileage_max || 'Non specifie',
-        'Delai': clean.preferred_timeline || 'En 21 jours',
+        'Delai': clean.preferred_timeline || 'Non specifie',
         'Ville': clean.delivery_city || 'France',
         'Remarques': clean.message || 'Aucune remarque',
         'Date': dateFormatted

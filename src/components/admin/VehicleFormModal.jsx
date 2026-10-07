@@ -524,7 +524,7 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
                         placeholder="ex: 38900"
                         className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-surface text-xs sm:text-sm outline-none focus:border-rolex font-bold text-rolex"
                       />
-                      <span className="text-[10px] text-slate-400">Laisser vide pour 'Sur devis'</span>
+                      <span className="text-[10px] text-slate-400">Laisser vide pour afficher 'En arrivage'</span>
                     </div>
 
                     <div>
@@ -887,7 +887,7 @@ export const VehicleFormModal = ({ vehicle, isOpen, onClose, onSave }) => {
                         name="delivery_city"
                         value={formData.delivery_city}
                         onChange={handleChange}
-                        placeholder="ex: France entière (Livraison en 21 jours)"
+                        placeholder="ex: France entière (Livraison sécurisée)"
                         className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-surface text-xs sm:text-sm outline-none focus:border-rolex"
                       />
                     </div>

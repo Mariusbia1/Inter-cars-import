@@ -9,7 +9,6 @@ import { GuaranteesPreview } from '../components/home/GuaranteesPreview';
 import { RecentDeliveries } from '../components/home/RecentDeliveries';
 import { KeyStatsSection } from '../components/home/KeyStatsSection';
 import { TestimonialsSlider } from '../components/home/TestimonialsSlider';
-import { FinalCta } from '../components/home/FinalCta';
 
 export const HomePage = () => {
   return (
@@ -43,9 +42,6 @@ export const HomePage = () => {
 
       {/* 10. Témoignages */}
       <TestimonialsSlider />
-
-      {/* 11. CTA Final */}
-      <FinalCta />
     </div>
   );
 };
