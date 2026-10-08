@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Award, HeartHandshake, Eye, ChevronRight, ArrowRight } from 'lucide-react';
+import { Shield, Award, HeartHandshake, ChevronRight } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
-import { LuxuryButton } from '../components/common/LuxuryButton';
 import { SEO } from '../components/common/SEO';
-import { companyMilestones } from '../data/timelineData';
-
 
 export const HistoryPage = () => {
   const values = [
@@ -56,7 +53,7 @@ export const HistoryPage = () => {
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">
             La Passion de la Qualité <br />
-            <span className="text-gold-gradient">Automobile depuis 2016</span>
+            <span className="text-gold-gradient">Automobile d'Excellence</span>
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
@@ -141,47 +138,6 @@ export const HistoryPage = () => {
                 </motion.div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* Frise Chronologique */}
-      <section className="py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            badge="Notre Parcours"
-            title="Les Jalons d'une Croissance Maîtrisée"
-            subtitle="Près d'une décennie d'exigence, de partenariats exclusifs en France et d'innovations de service."
-          />
-
-          <div className="relative border-l-2 border-gold/40 ml-4 sm:ml-64 space-y-12 pl-6 sm:pl-10">
-            {companyMilestones.map((m, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="relative"
-              >
-                {/* Pastille dorée centrée sur la ligne */}
-                <div className="absolute -left-[35px] sm:-left-[51px] top-1.5 w-5 h-5 rounded-full bg-rolex border-4 border-gold shadow-gold-glow z-10" />
-
-                {/* Année / Libellé avec espacement généreux et sécurisé avant la pastille */}
-                <div className="sm:absolute sm:-left-64 sm:w-48 text-left sm:text-right font-serif font-bold text-base sm:text-lg text-rolex mb-2 sm:mb-0 top-1 whitespace-nowrap pr-7 tracking-wide">
-                  {m.year}
-                </div>
-
-                <div className="p-6 rounded-xl bg-surface border border-slate-200 shadow-sm hover:border-gold/60 transition-colors">
-                  <h4 className="text-lg font-serif font-bold text-slate-900 mb-2">
-                    {m.title}
-                  </h4>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-light">
-                    {m.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>

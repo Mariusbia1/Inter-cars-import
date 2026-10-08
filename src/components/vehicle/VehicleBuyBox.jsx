@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Truck, FileCheck, Award, Phone, Clock, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Truck, FileCheck, Award, Phone } from 'lucide-react';
 import { useSettings } from '../../context/SettingsContext';
 
 export const VehicleBuyBox = ({
@@ -12,8 +12,6 @@ export const VehicleBuyBox = ({
   const formattedPrice = hasPrice
     ? Number(vehicle.price).toLocaleString('fr-FR') + ' €'
     : null;
-
-  const monthlyEstimate = vehicle?.monthly_price || (hasPrice ? Math.round(Number(vehicle.price) / 110) : null);
 
   const status = vehicle?.availability_status || 'ARRIVAGE';
   const statusColor = status === 'EN STOCK' 
@@ -45,14 +43,9 @@ export const VehicleBuyBox = ({
               </div>
             </div>
 
-            {/* Mention clé en main & Financement */}
+            {/* Mention clé en main */}
             <div className="mt-2 flex flex-wrap items-center justify-between gap-1 text-xs text-slate-500">
               <span className="font-medium text-slate-700">TTC • Prix clé en main certifié</span>
-              {monthlyEstimate && (
-                <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                  Dès {monthlyEstimate} € / mois
-                </span>
-              )}
             </div>
           </div>
         ) : (
@@ -143,12 +136,6 @@ export const VehicleBuyBox = ({
           <FileCheck className="w-4 h-4 text-emerald-600 shrink-0" />
           <span>Gestion complète de la carte grise & formalités</span>
         </div>
-      </div>
-
-      {/* 5. Délai de réservation */}
-      <div className="p-3 rounded-lg bg-rolex/5 border border-rolex/15 text-[11px] text-rolex-dark flex items-center gap-2">
-        <Clock className="w-4 h-4 text-rolex shrink-0" />
-        <span>Ce véhicule bénéficie d'une option de réservation exclusive de 48h.</span>
       </div>
     </div>
   );

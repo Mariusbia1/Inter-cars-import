@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { ArrowRight, Car, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowRight } from 'lucide-react';
 import { SectionHeader } from '../common/SectionHeader';
 import { VehicleCard } from '../common/VehicleCard';
 import { LuxuryButton } from '../common/LuxuryButton';
 import { useVehicles } from '../../context/VehicleContext';
 
 export const RecentDeliveries = () => {
-  const { vehicles } = useVehicles();
+  const { vehicles, loading } = useVehicles();
   const [activeCategory, setActiveCategory] = useState('Tous');
 
   const categories = ['Tous', 'Citadine', 'Berline & Break', 'SUV & 4x4'];
@@ -14,6 +14,22 @@ export const RecentDeliveries = () => {
   const filteredVehicles = vehicles
     .filter(v => activeCategory === 'Tous' || v.category === activeCategory)
     .slice(0, 6);
+
+  // Restauration automatique du défilement vers le véhicule cliqué en faisant retour vers l'accueil
+  useEffect(() => {
+    if (loading) return;
+    const lastVehicleId = sessionStorage.getItem('last_viewed_vehicle_id');
+    if (lastVehicleId) {
+      const timer = setTimeout(() => {
+        const targetEl = document.getElementById(`vehicle-card-${lastVehicleId}`);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        sessionStorage.removeItem('last_viewed_vehicle_id');
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
 
   return (
     <section className="py-20 lg:py-28 bg-white relative overflow-hidden">

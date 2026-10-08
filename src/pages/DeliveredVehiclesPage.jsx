@@ -1,28 +1,51 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronRight, ChevronLeft, Search, SlidersHorizontal, Car, CheckCircle2, Phone, ShieldCheck } from 'lucide-react';
+import React, { useMemo, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { ChevronRight, ChevronLeft, Search, SlidersHorizontal, Car, ShieldCheck } from 'lucide-react';
 import { VehicleCard } from '../components/common/VehicleCard';
 import { LuxuryButton } from '../components/common/LuxuryButton';
 import { SEO } from '../components/common/SEO';
 import { useVehicles } from '../context/VehicleContext';
 
-
 export const DeliveredVehiclesPage = () => {
   const { vehicles, loading } = useVehicles();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('Tous');
-  const [sortBy, setSortBy] = useState('recent');
-  
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 6;
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const pageParam = parseInt(searchParams.get('page'), 10);
+  const currentPage = !isNaN(pageParam) && pageParam > 0 ? pageParam : 1;
+  const selectedCategory = searchParams.get('cat') || 'Tous';
+  const searchQuery = searchParams.get('q') || '';
+  const sortBy = searchParams.get('sort') || 'recent';
+
+  const ITEMS_PER_PAGE = 6;
   const categories = ['Tous', 'Citadine', 'Berline & Break', 'SUV & 4x4'];
 
-  // Reset pagination on filter change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedCategory, sortBy]);
+  const updateFilters = (newFilters, isNewFilter = false) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (newFilters.page !== undefined) {
+      if (newFilters.page <= 1) params.delete('page');
+      else params.set('page', String(newFilters.page));
+    } else if (isNewFilter) {
+      params.delete('page');
+    }
+
+    if (newFilters.cat !== undefined) {
+      if (newFilters.cat === 'Tous') params.delete('cat');
+      else params.set('cat', newFilters.cat);
+    }
+
+    if (newFilters.q !== undefined) {
+      if (!newFilters.q.trim()) params.delete('q');
+      else params.set('q', newFilters.q.trim());
+    }
+
+    if (newFilters.sort !== undefined) {
+      if (newFilters.sort === 'recent') params.delete('sort');
+      else params.set('sort', newFilters.sort);
+    }
+
+    setSearchParams(params, { replace: isNewFilter });
+  };
 
   const filteredVehicles = useMemo(() => {
     return vehicles
@@ -53,7 +76,7 @@ export const DeliveredVehiclesPage = () => {
   }, [filteredVehicles, currentPage]);
 
   const handlePageChange = (page) => {
-    setCurrentPage(page);
+    updateFilters({ page });
     const element = document.getElementById('catalog-filters');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -61,6 +84,22 @@ export const DeliveredVehiclesPage = () => {
       window.scrollTo({ top: 380, behavior: 'smooth' });
     }
   };
+
+  // Restauration automatique du défilement vers le véhicule précédemment ouvert en faisant retour
+  useEffect(() => {
+    if (loading) return;
+    const lastVehicleId = sessionStorage.getItem('last_viewed_vehicle_id');
+    if (lastVehicleId) {
+      const timer = setTimeout(() => {
+        const targetEl = document.getElementById(`vehicle-card-${lastVehicleId}`);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        sessionStorage.removeItem('last_viewed_vehicle_id');
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, currentPage]);
 
   const catalogStructuredData = {
     '@context': 'https://schema.org',
@@ -144,7 +183,7 @@ export const DeliveredVehiclesPage = () => {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => updateFilters({ q: e.target.value }, true)}
                 placeholder="Rechercher par marque, modèle, ville..."
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-rolex focus:ring-2 focus:ring-rolex/10 text-sm bg-surface outline-none transition-all placeholder:text-slate-400"
               />
@@ -157,7 +196,7 @@ export const DeliveredVehiclesPage = () => {
               </span>
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => updateFilters({ sort: e.target.value }, true)}
                 className="px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-surface outline-none focus:border-rolex cursor-pointer transition-colors shadow-xs"
               >
                 <option value="recent">Nouveaux arrivages en premier</option>
@@ -175,7 +214,7 @@ export const DeliveredVehiclesPage = () => {
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => updateFilters({ cat }, true)}
                 className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 ${
                   selectedCategory === cat
                     ? 'bg-rolex text-gold border border-gold/50 shadow-md font-bold scale-105'

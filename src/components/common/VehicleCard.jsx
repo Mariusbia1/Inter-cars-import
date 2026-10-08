@@ -14,17 +14,25 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
     ? Number(vehicle.price).toLocaleString('fr-FR') + ' €'
     : null;
 
+  const handleCardClick = () => {
+    try {
+      sessionStorage.setItem('last_viewed_vehicle_id', String(vehicle.id));
+    } catch (e) {}
+    if (onSelect) onSelect(vehicle);
+  };
+
   return (
     <motion.div
+      id={`vehicle-card-${vehicle.id}`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       whileHover={{ y: -6 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      className={`group bg-white rounded-xl overflow-hidden border border-slate-200/80 hover:border-gold/60 shadow-luxury-card hover:shadow-luxury-hover transition-all duration-300 flex flex-col ${className}`}
+      className={`group bg-white rounded-xl overflow-hidden border border-slate-200/80 hover:border-gold/60 shadow-luxury-card hover:shadow-luxury-hover transition-all duration-300 flex flex-col scroll-mt-28 ${className}`}
     >
       {/* Image du véhicule - Lien cliquable vers la page produit */}
-      <Link to={vehicleUrl} className="relative h-60 sm:h-64 overflow-hidden bg-slate-900 block">
+      <Link to={vehicleUrl} onClick={handleCardClick} className="relative h-60 sm:h-64 overflow-hidden bg-slate-900 block">
         <img
           src={vehicle.image_url}
           alt={vehicle.title}
@@ -61,7 +69,7 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
             </span>
           </div>
 
-          <Link to={vehicleUrl} className="block group-hover:text-rolex transition-colors">
+          <Link to={vehicleUrl} onClick={handleCardClick} className="block group-hover:text-rolex transition-colors">
             <h3 className="text-lg sm:text-xl font-serif font-bold text-slate-900 line-clamp-1 mb-3 hover:text-rolex">
               {vehicle.title}
             </h3>
@@ -100,7 +108,7 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
         <div className="pt-1">
           <LuxuryButton
             to={vehicleUrl}
-            onClick={() => onSelect && onSelect(vehicle)}
+            onClick={handleCardClick}
             variant="rolex"
             size="sm"
             className="w-full justify-between font-semibold"
