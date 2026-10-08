@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, ChevronLeft, Search, SlidersHorizontal, Car, CheckCircle2, Phone, ShieldCheck } from 'lucide-react';
 import { VehicleCard } from '../components/common/VehicleCard';
 import { LuxuryButton } from '../components/common/LuxuryButton';
+import { SEO } from '../components/common/SEO';
 import { useVehicles } from '../context/VehicleContext';
 
 
@@ -61,8 +62,39 @@ export const DeliveredVehiclesPage = () => {
     }
   };
 
+  const catalogStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'itemListElement': filteredVehicles.slice(0, 10).map((v, idx) => ({
+      '@type': 'ListItem',
+      'position': idx + 1,
+      'item': {
+        '@type': 'Car',
+        'name': v.title,
+        'brand': { '@type': 'Brand', 'name': v.brand },
+        'model': v.model,
+        'productionDate': v.year ? String(v.year) : undefined,
+        'mileageFromOdometer': v.mileage ? { '@type': 'QuantitativeValue', 'value': v.mileage, 'unitCode': 'KMT' } : undefined,
+        'offers': v.price ? {
+          '@type': 'Offer',
+          'price': v.price,
+          'priceCurrency': 'EUR',
+          'availability': 'https://schema.org/InStock',
+          'itemCondition': 'https://schema.org/UsedCondition'
+        } : undefined,
+        'image': v.image_url ? (v.image_url.startsWith('http') ? v.image_url : `https://inter-cars-import.fr${v.image_url}`) : undefined,
+        'url': `https://inter-cars-import.fr/vehicules/${v.id}`
+      }
+    }))
+  };
+
   return (
     <div className="pt-32 sm:pt-36 bg-surface">
+      <SEO
+        title="Véhicules d'Occasion Certifiés Disponibles en France"
+        description="Découvrez notre catalogue de véhicules d'occasion certifiés : Volkswagen, Toyota, Audi, Peugeot, BMW. Audit 150 points de contrôle, historique constructeur garanti et livraison rapide."
+        structuredData={catalogStructuredData}
+      />
       {/* Hero Page Header */}
       <section className="bg-rolex-dark text-white py-14 sm:py-20 relative overflow-hidden border-b border-gold/30">
         <div className="absolute inset-0 z-0 opacity-20">

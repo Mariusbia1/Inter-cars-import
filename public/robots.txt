@@ -4,6 +4,9 @@
 
 User-agent: *
 Allow: /
+Allow: /nos-vehicules
+Allow: /vehicules-disponibles
+Allow: /vehicules/
 Allow: /vehicules-livres
 Allow: /notre-histoire
 Allow: /notre-methode

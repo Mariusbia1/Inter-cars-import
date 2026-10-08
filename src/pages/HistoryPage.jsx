@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Shield, Award, HeartHandshake, Eye, ChevronRight, ArrowRight } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
+import { SEO } from '../components/common/SEO';
 import { companyMilestones } from '../data/timelineData';
 
 
@@ -28,6 +29,10 @@ export const HistoryPage = () => {
 
   return (
     <div className="pt-32 sm:pt-36 bg-surface">
+      <SEO
+        title="Notre Histoire, Vision & Valeurs de l'Excellence"
+        description="Découvrez l'histoire d'Inter Cars Import, notre engagement pour l'intégrité automobile, notre réseau de partenaires exclusifs et notre passion pour les véhicules d'occasion certifiés."
+      />
       {/* Page Hero Header */}
       <section className="bg-rolex-dark text-white py-14 sm:py-20 relative overflow-hidden border-b border-gold/30">
         <div className="absolute inset-0 z-0">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, Phone, Mail, MapPin, Building2, Clock, ShieldCheck, Award, FileCheck, Truck, ArrowRight } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 import { LuxuryButton } from '../components/common/LuxuryButton';
+import { SEO } from '../components/common/SEO';
 
 export const ContactPage = () => {
   const { settings } = useSettings();
@@ -13,8 +14,30 @@ export const ContactPage = () => {
   const emailAddr = settings.email || 'contact@inter-cars-import.fr';
   const hours = settings.businessHours || "Du Lundi au Samedi : 08h30 - 19h30";
 
+  const contactStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    'mainEntity': {
+      '@type': 'AutoDealer',
+      'name': 'Inter Cars Import',
+      'telephone': phoneRaw,
+      'email': emailAddr,
+      'address': {
+        '@type': 'PostalAddress',
+        'streetAddress': commercialAddr,
+        'addressCountry': 'FR'
+      },
+      'openingHours': 'Mo-Sa 08:30-19:30'
+    }
+  };
+
   return (
     <div className="pt-32 sm:pt-36 bg-surface min-h-screen">
+      <SEO
+        title="Contact & Conciergerie Automobile | Inter Cars Import"
+        description="Contactez nos conseillers automobiles Inter Cars Import par téléphone, email ou rendez-vous en agence pour votre projet d'achat de véhicule d'occasion certifié."
+        structuredData={contactStructuredData}
+      />
       {/* Hero Page Header */}
       <section className="bg-rolex-dark text-white py-14 sm:py-20 relative overflow-hidden border-b border-gold/30">
         <div className="absolute inset-0 bg-[radial-gradient(#C6A15B_1px,transparent_1px)] [background-size:32px_32px] opacity-5 pointer-events-none" />

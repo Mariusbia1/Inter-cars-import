@@ -4,34 +4,41 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   
-  <!-- Page d'Accueil Principale -->
+  <!-- Page d Accueil Principale -->
   <url>
     <loc>https://inter-cars-import.fr/</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- Catalogue des Véhicules Livrés & Disponibles -->
+  <!-- Catalogue des Véhicules Disponibles -->
   <url>
-    <loc>https://inter-cars-import.fr/vehicules-livres</loc>
-    <lastmod>2026-08-24</lastmod>
+    <loc>https://inter-cars-import.fr/vehicules-disponibles</loc>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- Page de Contact & Demande de Devis -->
+  <url>
+    <loc>https://inter-cars-import.fr/nos-vehicules</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Page de Contact -->
   <url>
     <loc>https://inter-cars-import.fr/contact</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
 
   <!-- Notre Histoire & Vision -->
   <url>
     <loc>https://inter-cars-import.fr/notre-histoire</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -39,7 +46,7 @@
   <!-- Notre Méthode & Audit 150 Points -->
   <url>
     <loc>https://inter-cars-import.fr/notre-methode</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -47,33 +54,120 @@
   <!-- Nos Garanties Contractuelles -->
   <url>
     <loc>https://inter-cars-import.fr/garanties</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Mentions Légales -->
+  <!-- Pages Légales -->
   <url>
     <loc>https://inter-cars-import.fr/mentions-legales</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
-  <!-- Politique de Confidentialité -->
   <url>
     <loc>https://inter-cars-import.fr/confidentialite</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
-  <!-- Conditions Générales de Vente -->
   <url>
     <loc>https://inter-cars-import.fr/cgv</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
+  <!-- Fiches Véhicules Disponibles -->
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/5e33e921-b843-4dec-b496-6ec7cd945766</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/e58ff218-41f5-4f70-84c6-64848dd39f93</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/6ef77b66-cae5-441d-bab3-5868d8ccefa3</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/ebaa7e78-a6eb-437d-93d6-7562831567ce</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/557dcebd-d1c6-47a7-80a5-39eb9706c116</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/d8009d2f-c278-4c3d-826c-b5b6e64de39c</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/c5d4704a-ca7c-43de-ba2a-1cb0fd0639ff</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/f3fdfd15-e311-456a-b007-0d69efbbc75b</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/b86b42c6-0aef-46a8-9257-1da4fc04dad7</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/f4617860-75ab-4912-b52e-7a661bf46510</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/d3d0b39a-23cf-492a-a4d3-0e45e0cc27a4</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/d6d2c0a7-43d7-4c77-b0cf-4fa583d22b80</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/3826942f-b8fe-4087-b6a3-b87e254d6ad2</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/8243e6a9-1d20-4e96-a5af-7ad426eb968c</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://inter-cars-import.fr/vehicules/8aa2fd05-df23-41d3-9a31-0929faff56d9</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

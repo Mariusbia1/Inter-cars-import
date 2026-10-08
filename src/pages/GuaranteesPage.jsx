@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight, ShieldCheck, CheckCircle2, Landmark, FileText, Scale, Wrench, FileCheck2 } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
+import { SEO } from '../components/common/SEO';
 
 
 export const GuaranteesPage = () => {
@@ -48,6 +49,10 @@ export const GuaranteesPage = () => {
 
   return (
     <div className="pt-32 sm:pt-36 bg-surface">
+      <SEO
+        title="Nos Garanties, Audit 150 Points & Sécurité de l'Achat"
+        description="Achetez votre véhicule d'occasion en toute sécurité chez Inter Cars Import : garantie constructeur, audit 150 points, historique certifié et transparence financière totale."
+      />
       {/* Hero Page */}
       <section className="bg-rolex-dark text-white py-14 sm:py-20 relative overflow-hidden border-b border-gold/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">

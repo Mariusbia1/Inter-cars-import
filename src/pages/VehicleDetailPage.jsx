@@ -21,7 +21,7 @@ import { VehicleBuyBox } from '../components/vehicle/VehicleBuyBox';
 import { VehicleSpecsAndEquipments } from '../components/vehicle/VehicleSpecsAndEquipments';
 import { VehicleLeadForm } from '../components/vehicle/VehicleLeadForm';
 import { SimilarVehicles } from '../components/vehicle/SimilarVehicles';
-
+import { SEO } from '../components/common/SEO';
 import { useToast } from '../context/ToastContext';
 
 export const VehicleDetailPage = () => {
@@ -126,8 +126,89 @@ export const VehicleDetailPage = () => {
     );
   }
 
+  const vehiclePriceText = vehicle.price ? `${Number(vehicle.price).toLocaleString('fr-FR')} €` : 'En Arrivage';
+  const vehicleMainImage = vehicle.image_url ? (vehicle.image_url.startsWith('http') ? vehicle.image_url : `https://inter-cars-import.fr${vehicle.image_url}`) : 'https://inter-cars-import.fr/logo.png';
+
+  const vehicleStructuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Car',
+        '@id': `https://inter-cars-import.fr/vehicules/${vehicle.id}#car`,
+        'name': vehicle.title,
+        'brand': { '@type': 'Brand', 'name': vehicle.brand },
+        'model': vehicle.model,
+        'productionDate': vehicle.year ? String(vehicle.year) : undefined,
+        'mileageFromOdometer': vehicle.mileage ? {
+          '@type': 'QuantitativeValue',
+          'value': vehicle.mileage,
+          'unitCode': 'KMT'
+        } : undefined,
+        'vehicleEngine': vehicle.engine ? {
+          '@type': 'EngineSpecification',
+          'name': vehicle.engine,
+          'enginePower': vehicle.power_hp ? {
+            '@type': 'QuantitativeValue',
+            'value': vehicle.power_hp,
+            'unitCode': 'HP'
+          } : undefined
+        } : undefined,
+        'vehicleTransmission': vehicle.transmission,
+        'fuelType': vehicle.fuel_type || vehicle.specs?.fuel_type,
+        'color': vehicle.color_ext,
+        'numberOfDoors': vehicle.doors ? parseInt(vehicle.doors, 10) : 5,
+        'seatingCapacity': vehicle.seats ? parseInt(vehicle.seats, 10) : 5,
+        'image': vehicle.gallery && vehicle.gallery.length > 0 
+          ? vehicle.gallery.map(img => img.startsWith('http') ? img : `https://inter-cars-import.fr${img}`)
+          : [vehicleMainImage],
+        'description': `Véhicule d'occasion certifié ${vehicle.title} (${vehicle.year}) avec audit en 150 points de contrôle. Disponible chez Inter Cars Import avec livraison sécurisée en France.`,
+        'offers': vehicle.price ? {
+          '@type': 'Offer',
+          'price': vehicle.price,
+          'priceCurrency': 'EUR',
+          'availability': 'https://schema.org/InStock',
+          'itemCondition': 'https://schema.org/UsedCondition',
+          'seller': {
+            '@type': 'AutoDealer',
+            'name': 'Inter Cars Import',
+            'url': 'https://inter-cars-import.fr'
+          }
+        } : undefined
+      },
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          {
+            '@type': 'ListItem',
+            'position': 1,
+            'name': 'Accueil',
+            'item': 'https://inter-cars-import.fr/'
+          },
+          {
+            '@type': 'ListItem',
+            'position': 2,
+            'name': 'Nos Véhicules',
+            'item': 'https://inter-cars-import.fr/vehicules-disponibles'
+          },
+          {
+            '@type': 'ListItem',
+            'position': 3,
+            'name': vehicle.title,
+            'item': `https://inter-cars-import.fr/vehicules/${vehicle.id}`
+          }
+        ]
+      }
+    ]
+  };
+
   return (
     <div className="pt-28 sm:pt-32 bg-[#f8fafc] min-h-screen">
+      <SEO
+        title={`${vehicle.title} - ${vehiclePriceText}`}
+        description={`Découvrez cette ${vehicle.title} ${vehicle.year || ''} (${vehicle.mileage ? vehicle.mileage.toLocaleString('fr-FR') + ' km' : 'Faible km'}, ${vehicle.power_hp || 0} ch). Audit 150 points validé, historique certifié et livraison sécurisée partout en France.`}
+        image={vehicleMainImage}
+        structuredData={vehicleStructuredData}
+      />
       
       {/* 1. Fil d'Ariane & Barre d'Actions Supérieure */}
       <div className="bg-white border-b border-slate-200 py-3 shadow-2xs">

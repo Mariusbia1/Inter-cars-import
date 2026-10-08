@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Check, X, Shield, Search, FileCheck, Truck, HelpCircle, ChevronDown } from 'lucide-react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { LuxuryButton } from '../components/common/LuxuryButton';
+import { SEO } from '../components/common/SEO';
 import { salesFaqs } from '../data/faqData';
 
 
@@ -106,8 +107,61 @@ export const MethodPage = () => {
     }
   ];
 
+  const methodStructuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'HowTo',
+        'name': "Le Processus d'Achat Sécurisé Inter Cars Import",
+        'description': "Guide pas à pas de l'achat d'un véhicule d'occasion certifié en France avec audit technique en 150 points.",
+        'step': [
+          {
+            '@type': 'HowToStep',
+            'position': 1,
+            'name': 'Sélection de Votre Véhicule',
+            'text': "Choix parmi notre sélection de véhicules d'occasion certifiés avec conseils sur-mesure."
+          },
+          {
+            '@type': 'HowToStep',
+            'position': 2,
+            'name': 'Partenariat Exclusif en France',
+            'text': "Sélection dans notre réseau de concessions partenaires avec historique constructeur vérifié."
+          },
+          {
+            '@type': 'HowToStep',
+            'position': 3,
+            'name': 'Audit Technique 150 Points',
+            'text': "Inspection méticuleuse sur pont élévateur, diagnostic électronique et mesure micrométrique."
+          },
+          {
+            '@type': 'HowToStep',
+            'position': 4,
+            'name': 'Livraison Sécurisée & Carte Grise',
+            'text': "Livraison soignée partout en France et prise en charge intégrale des formalités administratives."
+          }
+        ]
+      },
+      {
+        '@type': 'FAQPage',
+        'mainEntity': salesFaqs.map((faq) => ({
+          '@type': 'Question',
+          'name': faq.question,
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': faq.answer
+          }
+        }))
+      }
+    ]
+  };
+
   return (
     <div className="pt-32 sm:pt-36 bg-surface">
+      <SEO
+        title="Notre Méthode & Protocole d'Audit en 150 Points"
+        description="Découvrez notre protocole d'audit en 150 points de contrôle : inspection technique complète, certification kilométrique, vérification administrative et livraison soignée partout en France."
+        structuredData={methodStructuredData}
+      />
       {/* Hero Page */}
       <section className="bg-rolex-dark text-white py-14 sm:py-20 relative overflow-hidden border-b border-gold/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">

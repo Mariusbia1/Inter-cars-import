@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
+import { SEO } from '../components/common/SEO';
 
 export const LegalPage = () => {
   const { pathname } = useLocation();
@@ -18,6 +19,11 @@ export const LegalPage = () => {
 
   return (
     <div className="pt-32 sm:pt-36 bg-surface min-h-screen">
+      <SEO
+        title={title}
+        description={`${title} de la société Inter Cars Import SAS, spécialiste de la vente de véhicules d'occasion en France.`}
+        noIndex={false}
+      />
       <section className="bg-rolex-dark text-white py-12 sm:py-16 relative overflow-hidden border-b border-gold/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <div className="flex items-center justify-center gap-2 text-xs text-slate-400 mb-4 uppercase tracking-widest">
