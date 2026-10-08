@@ -13,7 +13,6 @@ export const VehicleBuyBox = ({
     ? Number(vehicle.price).toLocaleString('fr-FR') + ' €'
     : null;
 
-  const discountPercent = vehicle?.discount_percent || 12;
   const monthlyEstimate = vehicle?.monthly_price || (hasPrice ? Math.round(Number(vehicle.price) / 110) : null);
 
   const status = vehicle?.availability_status || 'ARRIVAGE';
@@ -28,7 +27,7 @@ export const VehicleBuyBox = ({
   return (
     <div className="bg-white rounded-xl border border-slate-200 shadow-md p-5 sm:p-6 flex flex-col justify-between space-y-5">
       
-      {/* 1. Bloc Prix & Remise */}
+      {/* 1. Bloc Prix & Statut */}
       <div className="border-b border-slate-100 pb-4">
         {hasPrice ? (
           <div>
@@ -39,13 +38,11 @@ export const VehicleBuyBox = ({
                 </span>
               </div>
 
-              {discountPercent > 0 && (
-                <div className="flex items-center gap-1.5">
-                  <span className="bg-[#fcd34d] text-slate-900 font-extrabold text-xs sm:text-sm px-2.5 py-1 rounded-md flex items-center gap-1 shadow-xs">
-                    -{discountPercent}%
-                  </span>
-                </div>
-              )}
+              <div className="flex items-center gap-1.5">
+                <span className="px-2.5 py-1 rounded text-xs font-extrabold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-300 shadow-xs">
+                  En Arrivage
+                </span>
+              </div>
             </div>
 
             {/* Mention clé en main & Financement */}

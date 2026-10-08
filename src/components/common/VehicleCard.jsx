@@ -14,8 +14,6 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
     ? Number(vehicle.price).toLocaleString('fr-FR') + ' €'
     : null;
 
-  const discount = vehicle.discount_percent;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -37,24 +35,16 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
         />
 
-        {/* Badge Prix & Remise superposé */}
+        {/* Badge Prix & Statut superposé */}
         <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10 pointer-events-none">
-          {hasPrice ? (
-            <>
-              <span className="bg-slate-950/80 backdrop-blur-md text-white font-extrabold text-xs px-2.5 py-1 rounded-md border border-white/20 shadow-md">
-                {formattedPrice}
-              </span>
-              {discount && (
-                <span className="bg-[#fcd34d] text-slate-950 font-extrabold text-[11px] px-2 py-1 rounded-md shadow-md">
-                  -{discount}%
-                </span>
-              )}
-            </>
-          ) : (
-            <span className="bg-slate-950/85 backdrop-blur-md text-amber-300 font-extrabold text-xs px-2.5 py-1 rounded-md border border-amber-300/30 shadow-md">
-              En Arrivage
+          {hasPrice && (
+            <span className="bg-slate-950/85 backdrop-blur-md text-white font-extrabold text-xs px-2.5 py-1 rounded-md border border-white/20 shadow-md">
+              {formattedPrice}
             </span>
           )}
+          <span className="bg-amber-400 text-slate-950 font-extrabold text-[11px] px-2.5 py-1 rounded-md shadow-md border border-amber-500/30">
+            En Arrivage
+          </span>
         </div>
       </Link>
 
