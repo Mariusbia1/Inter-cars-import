@@ -16,9 +16,9 @@ export const SettingsManager = () => {
     smtpUser: settings.smtpUser || 'contact@inter-cars-import.fr',
     smtpPass: settings.smtpPass || '',
     whatsapp: settings.whatsapp || '+33 6 00 00 00 00',
-    commercialAddress: settings.commercialAddress || settings.address || "Bureau Commercial, Axe Cannes — Monaco",
+    commercialAddress: settings.commercialAddress || settings.address || "Siège Commercial, Axe Cannes — Monaco",
     headquartersAddress: settings.headquartersAddress || "Siège Social, France",
-    address: settings.commercialAddress || settings.address || "Bureau Commercial, Axe Cannes — Monaco",
+    address: settings.commercialAddress || settings.address || "Siège Commercial, Axe Cannes — Monaco",
     businessHours: settings.businessHours || "Du Lundi au Samedi : 08h30 - 19h30",
   });
 
@@ -233,14 +233,14 @@ export const SettingsManager = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                  Adresse Commerciale (Bureau / Accueil Client)
+                  Adresse Commerciale (Siège Commercial / Accueil Client)
                 </label>
                 <input
                   type="text"
                   name="commercialAddress"
                   value={formState.commercialAddress}
                   onChange={handleChange}
-                  placeholder="Ex: Bureau Commercial, Axe Cannes — Monaco"
+                  placeholder="Ex: Siège Commercial, Axe Cannes — Monaco"
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
                 />
                 <span className="text-[11px] text-slate-400 mt-1 block">

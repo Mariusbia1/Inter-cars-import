@@ -10,17 +10,31 @@ const defaultSettings = {
   phoneRaw: '+33493000000',
   email: 'contact@inter-cars-import.fr',
   notificationEmail: 'contact@inter-cars-import.fr',
-  commercialAddress: "Bureau Commercial, Axe Cannes — Monaco",
+  commercialAddress: "Siège Commercial, Axe Cannes — Monaco",
   headquartersAddress: "Siège Social, France",
-  address: "Bureau Commercial, Axe Cannes — Monaco",
+  address: "Siège Commercial, Axe Cannes — Monaco",
   businessHours: "Du Lundi au Samedi : 08h30 - 19h30",
+};
+
+const formatAddress = (addr) => {
+  if (!addr) return "Siège Commercial, Axe Cannes — Monaco";
+  return addr.replace(/Bureau\s+commercial/gi, "Siège Commercial");
 };
 
 export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useState(() => {
     try {
       const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
-      return stored ? { ...defaultSettings, ...JSON.parse(stored) } : defaultSettings;
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        return {
+          ...defaultSettings,
+          ...parsed,
+          commercialAddress: formatAddress(parsed.commercialAddress),
+          address: formatAddress(parsed.address || parsed.commercialAddress)
+        };
+      }
+      return defaultSettings;
     } catch {
       return defaultSettings;
     }
@@ -38,14 +52,16 @@ export const SettingsProvider = ({ children }) => {
           .single();
 
         if (!error && data) {
+          const rawCommercial = data.commercial_address || data.address || defaultSettings.commercialAddress;
+          const formattedCommercial = formatAddress(rawCommercial);
           const remoteConfig = {
             phone: data.phone || defaultSettings.phone,
             phoneRaw: (data.phone || defaultSettings.phone).replace(/[^0-9+]/g, ''),
             email: data.email || defaultSettings.email,
             notificationEmail: data.notification_email || data.email || defaultSettings.notificationEmail,
-            commercialAddress: data.commercial_address || data.address || defaultSettings.commercialAddress,
+            commercialAddress: formattedCommercial,
             headquartersAddress: data.headquarters_address || defaultSettings.headquartersAddress,
-            address: data.commercial_address || data.address || defaultSettings.address,
+            address: formattedCommercial,
             businessHours: data.business_hours || defaultSettings.businessHours,
           };
           setSettings(remoteConfig);

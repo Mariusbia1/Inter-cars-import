@@ -95,7 +95,7 @@ export const LegalPage = () => {
                   )}
                   {(settings.commercialAddress || settings.address) && (
                     <>
-                      <strong>Bureau commercial :</strong> {settings.commercialAddress || settings.address}<br />
+                      <strong>Siège commercial :</strong> {settings.commercialAddress || settings.address}<br />
                     </>
                   )}
                   <strong>Email :</strong> {settings.email}<br />

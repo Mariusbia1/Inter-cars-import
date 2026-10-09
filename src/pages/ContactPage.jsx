@@ -9,7 +9,7 @@ export const ContactPage = () => {
   const { settings } = useSettings();
 
   const phoneRaw = settings.phoneRaw || '+33493000000';
-  const commercialAddr = settings.commercialAddress || settings.address || "Bureau Commercial, Axe Cannes — Monaco";
+  const commercialAddr = settings.commercialAddress || settings.address || "Siège Commercial, Axe Cannes — Monaco";
   const headquartersAddr = settings.headquartersAddress || "Siège Social, France";
   const emailAddr = settings.email || 'contact@inter-cars-import.fr';
   const hours = settings.businessHours || "Du Lundi au Samedi : 08h30 - 19h30";
@@ -71,10 +71,10 @@ export const ContactPage = () => {
                 </div>
                 <div>
                   <span className="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-gold/15 text-rolex-dark border border-gold/30 inline-block mb-2">
-                    Bureau Commercial
+                    Siège Commercial
                   </span>
                   <h3 className="font-serif font-bold text-slate-900 text-lg">
-                    Accueil & Conseils
+                    Siège Commercial
                   </h3>
                 </div>
                 <p className="text-sm text-slate-600 leading-relaxed">
