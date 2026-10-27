@@ -84,7 +84,7 @@ export const VehicleBuyBox = ({
         {vehicle?.engine && (
           <div className="flex items-center justify-between text-xs pt-1.5 border-t border-slate-200/60">
             <span className="text-slate-500 font-medium">Motorisation :</span>
-            <span className="font-bold text-slate-800">{vehicle.engine} ({vehicle.power_hp || 0} ch)</span>
+            <span className="font-bold text-slate-800">{vehicle.engine}</span>
           </div>
         )}
 
