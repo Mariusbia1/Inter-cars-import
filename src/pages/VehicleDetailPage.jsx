@@ -139,29 +139,29 @@ export const VehicleDetailPage = () => {
         'brand': { '@type': 'Brand', 'name': vehicle.brand },
         'model': vehicle.model,
         'productionDate': vehicle.year ? String(vehicle.year) : undefined,
-        'mileageFromOdometer': vehicle.mileage ? {
+        'mileageFromOdometer': (vehicle.mileage && Number(vehicle.mileage) > 0) ? {
           '@type': 'QuantitativeValue',
-          'value': vehicle.mileage,
+          'value': Number(vehicle.mileage),
           'unitCode': 'KMT'
         } : undefined,
         'vehicleEngine': vehicle.engine ? {
           '@type': 'EngineSpecification',
           'name': vehicle.engine,
-          'enginePower': vehicle.power_hp ? {
+          'enginePower': (vehicle.power_hp && Number(vehicle.power_hp) > 0) ? {
             '@type': 'QuantitativeValue',
-            'value': vehicle.power_hp,
+            'value': Number(vehicle.power_hp),
             'unitCode': 'HP'
           } : undefined
         } : undefined,
-        'vehicleTransmission': vehicle.transmission,
-        'fuelType': vehicle.fuel_type || vehicle.specs?.fuel_type,
-        'color': vehicle.color_ext,
-        'numberOfDoors': vehicle.doors ? parseInt(vehicle.doors, 10) : 5,
-        'seatingCapacity': vehicle.seats ? parseInt(vehicle.seats, 10) : 5,
+        'vehicleTransmission': vehicle.transmission || undefined,
+        'fuelType': vehicle.fuel_type || vehicle.specs?.fuel_type || undefined,
+        'color': vehicle.color_ext || undefined,
+        'numberOfDoors': vehicle.doors ? parseInt(vehicle.doors, 10) : undefined,
+        'seatingCapacity': vehicle.seats ? parseInt(vehicle.seats, 10) : undefined,
         'image': vehicle.gallery && vehicle.gallery.length > 0 
           ? vehicle.gallery.map(img => img.startsWith('http') ? img : `https://inter-cars-import.fr${img}`)
           : [vehicleMainImage],
-        'description': `Véhicule d'occasion certifié ${vehicle.title} (${vehicle.year}) avec audit en 150 points de contrôle. Disponible chez Inter Cars Import avec livraison sécurisée en France.`,
+        'description': `Véhicule d'occasion certifié ${vehicle.title}${vehicle.year ? ` (${vehicle.year})` : ''} avec audit en 150 points de contrôle. Disponible chez Inter Cars Import avec livraison sécurisée en France.`,
         'offers': vehicle.price ? {
           '@type': 'Offer',
           'price': vehicle.price,
@@ -201,11 +201,16 @@ export const VehicleDetailPage = () => {
     ]
   };
 
+  const seoSpecs = [
+    vehicle.mileage && Number(vehicle.mileage) > 0 ? `${Number(vehicle.mileage).toLocaleString('fr-FR')} km` : null,
+    vehicle.power_hp && Number(vehicle.power_hp) > 0 ? `${vehicle.power_hp} ch` : null
+  ].filter(Boolean);
+
   return (
     <div className="pt-28 sm:pt-32 bg-[#f8fafc] min-h-screen">
       <SEO
         title={`${vehicle.title} - ${vehiclePriceText}`}
-        description={`Découvrez cette ${vehicle.title} ${vehicle.year || ''} (${vehicle.mileage ? vehicle.mileage.toLocaleString('fr-FR') + ' km' : 'Faible km'}, ${vehicle.power_hp || 0} ch). Audit 150 points validé, historique certifié et livraison sécurisée partout en France.`}
+        description={`Découvrez cette ${vehicle.title}${vehicle.year ? ` ${vehicle.year}` : ''}${seoSpecs.length > 0 ? ` (${seoSpecs.join(', ')})` : ''}. Audit 150 points validé, historique certifié et livraison sécurisée partout en France.`}
         image={vehicleMainImage}
         structuredData={vehicleStructuredData}
       />

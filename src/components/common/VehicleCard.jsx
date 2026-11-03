@@ -79,17 +79,21 @@ export const VehicleCard = ({ vehicle, onSelect, className = '' }) => {
           <div className="grid grid-cols-3 gap-2 py-3 border-y border-slate-100 mb-4 text-xs text-slate-600">
             <div className="flex flex-col items-center justify-center p-2 rounded bg-slate-50 text-center">
               <Calendar className="w-4 h-4 text-rolex mb-1" />
-              <span className="font-semibold text-slate-900">{vehicle.year}</span>
+              <span className="font-semibold text-slate-900">{vehicle.year || '-'}</span>
               <span className="text-[10px] text-slate-400">Mise en circ.</span>
             </div>
             <div className="flex flex-col items-center justify-center p-2 rounded bg-slate-50 text-center">
               <Gauge className="w-4 h-4 text-rolex mb-1" />
-              <span className="font-semibold text-slate-900">{vehicle.mileage?.toLocaleString('fr-FR')} km</span>
+              <span className="font-semibold text-slate-900">
+                {vehicle.mileage && Number(vehicle.mileage) > 0 ? `${Number(vehicle.mileage).toLocaleString('fr-FR')} km` : '-'}
+              </span>
               <span className="text-[10px] text-slate-400">Kilométrage</span>
             </div>
             <div className="flex flex-col items-center justify-center p-2 rounded bg-slate-50 text-center">
               <Zap className="w-4 h-4 text-gold mb-1" />
-              <span className="font-semibold text-slate-900">{vehicle.power_hp} ch</span>
+              <span className="font-semibold text-slate-900">
+                {vehicle.power_hp && Number(vehicle.power_hp) > 0 ? `${vehicle.power_hp} ch` : '-'}
+              </span>
               <span className="text-[10px] text-slate-400">Puissance</span>
             </div>
           </div>

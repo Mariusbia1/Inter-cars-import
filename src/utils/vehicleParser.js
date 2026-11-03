@@ -14,25 +14,25 @@ export const parseVehicleText = (rawText) => {
     brand: '',
     model: '',
     category: '',
-    year: new Date().getFullYear(),
+    year: '',
     first_reg_date: '',
-    mileage: 25000,
-    power_hp: 150,
-    fiscal_power: 8,
+    mileage: '',
+    power_hp: '',
+    fiscal_power: '',
     engine: '',
-    fuel_type: 'Diesel',
-    transmission: 'Automatique',
-    drivetrain: 'Traction avant',
-    color_ext: 'Gris',
-    color_int: 'Noir',
-    seats: 5,
-    doors: '5 portes',
+    fuel_type: '',
+    transmission: '',
+    drivetrain: '',
+    color_ext: '',
+    color_int: '',
+    seats: '',
+    doors: '',
     price: '',
     discount_percent: 12,
-    warranty: 'Garantie Constructeur 12 à 24 Mois',
-    certification: 'Audit 150 Points Validé',
-    origin_country: 'Réseau Partenaire France',
-    delivery_city: 'France entière',
+    warranty: '',
+    certification: '',
+    origin_country: '',
+    delivery_city: '',
     availability_status: 'ARRIVAGE',
     image_url: '',
     gallery_urls: '',
@@ -310,10 +310,7 @@ export const parseVehicleText = (rawText) => {
   result.equipments = optionsFound;
   result.raw_equipments_text = optionsFound.map((opt) => `- ${opt}`).join('\n');
 
-  // Si pas d'engine renseigné, synthétiser avec cylindrée/puissance/carburant
-  if (!result.engine) {
-    result.engine = `${result.fuel_type} ${result.power_hp} ch`;
-  }
+  // Moteur laissé tel quel si non renseigné
 
   // Si des images ont été explicitement trouvées dans le texte
   if (imageUrlsFound.length > 0) {

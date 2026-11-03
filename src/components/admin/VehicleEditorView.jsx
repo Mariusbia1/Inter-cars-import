@@ -34,21 +34,21 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
     is_featured: false,
 
     // Technical
-    year: new Date().getFullYear(),
+    year: '',
     first_reg_date: '',
-    mileage: 25000,
-    power_hp: 150,
-    fiscal_power: 8,
+    mileage: '',
+    power_hp: '',
+    fiscal_power: '',
     engine: '',
-    fuel_type: 'Diesel',
-    transmission: 'Automatique',
-    drivetrain: 'Traction avant',
-    doors: '5 portes',
-    seats: 5,
+    fuel_type: '',
+    transmission: '',
+    drivetrain: '',
+    doors: '',
+    seats: '',
 
     // Colors
-    color_ext: 'Gris',
-    color_int: 'Noir',
+    color_ext: '',
+    color_int: '',
 
     // Equipments
     raw_equipments_text: '',
@@ -87,20 +87,20 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
         availability_status: vehicle.availability_status || 'ARRIVAGE',
         is_featured: vehicle.is_featured || false,
 
-        year: vehicle.year || 2024,
-        first_reg_date: vehicle.specs?.first_reg_date || vehicle.first_reg_date || `${vehicle.year || 2024}`,
-        mileage: vehicle.mileage || 20000,
-        power_hp: vehicle.power_hp || 150,
-        fiscal_power: vehicle.fiscal_power || vehicle.specs?.fiscal_power || 8,
-        engine: vehicle.engine || vehicle.specs?.engine_cylinders || '2.0L',
-        fuel_type: vehicle.fuel_type || 'Diesel',
-        transmission: vehicle.transmission || 'Automatique',
-        drivetrain: vehicle.specs?.drivetrain || vehicle.drivetrain || 'Traction avant',
-        doors: vehicle.specs?.doors || vehicle.doors || '5 portes',
-        seats: vehicle.specs?.seats ? parseInt(vehicle.specs.seats, 10) : (vehicle.seats || 5),
+        year: vehicle.year || '',
+        first_reg_date: vehicle.specs?.first_reg_date || vehicle.first_reg_date || (vehicle.year ? `${vehicle.year}` : ''),
+        mileage: (vehicle.mileage !== undefined && vehicle.mileage !== null && Number(vehicle.mileage) > 0) ? vehicle.mileage : '',
+        power_hp: (vehicle.power_hp !== undefined && vehicle.power_hp !== null && Number(vehicle.power_hp) > 0) ? vehicle.power_hp : '',
+        fiscal_power: vehicle.fiscal_power || vehicle.specs?.fiscal_power || '',
+        engine: vehicle.engine || vehicle.specs?.engine_cylinders || '',
+        fuel_type: vehicle.fuel_type || '',
+        transmission: vehicle.transmission || '',
+        drivetrain: vehicle.specs?.drivetrain || vehicle.drivetrain || '',
+        doors: vehicle.specs?.doors || vehicle.doors || '',
+        seats: vehicle.specs?.seats ? parseInt(vehicle.specs.seats, 10) : (vehicle.seats || ''),
 
-        color_ext: vehicle.color_ext || (vehicle.colors && vehicle.colors[0]?.name) || 'Gris',
-        color_int: vehicle.specs?.color_int || vehicle.color_int || 'Noir',
+        color_ext: vehicle.color_ext || (vehicle.colors && vehicle.colors[0]?.name) || '',
+        color_int: vehicle.specs?.color_int || vehicle.color_int || '',
 
         raw_equipments_text: flatEquipments.map((e) => `- ${e}`).join('\n'),
 
@@ -216,28 +216,26 @@ export const VehicleEditorView = ({ vehicle, onSave, onCancel }) => {
         year: parseInt(formData.year, 10) || new Date().getFullYear(),
         mileage: parseInt(formData.mileage, 10) || 0,
         power_hp: parseInt(formData.power_hp, 10) || 0,
-        fiscal_power: parseInt(formData.fiscal_power, 10) || 8,
+        fiscal_power: formData.fiscal_power ? (parseInt(formData.fiscal_power, 10) || 0) : 0,
         image_url: mainImageUrl,
         gallery: imagesList,
         equipments: equipmentsList,
-        colors: [
-          { name: formData.color_ext || 'Gris', hex: '#7D848C', status: formData.availability_status || 'ARRIVAGE', isDefault: true },
-          { name: 'Noir Intense Nacré', hex: '#1C1D21', status: 'EN STOCK' },
-          { name: 'Blanc Pur', hex: '#F4F5F7', status: 'DISPONIBLE' }
-        ],
+        colors: formData.color_ext ? [
+          { name: formData.color_ext, hex: '#7D848C', status: formData.availability_status || 'ARRIVAGE', isDefault: true }
+        ] : [],
         specs: {
-          co2: 'Crit’Air 1 / 2',
-          doors: formData.doors || '5 portes',
-          seats: `${formData.seats || 5} places`,
-          boot_volume: '450 L à 1 450 L',
-          consumption: '5.6 L / 100km',
-          drivetrain: formData.drivetrain || 'Traction avant',
-          first_reg_date: formData.first_reg_date || `${formData.year}`,
-          chassis_number: 'VF3******' + Math.floor(1000 + Math.random() * 9000),
+          co2: '',
+          doors: formData.doors || '',
+          seats: formData.seats ? `${formData.seats} places` : '',
+          boot_volume: '',
+          consumption: '',
+          drivetrain: formData.drivetrain || '',
+          first_reg_date: formData.first_reg_date || (formData.year ? `${formData.year}` : ''),
+          chassis_number: '',
           owners_count: 'Entretien Constructeur à Jour',
-          color_int: formData.color_int || 'Noir',
-          fiscal_power: parseInt(formData.fiscal_power, 10) || 8,
-          engine_cylinders: formData.engine || '2.0L Turbo'
+          color_int: formData.color_int || '',
+          fiscal_power: formData.fiscal_power ? parseInt(formData.fiscal_power, 10) : '',
+          engine_cylinders: formData.engine || ''
         }
       };
 

@@ -22,16 +22,16 @@ export const VehicleSpecsAndEquipments = ({ vehicle }) => {
   const [activeTab, setActiveTab] = useState('equipments'); // 'equipments' | 'audit' | 'history'
 
   const mainSpecsGrid = [
-    { icon: Calendar, label: 'Mise en circulation', value: vehicle?.specs?.first_reg_date || `${vehicle?.year || '2023'}` },
-    { icon: Gauge, label: 'Kilométrage certifié', value: `${vehicle?.mileage?.toLocaleString('fr-FR')} km` },
-    { icon: Fuel, label: 'Énergie / Carburant', value: vehicle?.fuel_type || 'Essence / Hybride' },
-    { icon: Zap, label: 'Puissance DIN', value: `${vehicle?.power_hp} ch (${vehicle?.fiscal_power || 10} CV)` },
-    { icon: Settings, label: 'Boîte de vitesses', value: vehicle?.transmission || 'Automatique' },
-    { icon: ShieldCheck, label: 'Vignette Crit’Air / CO2', value: vehicle?.specs?.co2 || 'Crit’Air 1' },
-    { icon: Car, label: 'Carrosserie / Portes', value: `${vehicle?.category || 'Berline'} • ${vehicle?.specs?.doors || '5 portes'}` },
-    { icon: Layers, label: 'Nombre de places', value: vehicle?.specs?.seats || '5 places' },
-    { icon: Award, label: 'Historique', value: 'Entretien Constructeur à Jour' },
-    { icon: ShieldCheck, label: 'Garantie incluse', value: vehicle?.warranty || 'Garantie Constructeur' },
+    { icon: Calendar, label: 'Mise en circulation', value: vehicle?.specs?.first_reg_date || (vehicle?.year ? `${vehicle.year}` : '-') },
+    { icon: Gauge, label: 'Kilométrage certifié', value: vehicle?.mileage && Number(vehicle.mileage) > 0 ? `${Number(vehicle.mileage).toLocaleString('fr-FR')} km` : '-' },
+    { icon: Fuel, label: 'Énergie / Carburant', value: vehicle?.fuel_type || vehicle?.specs?.fuel_type || '-' },
+    { icon: Zap, label: 'Puissance DIN', value: vehicle?.power_hp && Number(vehicle.power_hp) > 0 ? `${vehicle.power_hp} ch${vehicle.fiscal_power ? ` (${vehicle.fiscal_power} CV)` : ''}` : '-' },
+    { icon: Settings, label: 'Boîte de vitesses', value: vehicle?.transmission || '-' },
+    { icon: ShieldCheck, label: 'Vignette Crit’Air / CO2', value: vehicle?.specs?.co2 || '-' },
+    { icon: Car, label: 'Carrosserie / Portes', value: [vehicle?.category, vehicle?.specs?.doors].filter(Boolean).join(' • ') || '-' },
+    { icon: Layers, label: 'Nombre de places', value: vehicle?.specs?.seats ? `${vehicle.specs.seats} places` : '-' },
+    { icon: Award, label: 'Historique', value: vehicle?.specs?.history || 'Entretien Constructeur à Jour' },
+    { icon: ShieldCheck, label: 'Garantie incluse', value: vehicle?.warranty || '-' },
   ];
 
   const auditCategories = [

@@ -127,8 +127,11 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
               <div>
                 <span className="font-bold text-slate-900 block text-sm">{vehicle?.title}</span>
                 <span className="text-slate-500">
-                  {vehicle?.year} • {vehicle?.mileage ? `${Number(vehicle.mileage).toLocaleString('fr-FR')} km` : 'Faible km'}
-                  {vehicle?.color_ext ? ` • ${vehicle.color_ext}` : ''}
+                  {[
+                    vehicle?.year,
+                    vehicle?.mileage && Number(vehicle.mileage) > 0 ? `${Number(vehicle.mileage).toLocaleString('fr-FR')} km` : null,
+                    vehicle?.color_ext
+                  ].filter(Boolean).join(' • ')}
                 </span>
               </div>
             </div>

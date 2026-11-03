@@ -198,17 +198,28 @@ export const VehicleManager = () => {
                       </h4>
 
                       <div className="flex items-center justify-between text-xs text-slate-500 pt-1 border-t border-slate-100">
-                        <span>{vehicle.year} • {vehicle.mileage ? `${Number(vehicle.mileage).toLocaleString('fr-FR')} km` : 'Faible km'}</span>
-                        <span>{vehicle.power_hp ? `${vehicle.power_hp} ch` : vehicle.engine}</span>
+                        <span>
+                          {[
+                            vehicle.year,
+                            vehicle.mileage && Number(vehicle.mileage) > 0 ? `${Number(vehicle.mileage).toLocaleString('fr-FR')} km` : null
+                          ].filter(Boolean).join(' • ')}
+                        </span>
+                        <span>{vehicle.power_hp && Number(vehicle.power_hp) > 0 ? `${vehicle.power_hp} ch` : (vehicle.engine || '')}</span>
                       </div>
 
                       <div className="text-[11px] text-slate-400 flex items-center justify-between">
                         <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3 text-rolex" /> {vehicle.delivery_city || 'France'}
+                          {vehicle.delivery_city ? (
+                            <>
+                              <MapPin className="w-3 h-3 text-rolex" /> {vehicle.delivery_city}
+                            </>
+                          ) : null}
                         </span>
-                        <span className="text-slate-400 font-mono text-[10px]">
-                          {vehicle.fuel_type || 'Diesel'}
-                        </span>
+                        {vehicle.fuel_type ? (
+                          <span className="text-slate-400 font-mono text-[10px]">
+                            {vehicle.fuel_type}
+                          </span>
+                        ) : null}
                       </div>
                     </div>
                   </div>

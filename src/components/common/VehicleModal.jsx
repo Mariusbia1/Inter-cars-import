@@ -99,19 +99,23 @@ export const VehicleModal = ({ vehicle, onClose, onOpenQuotation }) => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
                 <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-100">
                   <span className="text-xs text-slate-400 block mb-1">Mise en circulation</span>
-                  <span className="font-bold text-slate-800">{vehicle.year}</span>
+                  <span className="font-bold text-slate-800">{vehicle.year || '-'}</span>
                 </div>
                 <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-100">
                   <span className="text-xs text-slate-400 block mb-1">Kilométrage certifié</span>
-                  <span className="font-bold text-slate-800">{vehicle.mileage?.toLocaleString('fr-FR')} km</span>
+                  <span className="font-bold text-slate-800">
+                    {vehicle.mileage && Number(vehicle.mileage) > 0 ? `${Number(vehicle.mileage).toLocaleString('fr-FR')} km` : '-'}
+                  </span>
                 </div>
                 <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-100">
                   <span className="text-xs text-slate-400 block mb-1">Motorisation</span>
-                  <span className="font-bold text-slate-800">{vehicle.engine}</span>
+                  <span className="font-bold text-slate-800">{vehicle.engine || '-'}</span>
                 </div>
                 <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-100">
                   <span className="text-xs text-slate-400 block mb-1">Puissance</span>
-                  <span className="font-bold text-gold-dark">{vehicle.power_hp} chevaux</span>
+                  <span className="font-bold text-gold-dark">
+                    {vehicle.power_hp && Number(vehicle.power_hp) > 0 ? `${vehicle.power_hp} chevaux` : '-'}
+                  </span>
                 </div>
               </div>
             </div>

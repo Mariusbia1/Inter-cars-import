@@ -113,7 +113,7 @@ export const DeliveredVehiclesPage = () => {
         'brand': { '@type': 'Brand', 'name': v.brand },
         'model': v.model,
         'productionDate': v.year ? String(v.year) : undefined,
-        'mileageFromOdometer': v.mileage ? { '@type': 'QuantitativeValue', 'value': v.mileage, 'unitCode': 'KMT' } : undefined,
+        'mileageFromOdometer': (v.mileage && Number(v.mileage) > 0) ? { '@type': 'QuantitativeValue', 'value': Number(v.mileage), 'unitCode': 'KMT' } : undefined,
         'offers': v.price ? {
           '@type': 'Offer',
           'price': v.price,
