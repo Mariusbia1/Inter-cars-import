@@ -8,9 +8,9 @@ import { SEO } from '../components/common/SEO';
 export const ContactPage = () => {
   const { settings } = useSettings();
 
-  const phoneRaw = settings.phoneRaw || '+33493000000';
-  const commercialAddr = settings.commercialAddress || settings.address || "Siège Commercial, Axe Cannes — Monaco";
-  const headquartersAddr = settings.headquartersAddress || "Siège Social, France";
+  const phoneRaw = settings.phoneRaw || '+33749180735';
+  const commercialAddr = settings.commercialAddress || settings.address || "55 Av. Louis Breguet, 31400 Toulouse";
+  const headquartersAddr = settings.headquartersAddress || "36 Bis CHEMIN DE BELBEZE, 31240 SAINT-JEAN";
   const emailAddr = settings.email || 'contact@inter-cars-import.fr';
   const hours = settings.businessHours || "Du Lundi au Samedi : 08h30 - 19h30";
 
@@ -18,13 +18,15 @@ export const ContactPage = () => {
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
     'mainEntity': {
-      '@type': 'AutoDealer',
+      '@type': 'Organization',
       'name': 'Inter Cars Import',
       'telephone': phoneRaw,
       'email': emailAddr,
       'address': {
         '@type': 'PostalAddress',
-        'streetAddress': commercialAddr,
+        'streetAddress': '55 Av. Louis Breguet',
+        'addressLocality': 'Toulouse',
+        'postalCode': '31400',
         'addressCountry': 'FR'
       },
       'openingHours': 'Mo-Sa 08:30-19:30'

@@ -8,17 +8,17 @@ export const SettingsManager = () => {
   const { addToast } = useToast();
 
   const [formState, setFormState] = useState({
-    phone: settings.phone || '+33 (0)4 93 00 00 00',
+    phone: settings.phone || '07 49 18 07 35',
     email: settings.email || 'contact@inter-cars-import.fr',
     notificationEmail: settings.notificationEmail || settings.email || 'contact@inter-cars-import.fr',
     smtpHost: settings.smtpHost || '149-202-177-181.cprapid.com',
     smtpPort: settings.smtpPort || '465',
     smtpUser: settings.smtpUser || 'contact@inter-cars-import.fr',
     smtpPass: settings.smtpPass || '',
-    whatsapp: settings.whatsapp || '+33 6 00 00 00 00',
-    commercialAddress: settings.commercialAddress || settings.address || "Siège Commercial, Axe Cannes — Monaco",
-    headquartersAddress: settings.headquartersAddress || "Siège Social, France",
-    address: settings.commercialAddress || settings.address || "Siège Commercial, Axe Cannes — Monaco",
+    whatsapp: settings.whatsapp || '07 49 18 07 35',
+    commercialAddress: settings.commercialAddress || settings.address || "55 Av. Louis Breguet, 31400 Toulouse",
+    headquartersAddress: settings.headquartersAddress || "36 Bis CHEMIN DE BELBEZE, 31240 SAINT-JEAN",
+    address: settings.commercialAddress || settings.address || "55 Av. Louis Breguet, 31400 Toulouse",
     businessHours: settings.businessHours || "Du Lundi au Samedi : 08h30 - 19h30",
   });
 
@@ -107,7 +107,7 @@ export const SettingsManager = () => {
                 name="phone"
                 value={formState.phone}
                 onChange={handleChange}
-                placeholder="+33 (0)4 93 00 00 00"
+                placeholder="07 49 18 07 35"
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
               />
               <span className="text-[11px] text-slate-400 mt-1 block">
@@ -240,7 +240,7 @@ export const SettingsManager = () => {
                   name="commercialAddress"
                   value={formState.commercialAddress}
                   onChange={handleChange}
-                  placeholder="Ex: Siège Commercial, Axe Cannes — Monaco"
+                  placeholder="Ex: 55 Av. Louis Breguet, 31400 Toulouse"
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
                 />
                 <span className="text-[11px] text-slate-400 mt-1 block">
@@ -257,7 +257,7 @@ export const SettingsManager = () => {
                   name="headquartersAddress"
                   value={formState.headquartersAddress}
                   onChange={handleChange}
-                  placeholder="Ex: Siège Social, 123 Boulevard..., 75008 Paris"
+                  placeholder="Ex: 36 Bis CHEMIN DE BELBEZE, 31240 SAINT-JEAN"
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-surface outline-none focus:border-rolex"
                 />
                 <span className="text-[11px] text-slate-400 mt-1 block">

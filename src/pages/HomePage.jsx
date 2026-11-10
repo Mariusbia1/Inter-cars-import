@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSettings } from '../context/SettingsContext';
 import { SEO } from '../components/common/SEO';
 import { salesFaqs } from '../data/faqData';
 import { HeroSection } from '../components/home/HeroSection';
@@ -13,28 +14,31 @@ import { KeyStatsSection } from '../components/home/KeyStatsSection';
 import { TestimonialsSlider } from '../components/home/TestimonialsSlider';
 
 export const HomePage = () => {
+  const { settings } = useSettings();
+
   const homeStructuredData = {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'AutoDealer',
+        '@type': 'Organization',
         'name': 'Inter Cars Import',
         'legalName': 'Inter Cars Import SAS',
         'url': 'https://inter-cars-import.fr',
         'logo': 'https://inter-cars-import.fr/logo.png',
         'image': 'https://inter-cars-import.fr/logo.png',
         'description': "Vente de véhicules d'occasion rigoureusement audités en 150 points de contrôle, issus directement de concessions officielles partenaires en France.",
-        'priceRange': '€€€',
-        'telephone': '+33493000000',
+        'telephone': settings.phoneRaw || '+33749180735',
+        'email': settings.email || 'contact@inter-cars-import.fr',
         'address': {
           '@type': 'PostalAddress',
-          'addressLocality': 'Cannes',
+          'streetAddress': '55 Av. Louis Breguet',
+          'addressLocality': 'Toulouse',
+          'postalCode': '31400',
           'addressCountry': 'FR'
         },
-        'aggregateRating': {
-          '@type': 'AggregateRating',
-          'ratingValue': '4.9',
-          'reviewCount': '128'
+        'areaServed': {
+          '@type': 'Country',
+          'name': 'France'
         }
       },
       {

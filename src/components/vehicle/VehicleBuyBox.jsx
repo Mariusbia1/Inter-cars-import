@@ -110,7 +110,7 @@ export const VehicleBuyBox = ({
 
         {/* Bouton secondaire d'appel direct */}
         <a
-          href={`tel:${settings.phoneRaw || '+33493000000'}`}
+          href={`tel:${settings.phoneRaw || '+33749180735'}`}
           className="w-full py-2.5 px-4 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition-colors border border-slate-200"
         >
           <Phone className="w-3.5 h-3.5 text-rolex" />

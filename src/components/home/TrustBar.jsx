@@ -10,7 +10,7 @@ export const TrustBar = () => {
       count: 280,
       suffix: '+',
       title: 'Clients Accompagnés',
-      subtitle: 'Partout en France & Monaco'
+      subtitle: 'Partout en France'
     },
     {
       icon: Star,

@@ -3,34 +3,49 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 const SettingsContext = createContext();
 
-const SETTINGS_STORAGE_KEY = 'intercars_site_settings_v3';
+const SETTINGS_STORAGE_KEY = 'intercars_site_settings_v4';
 
 const defaultSettings = {
-  phone: '+33 (0)4 93 00 00 00',
-  phoneRaw: '+33493000000',
+  phone: '07 49 18 07 35',
+  phoneRaw: '+33749180735',
   email: 'contact@inter-cars-import.fr',
   notificationEmail: 'contact@inter-cars-import.fr',
-  commercialAddress: "Siège Commercial, Axe Cannes — Monaco",
-  headquartersAddress: "Siège Social, France",
-  address: "Siège Commercial, Axe Cannes — Monaco",
+  commercialAddress: "55 Av. Louis Breguet, 31400 Toulouse",
+  headquartersAddress: "36 Bis CHEMIN DE BELBEZE, 31240 SAINT-JEAN",
+  address: "55 Av. Louis Breguet, 31400 Toulouse",
   businessHours: "Du Lundi au Samedi : 08h30 - 19h30",
 };
 
 const formatAddress = (addr) => {
-  if (!addr) return "Siège Commercial, Axe Cannes — Monaco";
+  if (!addr) return "55 Av. Louis Breguet, 31400 Toulouse";
+  if (addr.includes("Cannes") || addr.includes("Monaco")) {
+    return "55 Av. Louis Breguet, 31400 Toulouse";
+  }
   return addr.replace(/Bureau\s+commercial/gi, "Siège Commercial");
+};
+
+const sanitizePhone = (ph) => {
+  if (!ph || ph.includes('49300') || ph.includes('04 93')) {
+    return '07 49 18 07 35';
+  }
+  return ph;
 };
 
 export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useState(() => {
     try {
+      localStorage.removeItem('intercars_site_settings_v3');
       const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
+        const phone = sanitizePhone(parsed.phone);
         return {
           ...defaultSettings,
           ...parsed,
+          phone,
+          phoneRaw: phone.replace(/[^0-9+]/g, ''),
           commercialAddress: formatAddress(parsed.commercialAddress),
+          headquartersAddress: parsed.headquartersAddress && parsed.headquartersAddress !== 'Siège Social, France' ? parsed.headquartersAddress : defaultSettings.headquartersAddress,
           address: formatAddress(parsed.address || parsed.commercialAddress)
         };
       }
@@ -54,9 +69,10 @@ export const SettingsProvider = ({ children }) => {
         if (!error && data) {
           const rawCommercial = data.commercial_address || data.address || defaultSettings.commercialAddress;
           const formattedCommercial = formatAddress(rawCommercial);
+          const cleanPhone = sanitizePhone(data.phone || defaultSettings.phone);
           const remoteConfig = {
-            phone: data.phone || defaultSettings.phone,
-            phoneRaw: (data.phone || defaultSettings.phone).replace(/[^0-9+]/g, ''),
+            phone: cleanPhone,
+            phoneRaw: cleanPhone.replace(/[^0-9+]/g, ''),
             email: data.email || defaultSettings.email,
             notificationEmail: data.notification_email || data.email || defaultSettings.notificationEmail,
             commercialAddress: formattedCommercial,

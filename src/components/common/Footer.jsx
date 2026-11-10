@@ -151,7 +151,7 @@ export const Footer = () => {
               )}
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-gold shrink-0" />
-                <a href={`tel:${settings.phoneRaw || '+33493000000'}`} className="hover:text-gold transition-colors font-semibold">
+                <a href={`tel:${settings.phoneRaw || '+33749180735'}`} className="hover:text-gold transition-colors font-semibold">
                   {settings.phone}
                 </a>
               </li>

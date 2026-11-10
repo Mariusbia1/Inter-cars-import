@@ -56,7 +56,7 @@ export const Navbar = () => {
             {/* Téléphone + CTA "DÉMARRER MON PROJET" */}
             <div className="hidden sm:flex items-center gap-3 md:gap-4">
               <a
-                href={`tel:${settings.phoneRaw || '+33493000000'}`}
+                href={`tel:${settings.phoneRaw || '+33749180735'}`}
                 className="flex items-center gap-2.5 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all group border shadow-sm bg-white/10 hover:bg-white/20 border-white/20 hover:border-gold text-white hover:text-gold"
               >
                 <div className="w-7 h-7 rounded-full flex items-center justify-center transition-transform group-hover:scale-110 bg-gold/20 text-gold border border-gold/40">
@@ -78,7 +78,7 @@ export const Navbar = () => {
             {/* Mobile Menu Toggle */}
             <div className="flex items-center gap-2 sm:hidden">
               <a
-                href={`tel:${settings.phoneRaw || '+33493000000'}`}
+                href={`tel:${settings.phoneRaw || '+33749180735'}`}
                 className="p-2 rounded-lg border bg-white/10 text-gold border-white/20"
                 aria-label="Appeler"
               >
@@ -179,7 +179,7 @@ export const Navbar = () => {
 
               <div className="pt-4 border-t border-white/15 space-y-3">
                 <a
-                  href={`tel:${settings.phoneRaw || '+33493000000'}`}
+                  href={`tel:${settings.phoneRaw || '+33749180735'}`}
                   className="flex items-center justify-center gap-2.5 py-3 rounded-lg bg-white/10 border border-white/20 text-white text-sm font-semibold hover:text-gold hover:border-gold transition-colors"
                 >
                   <Phone className="w-4 h-4 text-gold" />

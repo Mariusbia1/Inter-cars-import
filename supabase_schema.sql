@@ -87,12 +87,12 @@ CREATE TABLE public.testimonials (
 CREATE TABLE public.site_settings (
     id TEXT PRIMARY KEY DEFAULT 'main_settings',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
-    phone TEXT DEFAULT '+33 (0)4 93 00 00 00',
+    phone TEXT DEFAULT '07 49 18 07 35',
     email TEXT DEFAULT 'contact@inter-cars-import.fr',
     notification_email TEXT DEFAULT 'contact@inter-cars-import.fr',
-    commercial_address TEXT DEFAULT 'Bureau Commercial, Axe Cannes — Monaco',
-    headquarters_address TEXT DEFAULT 'Siège Social, France',
-    address TEXT DEFAULT 'Bureau Commercial, Axe Cannes — Monaco',
+    commercial_address TEXT DEFAULT '55 Av. Louis Breguet, 31400 Toulouse',
+    headquarters_address TEXT DEFAULT '36 Bis CHEMIN DE BELBEZE, 31240 SAINT-JEAN',
+    address TEXT DEFAULT '55 Av. Louis Breguet, 31400 Toulouse',
     business_hours TEXT DEFAULT 'Du Lundi au Samedi : 08h30 - 19h30'
 );
 
@@ -285,12 +285,12 @@ VALUES
 -- INITIALISATION DES PARAMÈTRES DU SITE
 -- ==============================================================================
 INSERT INTO public.site_settings (id, phone, email, notification_email, commercial_address, headquarters_address, address, business_hours)
-VALUES ('main_settings', '+33 (0)4 93 00 00 00', 'contact@inter-cars-import.fr', 'contact@inter-cars-import.fr', 'Bureau Commercial, Axe Cannes — Monaco', 'Siège Social, France', 'Bureau Commercial, Axe Cannes — Monaco', 'Du Lundi au Samedi : 08h30 - 19h30');
+VALUES ('main_settings', '07 49 18 07 35', 'contact@inter-cars-import.fr', 'contact@inter-cars-import.fr', '55 Av. Louis Breguet, 31400 Toulouse', '36 Bis CHEMIN DE BELBEZE, 31240 SAINT-JEAN', '55 Av. Louis Breguet, 31400 Toulouse', 'Du Lundi au Samedi : 08h30 - 19h30');
 
 -- ==============================================================================
 -- REQUÊTE DE MIGRATION RAPIDE (À exécuter dans l'éditeur SQL Supabase si vos tables existent déjà) :
 -- ==============================================================================
--- ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS commercial_address TEXT DEFAULT 'Bureau Commercial, Axe Cannes — Monaco';
--- ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS headquarters_address TEXT DEFAULT 'Siège Social, France';
+-- ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS commercial_address TEXT DEFAULT '55 Av. Louis Breguet, 31400 Toulouse';
+-- ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS headquarters_address TEXT DEFAULT '36 Bis CHEMIN DE BELBEZE, 31240 SAINT-JEAN';
 -- ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS business_hours TEXT DEFAULT 'Du Lundi au Samedi : 08h30 - 19h30';
 

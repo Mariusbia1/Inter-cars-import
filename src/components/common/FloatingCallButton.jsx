@@ -5,7 +5,7 @@ import { useSettings } from '../../context/SettingsContext';
 
 export const FloatingCallButton = () => {
   const { settings } = useSettings();
-  const phoneRaw = settings.phoneRaw || '+33493000000';
+  const phoneRaw = settings.phoneRaw || '+33749180735';
 
   return (
     <motion.div

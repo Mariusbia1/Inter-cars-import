@@ -282,7 +282,7 @@ export default async function handler(req, res) {
         </div>
 
         <div class="footer">
-          Inter Cars Import SAS — Bureau Commercial, Axe Cannes — Monaco<br>
+          Inter Cars Import SAS — 55 Av. Louis Breguet, 31400 Toulouse<br>
           <a href="https://inter-cars-import.fr">www.inter-cars-import.fr</a> • <a href="mailto:contact@inter-cars-import.fr">contact@inter-cars-import.fr</a>
         </div>
       </div>

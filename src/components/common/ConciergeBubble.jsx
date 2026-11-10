@@ -19,7 +19,7 @@ export const ConciergeBubble = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const phoneRaw = settings.phoneRaw || '+33493000000';
+  const phoneRaw = settings.phoneRaw || '+33749180735';
 
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end select-none">
