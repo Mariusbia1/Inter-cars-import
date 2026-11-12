@@ -22,7 +22,10 @@ export const HomePage = () => {
       {
         '@type': 'Organization',
         'name': 'Inter Cars Import',
-        'legalName': 'Inter Cars Import SAS',
+        'legalName': 'INTER CARS IMPORT SAS',
+        'identifier': '927942847',
+        'taxID': 'FR42927942847',
+        'vatID': 'FR42927942847',
         'url': 'https://inter-cars-import.fr',
         'logo': 'https://inter-cars-import.fr/logo.png',
         'image': 'https://inter-cars-import.fr/logo.png',

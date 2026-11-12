@@ -221,6 +221,17 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
                   Comptant (Virement sécurisé)
                 </button>
               </div>
+
+              {/* Encadré de transparence & bon de commande officiel */}
+              <div className="mt-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
+                <div className="flex items-center gap-1.5 font-bold text-rolex text-[11px] uppercase tracking-wide">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Protocole d'achat sécurisé & transparent</span>
+                </div>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  Toute commande fait l'objet d'un <strong>Bon de Commande officiel nominatif</strong> émis par <strong>INTER CARS IMPORT SAS</strong> (SIREN 927 942 847, RCS Toulouse) avec identification du véhicule, audit 150 points et garanties légales avant tout règlement.
+                </p>
+              </div>
             </div>
 
             {/* Message optionnel */}

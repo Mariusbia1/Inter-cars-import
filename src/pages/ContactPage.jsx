@@ -105,9 +105,15 @@ export const ContactPage = () => {
                 <p className="text-sm text-slate-600 leading-relaxed">
                   {headquartersAddr}
                 </p>
+                <p className="text-xs text-slate-500 pt-1">
+                  SIREN : 927 942 847 • RCS Toulouse
+                </p>
               </div>
-              <div className="pt-6 border-t border-slate-200/60 mt-6 text-xs text-slate-400">
-                Administration & Direction
+              <div className="pt-6 border-t border-slate-200/60 mt-6 text-xs text-slate-400 flex items-center justify-between">
+                <span>Administration & Direction</span>
+                <Link to="/mentions-legales" className="text-rolex hover:underline font-semibold">
+                  Mentions Légales
+                </Link>
               </div>
             </div>
 
