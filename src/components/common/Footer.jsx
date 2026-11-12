@@ -33,8 +33,8 @@ export const Footer = () => {
             <div className="flex items-center justify-center md:justify-start gap-3">
               <Shield className="w-6 h-6 text-gold shrink-0" />
               <div>
-                <p className="text-xs font-bold text-white uppercase tracking-wider">Paiement Sécurisé</p>
-                <p className="text-[11px] text-slate-400">Transactions 100% sécurisées</p>
+                <p className="text-xs font-bold text-white uppercase tracking-wider">Achat Transparent</p>
+                <p className="text-[11px] text-slate-400">Bon de commande certifié</p>
               </div>
             </div>
             <div className="flex items-center justify-center md:justify-start gap-3">

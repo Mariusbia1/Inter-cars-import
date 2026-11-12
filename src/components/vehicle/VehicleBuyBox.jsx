@@ -105,7 +105,7 @@ export const VehicleBuyBox = ({
           <span className="text-lg font-black tracking-tighter group-hover:translate-x-0.5 transition-transform">
             &gt;&gt;
           </span>
-          <span>RECEVEZ UN DEVIS DÉTAILLÉ</span>
+          <span>VÉRIFIER LA DISPONIBILITÉ</span>
         </button>
 
         {/* Bouton secondaire d'appel direct */}

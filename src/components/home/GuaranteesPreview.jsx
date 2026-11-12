@@ -14,9 +14,9 @@ export const GuaranteesPreview = () => {
     },
     {
       icon: Landmark,
-      title: 'Sécurité & Paiement Garanti',
-      subtitle: 'Transactions 100% Sécurisées',
-      desc: 'Contrat de vente clair et transparent. Aucun engagement sans la validation pleine et entière du rapport de contrôle technique.'
+      title: 'Contrat de Vente Transparent',
+      subtitle: 'Bon de Commande Certifié',
+      desc: 'Engagement contractuel clair avec identification complète du véhicule. Aucun engagement sans la validation pleine et entière du rapport de contrôle technique.'
     },
     {
       icon: FileCheck,

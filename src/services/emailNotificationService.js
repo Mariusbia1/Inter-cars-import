@@ -9,7 +9,7 @@ export const emailNotificationService = {
     const vehicleName = `${leadData.brand_sought || 'Véhicule'} ${leadData.model_sought || ''}`.trim();
     const clientName = leadData.full_name || 'Client';
     const clientEmail = leadData.email || '';
-    const subject = `Demande de Devis : ${vehicleName} — ${clientName}`;
+    const subject = `Demande d'Information : ${vehicleName} — ${clientName}`;
 
     // Récupération des réglages SMTP sauvegardés en local si disponibles
     let smtpPass = leadData.smtpPass || '';
@@ -35,7 +35,7 @@ export const emailNotificationService = {
     // Message d'accusé de réception automatique élégant et formel envoyé au client
     const clientConfirmationMessage = `Bonjour ${clientName},
 
-Nous avons bien enregistré votre demande de devis concernant votre recherche de : ${vehicleName}.
+Nous avons bien enregistré votre demande d'information concernant votre recherche de : ${vehicleName}.
 
 Notre équipe commerciale étudie vos critères auprès de notre réseau de concessions partenaires officielles en France. Un conseiller dédié prendra contact avec vous au ${leadData.phone || 'téléphone'} sous 24 à 48 heures ouvrées afin de vous présenter les opportunités sélectionnées.
 

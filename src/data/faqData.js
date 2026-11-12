@@ -8,8 +8,8 @@ export const salesFaqs = [
     answer: "Nous appliquons un protocole rigoureux d'audit en 150 points de contrôle : relevé du carnet d'entretien constructeur, mesures d'épaisseur de peinture au micromètre, contrôle sur pont élévateur et diagnostic électronique pour certifier l'absence de choc et l'authenticité kilométrique."
   },
   {
-    question: "Comment se déroule la transaction et le paiement ?",
-    answer: "Votre sécurité financière est totale. Les transactions sont formalisées par contrat de vente en toute transparence."
+    question: "Comment se déroule la réservation d'un véhicule ?",
+    answer: "Chaque commande est officialisée par un Bon de Commande contractuel nominatif avec rapport d'audit 150 points remis préalablement, pour un achat en toute clarté et sécurité."
   },
   {
     question: "Prenez-vous en charge la carte grise et les formalités administratives ?",

@@ -119,8 +119,8 @@ export const GuaranteesPage = () => {
               <SectionHeader
                 dark
                 align="left"
-                badge="Sécurité des Transactions"
-                title="Des Paiements Sécurisés & un Contrat Transparent"
+                badge="Sécurité Contractuelle"
+                title="Un Achat Sécurisé & un Contrat Transparent"
                 subtitle="Vous bénéficiez d'un cadre contractuel clair et conforme à la législation française."
                 className="mb-4"
               />
@@ -130,12 +130,12 @@ export const GuaranteesPage = () => {
                   Chez <strong>Inter Cars Import</strong>, chaque transaction est encadrée par un contrat de vente officiel. Nous vous garantissons une clarté totale sur le prix, les garanties et les caractéristiques du véhicule.
                 </p>
                 <p>
-                  Les fonds sont sécurisés et la vente n'est conclue qu'après validation complète de la conformité technique du véhicule et de son dossier administratif.
+                  L'engagement est transparent et la vente n'est conclue qu'après validation complète de la conformité technique du véhicule et de son dossier administratif.
                 </p>
               </div>
 
               <div className="pt-2 flex flex-wrap gap-4 text-xs text-gold font-semibold">
-                <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4" /> Transactions bancaires sécurisées</span>
+                <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4" /> Bon de commande officiel certifié</span>
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Contrat de vente clair et conforme</span>
               </div>
             </div>
@@ -147,8 +147,8 @@ export const GuaranteesPage = () => {
                     <Landmark className="w-7 h-7" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-serif font-bold text-white">Garantie & Sécurité Achat</h4>
-                    <p className="text-xs text-gold">Transactions sécurisées sans mauvaise surprise</p>
+                    <h4 className="text-lg font-serif font-bold text-white">Sécurité Juridique & Achat</h4>
+                    <p className="text-xs text-gold">Achat encadré en toute transparence</p>
                   </div>
                 </div>
 

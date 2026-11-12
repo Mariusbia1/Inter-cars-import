@@ -13,7 +13,6 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
     email: '',
     phone: '',
     deliveryCity: '',
-    fundingType: 'Comptant', // 'Comptant' | 'Financement / LOA' | 'Avec Reprise'
     message: '',
     privacyAccepted: false
   });
@@ -48,7 +47,7 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
         delivery_city: formData.deliveryCity || vehicle?.delivery_city || 'France',
         budget_max: vehicle?.price || null,
         preferred_timeline: 'Immédiat / Moins de 15 jours',
-        message: `Demande de devis détaillé pour : ${vehicle?.title} (${vehicle?.year || 2023}) - Couleur souhaitée : ${selectedColor?.name || 'Standard'}. Mode d'acquisition : ${formData.fundingType}. ${formData.message ? `Commentaire : ${formData.message}` : ''}`,
+        message: `Demande d'information pour : ${vehicle?.title} (${vehicle?.year || 2023}) - Couleur souhaitée : ${selectedColor?.name || 'Standard'}. ${formData.message ? `Commentaire : ${formData.message}` : ''}`,
         status: 'new'
       };
 
@@ -56,7 +55,7 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
 
       if (result.success) {
         setSubmitted(true);
-        addToast('Votre demande de devis a été transmise avec succès !', 'success');
+        addToast('Votre demande d\'information a été transmise avec succès !', 'success');
       } else {
         addToast(result.error || 'Erreur lors de la transmission.', 'error');
       }
@@ -77,10 +76,10 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
             <CheckCircle2 className="w-10 h-10" />
           </div>
           <h3 className="text-2xl font-serif font-bold text-slate-900">
-            Demande de Devis Envoyée !
+            Demande Transmise avec Succès !
           </h3>
           <p className="text-sm text-slate-600 leading-relaxed">
-            Merci <strong>{formData.fullName}</strong>. Un conseiller commercial dédié d'Inter Cars Import va vous contacter sous <strong>2h ouvrées</strong> avec la proposition détaillée pour ce <strong>{vehicle?.title}</strong>.
+            Merci <strong>{formData.fullName}</strong>. Un conseiller dédié d'Inter Cars Import va vous contacter sous <strong>2h ouvrées</strong> concernant ce <strong>{vehicle?.title}</strong>.
           </p>
           <div className="pt-4">
             <button
@@ -91,7 +90,6 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
                   email: '',
                   phone: '',
                   deliveryCity: '',
-                  fundingType: 'Comptant',
                   message: '',
                   privacyAccepted: false
                 });
@@ -106,13 +104,13 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
         <div className="space-y-6 relative z-10">
           <div className="border-b border-slate-100 pb-4">
             <span className="text-xs font-bold uppercase tracking-wider text-gold bg-rolex px-3 py-1 rounded-md inline-block mb-2">
-              Devis Gratuit & Sans Engagement
+              Disponibilité & Renseignements
             </span>
             <h3 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900">
-              Recevez l'Offre Clé en Main pour ce Véhicule
+              Demander des Informations sur ce Véhicule
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Remplissez ce formulaire pour recevoir le dossier complet (audit 150 points, historique, photos HD et conditions de livraison).
+              Remplissez ce formulaire pour vérifier la disponibilité et recevoir le dossier complet (audit 150 points, historique constructeur, photos HD et conditions de livraison).
             </p>
           </div>
 
@@ -206,32 +204,15 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
               </div>
             </div>
 
-            {/* Mode d'acquisition */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-700 block">
-                Mode d'acquisition envisagé :
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, fundingType: 'Comptant' })}
-                  className="py-2.5 px-4 rounded-lg bg-rolex text-gold border border-gold/40 font-bold shadow-xs text-center flex items-center justify-center gap-2"
-                >
-                  <CheckCircle2 className="w-4 h-4 text-gold" />
-                  Comptant (Virement sécurisé)
-                </button>
+            {/* Encadré d'information & transparence */}
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
+              <div className="flex items-center gap-1.5 font-bold text-rolex text-[11px] uppercase tracking-wide">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Renseignements Sans Engagement</span>
               </div>
-
-              {/* Encadré de transparence & bon de commande officiel */}
-              <div className="mt-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
-                <div className="flex items-center gap-1.5 font-bold text-rolex text-[11px] uppercase tracking-wide">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Protocole d'achat sécurisé & transparent</span>
-                </div>
-                <p className="text-[11px] text-slate-500 leading-relaxed">
-                  Toute commande fait l'objet d'un <strong>Bon de Commande officiel nominatif</strong> émis par <strong>INTER CARS IMPORT SAS</strong> (SIREN 927 942 847, RCS Toulouse) avec identification du véhicule, audit 150 points et garanties légales avant tout règlement.
-                </p>
-              </div>
+              <p className="text-[11px] text-slate-500 leading-relaxed">
+                Votre demande est 100% gratuite et sans aucun engagement. Un conseiller dédié vous répond personnellement pour vous présenter le dossier technique complet, l'historique et les disponibilités.
+              </p>
             </div>
 
             {/* Message optionnel */}
@@ -259,7 +240,7 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
                   className="mt-0.5 rounded border-slate-300 text-rolex focus:ring-rolex accent-rolex cursor-pointer shrink-0"
                 />
                 <span>
-                  J'accepte que mes données soient traitées par Inter Cars Import afin de recevoir mon devis et d'être recontacté, conformément à la{' '}
+                  J'accepte que mes données soient traitées par Inter Cars Import afin d'être recontacté au sujet de ma demande, conformément à la{' '}
                   <Link to="/confidentialite" target="_blank" className="text-rolex font-semibold underline hover:text-gold">
                     politique de confidentialité
                   </Link>.
@@ -279,7 +260,7 @@ export const VehicleLeadForm = ({ vehicle, selectedColor, formRef }) => {
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>ENVOYER MA DEMANDE DE DEVIS</span>
+                    <span>ENVOYER MA DEMANDE D'INFORMATION</span>
                   </>
                 )}
               </button>

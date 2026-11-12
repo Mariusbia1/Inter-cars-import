@@ -45,7 +45,7 @@ export const LegalPage = () => {
               <div>
                 <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">1. Collecte des Données Personnelles</h3>
                 <p>
-                  Dans le cadre de son activité de vente automobile et de relation client, <strong>Inter Cars Import SAS</strong> collecte exclusivement les données strictement nécessaires au traitement des demandes d'information, à l'établissement des devis et aux formalités administratives d'immatriculation (Nom, prénom, email, téléphone, ville de livraison).
+                  Dans le cadre de son activité de vente automobile et de relation client, <strong>Inter Cars Import SAS</strong> collecte exclusivement les données strictement nécessaires au traitement des demandes d'information et aux formalités administratives d'immatriculation (Nom, prénom, email, téléphone, ville de livraison).
                 </p>
               </div>
               <div>
@@ -77,10 +77,9 @@ export const LegalPage = () => {
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">3. Modalités de Règlement & Sécurisation Bancaire</h3>
+                <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">3. Modalités de Commande & Règlement</h3>
                 <p>
-                  Afin de garantir une traçabilité totale et la sécurité des fonds conformément aux réglementations financières françaises, les règlements sont effectués exclusivement par virement bancaire sur le <strong>compte bancaire professionnel officiel ouvert au nom d'INTER CARS IMPORT SAS</strong> auprès d'un établissement bancaire habilité en France.<br />
-                  <strong>Aucun versement n'est exigible avant la signature préalable d'un Bon de Commande en bonne et due forme</strong> signé par les deux parties.
+                  Les modalités et conditions de réservation et de règlement sont formalisées d'un commun accord lors de l'établissement du Bon de Commande officiel. Conformément à la législation en vigueur, aucun versement n'est exigible avant la validation et la signature préalable du Bon de Commande contractuel entre les deux parties.
                 </p>
               </div>
               <div>

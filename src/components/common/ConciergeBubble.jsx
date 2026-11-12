@@ -87,7 +87,7 @@ export const ConciergeBubble = () => {
                 >
                   <span className="flex items-center gap-2">
                     <Send className="w-3.5 h-3.5 text-gold group-hover:translate-x-0.5 transition-transform" />
-                    Demander un devis personnalisé
+                    Demander des renseignements
                   </span>
                   <ChevronRight className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100" />
                 </Link>

@@ -117,7 +117,7 @@ export default async function handler(req, res) {
     const vehicleName = sanitizeHeader(`${clean.brand_sought || 'Véhicule'} ${clean.model_sought || ''}`.trim(), 100);
     const clientName = sanitizeHeader(clean.full_name || 'Client', 100);
     const clientEmail = clean.email || '';
-    const subject = `Demande de Devis : ${vehicleName} — ${clientName}`;
+    const subject = `Demande d'Information : ${vehicleName} — ${clientName}`;
 
     const dateFormatted = new Date().toLocaleString('fr-FR', {
       timeZone: 'Europe/Paris',
@@ -159,7 +159,7 @@ export default async function handler(req, res) {
       <div class="container">
         <div class="header">
           <h1>Inter Cars Import</h1>
-          <p>Nouvelle Demande de Devis Entrante</p>
+          <p>Nouvelle Demande d'Information Entrante</p>
         </div>
         
         <div class="content">
@@ -252,7 +252,7 @@ export default async function handler(req, res) {
       <div class="container">
         <div class="header">
           <h1>Inter Cars Import</h1>
-          <p>Confirmation de Votre Demande de Devis</p>
+          <p>Confirmation de Votre Demande d'Information</p>
         </div>
         
         <div class="content">
