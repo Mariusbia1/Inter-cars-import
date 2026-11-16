@@ -11,7 +11,6 @@ import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
 import { AdminFloatingBar } from './components/common/AdminFloatingBar';
 import { CookieConsent } from './components/common/CookieConsent';
-import { ConciergeBubble } from './components/common/ConciergeBubble';
 
 // Pages Publiques
 import { HomePage } from './pages/HomePage';
@@ -66,7 +65,6 @@ const MainContent = () => {
       </main>
       {!isAdminRoute && <Footer />}
       <AdminFloatingBar />
-      {!isAdminRoute && <ConciergeBubble />}
       {!isAdminRoute && <CookieConsent />}
     </div>
   );
